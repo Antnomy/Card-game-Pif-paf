@@ -7,7 +7,7 @@ namespace mesa
 {
     class Mao 
     {
-        public List<Carta> Cartas { get; protected set; } = new List<Carta>();
+        private List<Carta> Cartas  = new List<Carta>();
         public Mao(Baralho baralho, int maoInicial)
         {
             for (int i = 1; i < maoInicial; i++)
@@ -29,16 +29,26 @@ namespace mesa
             Cartas.Remove(Cartas[posicao]);
             return aux;
         }
-        
+        public void MoverCarta(int origem, int destino)
+        {
+            Cartas.Insert(destino, Descartar(origem));
+        }
+        public int QntCartas()
+        {
+            return Cartas.Count;
+        }
         public override string ToString()
         {
-            StringBuilder txt = new StringBuilder();
+            StringBuilder txt = new StringBuilder("|");
             foreach (Carta cart in Cartas)
             {
-                txt.Append(cart.ToString() + "|");
+                txt.Append(cart.ToString());
+                if(txt.Length < 10)
+                {
+                    txt.Append(' ', 10 - txt.Length);                 
+                }
+                txt.Append(" |");
             }
-            txt.AppendLine("");
-            txt.AppendLine("");
             return txt.ToString();
         }
     }

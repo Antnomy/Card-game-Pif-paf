@@ -18,25 +18,13 @@ namespace Pif_paf
                 baralho.AdcCarta(new Carta('4', 10, Nipe.Ouros, Cor.preta));
                 baralho.AdcCarta(new Carta('5', 10, Nipe.Copas, Cor.preta));
                 baralho.AdcCarta(new Carta('6', 10, Nipe.Copas, Cor.preta));
-
-                Console.WriteLine(baralho);
-                Console.WriteLine();
-                baralho.Embaralhar();
-                Console.WriteLine(baralho);
-                Console.WriteLine();
-                baralho.Embaralhar();
+                Cemiterio cemiterio = new Cemiterio();
                 Mao mao = new Mao(baralho, 5);
-                
-                Console.WriteLine("mão");
-                Console.WriteLine(mao);
+                Tela.ImprimeMesa(baralho, cemiterio, mao);
 
-                mao.Descartar(2);
+                cemiterio.AdcCarta( mao.Descartar(1));
 
-                Console.WriteLine("mão");
-                Console.WriteLine(mao);
-
-                Console.WriteLine("Baralho");
-                Console.WriteLine(baralho);
+                Tela.ImprimeMesa(baralho, cemiterio, mao);
             }
             catch(PifpafExeption e)
             {
