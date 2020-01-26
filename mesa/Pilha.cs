@@ -3,7 +3,7 @@ using System;
 using System.Text;
 namespace mesa
 {
-    class Pilha
+    abstract class Pilha
     {
         protected int Count;
         public List<Carta> Cartas { get; protected set; } = new List<Carta>();
@@ -21,7 +21,7 @@ namespace mesa
         {
             Cartas.Remove(carta);
         }
-
+        public abstract Carta RemoveTop();
         public int QntCartas()
         {
             return Cartas.Count;

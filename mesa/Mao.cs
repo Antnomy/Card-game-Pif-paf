@@ -1,27 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Pif_paf;
 
 namespace mesa
 {
-    class Mao : Pilha
+    class Mao 
     {
-        public Baralho Baralho { get; private set; }
-        public Mao(Baralho baralho)
+        public List<Carta> Cartas { get; protected set; } = new List<Carta>();
+        public Mao(Baralho baralho, int maoInicial)
         {
-            for (int i = 1; i < 5; i++)
+            for (int i = 1; i < maoInicial; i++)
             {
                 Cartas.Add(baralho.RemoveTop());
             }          
         }
-        public void CompraCarta()
+        public void CompraCarta(Pilha cartas)
         {
-            Cartas.Add(Baralho.RemoveTop());
+            if (cartas.QntCartas() == 0)
+            {
+                throw new PifpafExeption("Não há mais cartas para sacar!");
+            }
+            Cartas.Add(cartas.RemoveTop());
         }
-        public void Descartar(int posicao)
+        public Carta Descartar(int posicao)
         {
+            Carta aux = Cartas[posicao];
             Cartas.Remove(Cartas[posicao]);
+            return aux;
         }
+        
         public override string ToString()
         {
             StringBuilder txt = new StringBuilder();

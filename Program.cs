@@ -9,30 +9,39 @@ namespace Pif_paf
     {
         static void Main(string[] args)
         {
-            Baralho b = new Baralho();
+            try
+            {
+                Baralho baralho = new Baralho();
+                baralho.AdcCarta(new Carta('A', 10, Nipe.Copas, Cor.preta));
+                baralho.AdcCarta(new Carta('2', 10, Nipe.Espadas, Cor.preta));
+                baralho.AdcCarta(new Carta('3', 10, Nipe.Paus, Cor.preta));
+                baralho.AdcCarta(new Carta('4', 10, Nipe.Ouros, Cor.preta));
+                baralho.AdcCarta(new Carta('5', 10, Nipe.Copas, Cor.preta));
+                baralho.AdcCarta(new Carta('6', 10, Nipe.Copas, Cor.preta));
 
-           
-            Baralho baralho = new Baralho();
-            baralho.AdcCarta(new Carta('A', 10, Nipe.copas, Cor.preta));
-            baralho.AdcCarta(new Carta('2', 10, Nipe.copas, Cor.preta));
-            baralho.AdcCarta(new Carta('3', 10, Nipe.copas, Cor.preta));
-            baralho.AdcCarta(new Carta('4', 10, Nipe.copas, Cor.preta));
-            baralho.AdcCarta(new Carta('5', 10, Nipe.copas, Cor.preta));
-            baralho.AdcCarta(new Carta('6', 10, Nipe.copas, Cor.preta));
-            
-            Console.WriteLine(baralho);
-            Console.WriteLine();
-            baralho.Embaralhar();
-            Console.WriteLine(baralho);
-            Console.WriteLine();
-            baralho.Embaralhar();
-            Mao mao = new Mao(baralho);
-            Console.WriteLine("mão");
-            Console.WriteLine(mao);
+                Console.WriteLine(baralho);
+                Console.WriteLine();
+                baralho.Embaralhar();
+                Console.WriteLine(baralho);
+                Console.WriteLine();
+                baralho.Embaralhar();
+                Mao mao = new Mao(baralho, 5);
+                
+                Console.WriteLine("mão");
+                Console.WriteLine(mao);
 
-            Console.WriteLine("Baralho");
-            Console.WriteLine(baralho);
+                mao.Descartar(2);
 
+                Console.WriteLine("mão");
+                Console.WriteLine(mao);
+
+                Console.WriteLine("Baralho");
+                Console.WriteLine(baralho);
+            }
+            catch(PifpafExeption e)
+            {
+                Console.WriteLine("O.o " + e.Message);
+            }
 
 
         }

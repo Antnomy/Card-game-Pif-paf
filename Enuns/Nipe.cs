@@ -2,9 +2,9 @@
 {
     enum Nipe
     {
-        copas,
-        espadas,
-        ouros,
-        paus
+        Copas,
+        Espadas,
+        Ouros,
+        Paus
     }
 }
