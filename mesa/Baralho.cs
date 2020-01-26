@@ -12,7 +12,12 @@ namespace mesa
         }
         public override Carta RemoveTop()
         {
-            
+
+            if (QntCartas() == 0)
+            {
+                throw new PifpafExeption("Não há mais cartas para sacar!");
+            }
+
             Carta aux = Cartas[0];
             Cartas.Remove(Cartas[0]);
             return aux;

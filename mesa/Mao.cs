@@ -10,23 +10,19 @@ namespace mesa
         private List<Carta> Cartas  = new List<Carta>();
         public Mao(Baralho baralho, int maoInicial)
         {
-            for (int i = 1; i < maoInicial; i++)
+            for (int i = 0; i < maoInicial; i++)
             {
                 Cartas.Add(baralho.RemoveTop());
             }          
         }
         public void CompraCarta(Pilha cartas)
         {
-            if (cartas.QntCartas() == 0)
-            {
-                throw new PifpafExeption("Não há mais cartas para sacar!");
-            }
             Cartas.Add(cartas.RemoveTop());
         }
         public Carta Descartar(int posicao)
         {
-            Carta aux = Cartas[posicao];
-            Cartas.Remove(Cartas[posicao]);
+            Carta aux = Cartas[posicao - 1];
+            Cartas.Remove(Cartas[posicao - 1]);
             return aux;
         }
         public void MoverCarta(int origem, int destino)
@@ -40,14 +36,17 @@ namespace mesa
         public override string ToString()
         {
             StringBuilder txt = new StringBuilder("|");
+            string str;
             foreach (Carta cart in Cartas)
             {
-                txt.Append(cart.ToString());
-                if(txt.Length < 10)
+                str = cart.ToString();
+                txt.Append(str);
+
+                if(str.Length < 9)
                 {
-                    txt.Append(' ', 10 - txt.Length);                 
+                    txt.Append(' ', 9 - str.Length);                 
                 }
-                txt.Append(" |");
+                txt.Append("|");
             }
             return txt.ToString();
         }

@@ -7,12 +7,6 @@ namespace mesa
     {
         protected int Count;
         public List<Carta> Cartas { get; protected set; } = new List<Carta>();
-
-        public Pilha()
-        {
-            Count = 0;
-        }
-
         public void AdcCarta(Carta carta)
         {
             Cartas.Add(carta);
