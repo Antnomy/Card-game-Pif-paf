@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿
 using System;
 using mesa;
 using Enuns;
@@ -31,21 +31,26 @@ namespace Pif_paf
 
                 while (true)
                 {
-                    Console.Clear();
+                    
                     Tela.ImprimeMesa(baralho, cemiterio, mao);                  
                     if(fase == 1)
                     {
-                        Console.Write("Compre carta (Enter): ");
-                        Console.ReadLine();
-                        mao.CompraCarta(baralho);
+                       
+                        mao.Sacar(Tela.Compra(baralho, cemiterio));
                         fase = 2;
                     }
                     else
                     {
-                        Console.Write("Descarte (posicao): ");
+                        Console.WriteLine("Mover carta: ");
+                        Console.Write("Origem: ");
+                        int origem = int.Parse(Console.ReadLine());
+                        Console.Write("Destino: ");
+                        int destino = int.Parse(Console.ReadLine());
+                        mao.MoverCarta(origem, destino);
+                        /*Console.Write("!Descarte uma carta (posicao):");
                         posicao = int.Parse(Console.ReadLine());
                         cemiterio.AdcCarta(mao.Descartar(posicao));
-                        fase = 1;
+                        fase = 1;*/
                     }                    
                 }
             }

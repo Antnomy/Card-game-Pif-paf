@@ -4,6 +4,7 @@
     {
         Compra,
         Descarte,
+        Selecao,
         Movimentacao,
         Fim
     }

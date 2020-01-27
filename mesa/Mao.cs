@@ -1,19 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
-using Pif_paf;
 
 namespace mesa
 {
     class Mao 
     {
         private List<Carta> Cartas  = new List<Carta>();
+        private int cartaSelec = -1;
         public Mao(Baralho baralho, int maoInicial)
         {
             for (int i = 0; i < maoInicial; i++)
             {
                 Cartas.Add(baralho.RemoveTop());
             }          
+        }
+
+        public void Sacar(Carta carta)
+        {
+            Cartas.Add(carta);
         }
         public void CompraCarta(Pilha cartas)
         {
@@ -24,6 +28,11 @@ namespace mesa
             Carta aux = Cartas[posicao - 1];
             Cartas.Remove(Cartas[posicao - 1]);
             return aux;
+        }
+
+        public void Selecionar(int indice)
+        {
+            cartaSelec = indice;
         }
         public void MoverCarta(int origem, int destino)
         {
