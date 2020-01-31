@@ -9,6 +9,7 @@ namespace Pif_paf
     {
         static void Main(string[] args)
         {
+            
             JogoPifpaf jogo = new JogoPifpaf();
             Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
 
@@ -22,15 +23,21 @@ namespace Pif_paf
                     Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
 
                     Console.Write("Decarte uma carta (posição): ");
-                    int pos = int.Parse(Console.ReadLine());
-                    jogo.Cemiterio.AdcCarta(jogo.Mao.Descartar(pos));
+                    int pos = Tela.EntrarPosicao();
+                    jogo.Mao.Marcar(pos);
+                    Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
+                    if (Tela.Confirmar())
+                    {
+                        jogo.Cemiterio.AdcCarta(jogo.Mao.Descartar(pos));
+                        jogo.Mao.DesMarcar();
 
+                    }
                     Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
                     char ch = 's';
 
                     while (ch == 's')
                     {
-                        Console.WriteLine("Mover uma carta (s/n)? ");
+                        Console.Write("Mover uma carta (s/n)? ");
                         ch = char.Parse(Console.ReadLine());
                         if (ch == 's')
                         {

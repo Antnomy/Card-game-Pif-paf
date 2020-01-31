@@ -69,9 +69,14 @@ namespace Pif_paf
         {
             return int.Parse(Console.ReadLine());
         }
+
+        public static int EntrarPosicao(Ai ai)
+        {
+            return ai.SelecionaIndiceMao();
+        }
         public static bool Confirmar()
         {
-            Console.WriteLine("Confirmar (s/n)?");
+            Console.Write("Confirmar (s/n)?");
             char ch = char.Parse(Console.ReadLine());
             if(ch == 's')
             {
