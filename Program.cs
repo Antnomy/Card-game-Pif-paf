@@ -9,55 +9,53 @@ namespace Pif_paf
     {
         static void Main(string[] args)
         {
-            try
-            {
-                Baralho baralho = new Baralho();
-                baralho.AdcCarta(new Carta('A', 10, Nipe.Copas, Cor.preta));
-                baralho.AdcCarta(new Carta('2', 10, Nipe.Espadas, Cor.preta));
-                baralho.AdcCarta(new Carta('3', 10, Nipe.Paus, Cor.preta));
-                baralho.AdcCarta(new Carta('4', 10, Nipe.Ouros, Cor.preta));
-                baralho.AdcCarta(new Carta('5', 10, Nipe.Copas, Cor.preta));
-                baralho.AdcCarta(new Carta('6', 10, Nipe.Copas, Cor.preta));
-                baralho.AdcCarta(new Carta('A', 10, Nipe.Copas, Cor.preta));
-                baralho.AdcCarta(new Carta('K', 10, Nipe.Espadas, Cor.preta));
-                baralho.AdcCarta(new Carta('3', 10, Nipe.Paus, Cor.preta));
-                baralho.AdcCarta(new Carta('1', 10, Nipe.Ouros, Cor.preta));
-                baralho.AdcCarta(new Carta('5', 10, Nipe.Copas, Cor.preta));
-                baralho.AdcCarta(new Carta('J', 10, Nipe.Copas, Cor.preta));
-                Cemiterio cemiterio = new Cemiterio();
-                Mao mao = new Mao(baralho, 5);
-                int posicao;
-                int fase = 1;
+            JogoPifpaf jogo = new JogoPifpaf();
+            Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
 
-                while (true)
+            while (true)
+            {
+                try
                 {
-                    
-                    Tela.ImprimeMesa(baralho, cemiterio, mao);                  
-                    if(fase == 1)
+                    Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
+
+                    jogo.Mao.AdcCarta(Tela.Compra(jogo.Baralho, jogo.Cemiterio));
+                    Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
+
+                    Console.Write("Decarte uma carta (posição): ");
+                    int pos = int.Parse(Console.ReadLine());
+                    jogo.Cemiterio.AdcCarta(jogo.Mao.Descartar(pos));
+
+                    Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
+                    char ch = 's';
+
+                    while (ch == 's')
                     {
-                       
-                        mao.Sacar(Tela.Compra(baralho, cemiterio));
-                        fase = 2;
+                        Console.WriteLine("Mover uma carta (s/n)? ");
+                        ch = char.Parse(Console.ReadLine());
+                        if (ch == 's')
+                        {
+                            Console.Write("Origem: ");
+                            int origem = int.Parse(Console.ReadLine());
+                            jogo.Mao.Marcar(origem);
+                            Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
+
+                            Console.Write("Destino: ");
+                            int destino = int.Parse(Console.ReadLine());
+
+                            jogo.MoverCarta(origem, destino);
+                            jogo.Mao.DesMarcar();
+
+                            Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
+                        }
                     }
-                    else
-                    {
-                        Console.WriteLine("Mover carta: ");
-                        Console.Write("Origem: ");
-                        int origem = int.Parse(Console.ReadLine());
-                        Console.Write("Destino: ");
-                        int destino = int.Parse(Console.ReadLine());
-                        mao.MoverCarta(origem, destino);
-                        /*Console.Write("!Descarte uma carta (posicao):");
-                        posicao = int.Parse(Console.ReadLine());
-                        cemiterio.AdcCarta(mao.Descartar(posicao));
-                        fase = 1;*/
-                    }                    
+                }
+                catch (PifpafExeption e)
+                {
+                    Console.WriteLine("Erro!... " + e.Message);
+                    Console.ReadLine();
                 }
             }
-            catch(PifpafExeption e)
-            {
-                Console.WriteLine("O.o " + e.Message);
-            }
+
 
 
         }

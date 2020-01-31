@@ -1,42 +1,84 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Pif_paf;
 
 namespace mesa
 {
     class Mao 
     {
         private List<Carta> Cartas  = new List<Carta>();
-        private int cartaSelec = -1;
+        public Carta Selecao { get; set; }
         public Mao(Baralho baralho, int maoInicial)
         {
             for (int i = 0; i < maoInicial; i++)
             {
                 Cartas.Add(baralho.RemoveTop());
-            }          
+            }
+            Selecao = null;
         }
 
-        public void Sacar(Carta carta)
+        public List<Carta> GetListaCartas()
+        {
+            return Cartas;
+        }
+
+        public void AdcCarta(Carta carta)
         {
             Cartas.Add(carta);
         }
+        public void RemovCarta(Carta carta)
+        {
+            Cartas.Remove(carta);
+        }
+
         public void CompraCarta(Pilha cartas)
         {
             Cartas.Add(cartas.RemoveTop());
         }
+
+        public bool ValidarPosicao(int posicao)
+        {
+            if(posicao <= Cartas.Count && posicao >= 1)
+            {
+                return true;
+            }
+            return false;
+        }
         public Carta Descartar(int posicao)
         {
-            Carta aux = Cartas[posicao - 1];
-            Cartas.Remove(Cartas[posicao - 1]);
-            return aux;
+            if (!ValidarPosicao(posicao))
+            {
+                throw new PifpafExeption("Digite uma posiçaõ existente!");
+            }
+            else
+            {
+                Carta aux = Cartas[posicao - 1];
+                Cartas.Remove(Cartas[posicao - 1]);
+                return aux;
+            }
+            
         }
 
-        public void Selecionar(int indice)
+        public void Marcar(int indice)
         {
-            cartaSelec = indice;
+            if (!ValidarPosicao(indice))
+            {
+                throw new PifpafExeption("Digite uma posiçaõ existente!");
+            }
+            else
+            {
+                Selecao = Cartas[indice - 1];
+            }
+            
         }
+        public void DesMarcar()
+        {
+            Selecao = null;
+        }
+
         public void MoverCarta(int origem, int destino)
         {
-            Cartas.Insert(destino, Descartar(origem));
+            Cartas.Insert(destino - 1, Descartar(origem));
         }
         public int QntCartas()
         {

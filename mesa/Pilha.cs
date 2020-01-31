@@ -4,7 +4,7 @@ using System.Text;
 using Pif_paf;
 namespace mesa
 {
-    abstract class Pilha
+    class Pilha
     {
         public List<Carta> Cartas { get; protected set; } = new List<Carta>();
         public void AdcCarta(Carta carta)

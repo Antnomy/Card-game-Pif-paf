@@ -35,7 +35,7 @@ namespace Pif_paf
             }
             Console.WriteLine();
         }
-        public static void ImprimeMesa(Baralho baralho, Cemiterio cemiterio, Mao mao)
+        public static void ImprimeMesa(Baralho baralho, Pilha cemiterio, Mao mao)
         {
             Console.Clear();
             string carta = "  vazio  ";
@@ -58,19 +58,35 @@ namespace Pif_paf
 
             Console.WriteLine();
             Linha(mao.QntCartas());
-            Console.WriteLine(mao);
+            ImprimeMao(mao);
             Corpo(mao.QntCartas());
             Corpo(mao.QntCartas());
             Linha(mao.QntCartas());
             Posicoes(mao.QntCartas());
             Linha(mao.QntCartas());
         }
-
-        public static Carta Compra(Baralho baralho, Cemiterio cemiterio)
+        public static int EntrarPosicao()
+        {
+            return int.Parse(Console.ReadLine());
+        }
+        public static bool Confirmar()
+        {
+            Console.WriteLine("Confirmar (s/n)?");
+            char ch = char.Parse(Console.ReadLine());
+            if(ch == 's')
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static Carta Compra(Baralho baralho, Pilha cemiterio)
         {
             if(qntCemiterio == 0)
             {
-                Console.Write("!Compre uma carta (Enter): ");
+                Console.Write("Pressione (Enter) para comprar uma carta: ");
                 Console.ReadLine();
                 return baralho.RemoveTop();
             }
@@ -86,8 +102,40 @@ namespace Pif_paf
                 {
                     return cemiterio.RemoveTop();
                 }
-            }
+            }                     
+        }
+        public static void Print(string txt)
+        {
             
+            ConsoleColor aux = Console.BackgroundColor;
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.Write(txt);
+            Console.BackgroundColor = aux;
+        }
+        public static void ImprimeMao(Mao mao)
+        {
+            Console.Write("|");
+            foreach (Carta cart in mao.GetListaCartas())
+            {
+                string  txt = cart.ToString();
+                while (txt.Length < 9)
+                {
+                    txt += " ";
+                }
+
+                if(mao.Selecao == cart)
+                {
+                    Print(txt);
+                }
+                else
+                {
+                    Console.Write(txt);
+                }
+                Console.Write("|");
+            }
+            Console.WriteLine();
+           
+
         }
     }
 }
