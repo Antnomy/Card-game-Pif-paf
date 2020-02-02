@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using mesa;
+using Enuns;
 
 namespace Pif_paf
 {
@@ -12,58 +11,81 @@ namespace Pif_paf
         {
             for (int i = 0; i < tamanho; i++)
             {
-                Console.Write("----------");
+                Console.Write("----");
             }
-            Console.WriteLine();
+            Console.WriteLine("----");
         }
         public static void Corpo(int tamanho)
         {
-            Console.Write("|");
+
             for (int i = 0; i < tamanho; i++)
             {
-                Console.Write("         |");
+                Console.Write("|   ");
             }
-            Console.WriteLine();
+            Console.WriteLine("    |");
         }
+        public static void Costas(int tamanho)
+        {
 
+            for (int i = 0; i < tamanho; i++)
+            {
+                Console.Write("|?  ");
+            }
+            Console.WriteLine("    |");
+        }
         public static void Posicoes(int tamanho)
         {
-            
+
             for (int i = 1; i <= tamanho; i++)
             {
-                Console.Write( $"    {i}     ");
+                Console.Write($" {i}  ");
             }
             Console.WriteLine();
         }
-        public static void ImprimeMesa(Baralho baralho, Pilha cemiterio, Mao mao)
+        public static void Desenho(Mao mao, bool visibilidade)
+        {
+            Linha(mao.QntCartas());
+            if (mao.Visibilidade == true && visibilidade == true)
+            {
+                ImprimeMao(mao);
+            }
+            else
+            {
+                Costas(mao.QntCartas());
+            }
+            Corpo(mao.QntCartas());
+            Corpo(mao.QntCartas());
+            Linha(mao.QntCartas());
+
+        }
+        public static void ImprimeMesa(JogoPifpaf jogo)
         {
             Console.Clear();
-            string carta = "  vazio  ";
-            qntCemiterio = cemiterio.QntCartas();
-            if(qntCemiterio > 0)
+            int indiceAdeversario = jogo.indiceAnterior;
+            Console.WriteLine("Jogador " + indiceAdeversario);
+            Desenho(jogo.Jogadores[indiceAdeversario].Mao, false);
+            string carta = "vazio";
+            qntCemiterio = jogo.Cemiterio.QntCartas();
+            if (qntCemiterio > 0)
             {
-                carta = cemiterio.Cartas[qntCemiterio - 1] + "";
+                carta = jogo.Cemiterio.Cartas[qntCemiterio - 1] + "";
             }
 
-            while(carta.Length < 9)
-            {
-                carta += " ";
-            }
-            Console.WriteLine("                                               "+ qntCemiterio +"             " + baralho.QntCartas());
-            Console.WriteLine("                                         ------------  ------------");
-            Console.WriteLine("                                         |" + carta + " |  |          |");
-            Console.WriteLine("                                         |          |  |     X    |");
-            Console.WriteLine("                                         |          |  |          |");
-            Console.WriteLine("                                         ------------  ------------");
+
+
+            Console.WriteLine("                                            " + qntCemiterio + "          " + jogo.Baralho.QntCartas());
+            Console.WriteLine("                                         ----------  ---------");
+            Console.WriteLine("                                         |" + carta + "   |  |?      |");
+            Console.WriteLine("                                         |        |  |       |");
+            Console.WriteLine("                                         |        |  |       |");
+            Console.WriteLine("                                         |        |  |       |");
+            Console.WriteLine("                                         ----------  ---------");
 
             Console.WriteLine();
-            Linha(mao.QntCartas());
-            ImprimeMao(mao);
-            Corpo(mao.QntCartas());
-            Corpo(mao.QntCartas());
-            Linha(mao.QntCartas());
-            Posicoes(mao.QntCartas());
-            Linha(mao.QntCartas());
+            Console.WriteLine("Jogador " + jogo.JogadorAtual.Numero);
+            Desenho(jogo.JogadorAtual.Mao, true);
+            Posicoes(jogo.JogadorAtual.Mao.QntCartas());
+            Linha(jogo.JogadorAtual.Mao.QntCartas());
         }
         public static int EntrarPosicao()
         {
@@ -72,13 +94,13 @@ namespace Pif_paf
 
         public static int EntrarPosicao(Ai ai)
         {
-            return ai.SelecionaIndiceMao();
+            return ai.SelecRandonIndiceMao();
         }
         public static bool Confirmar()
         {
             Console.Write("Confirmar (s/n)?");
             char ch = char.Parse(Console.ReadLine());
-            if(ch == 's')
+            if (ch == 's')
             {
                 return true;
             }
@@ -89,7 +111,7 @@ namespace Pif_paf
         }
         public static Carta Compra(Baralho baralho, Pilha cemiterio)
         {
-            if(qntCemiterio == 0)
+            if (qntCemiterio == 0)
             {
                 Console.Write("Pressione (Enter) para comprar uma carta: ");
                 Console.ReadLine();
@@ -99,7 +121,7 @@ namespace Pif_paf
             {
                 Console.Write("!Comprar do Maço ou Cemiterio (m, c)?: ");
                 char c = char.Parse(Console.ReadLine());
-                if(c == 'm')
+                if (c == 'm')
                 {
                     return baralho.RemoveTop();
                 }
@@ -107,11 +129,20 @@ namespace Pif_paf
                 {
                     return cemiterio.RemoveTop();
                 }
-            }                     
+            }
         }
-        public static void Print(string txt)
+
+        public static void PrintCarta(string carta, ConsoleColor cor)
         {
-            
+
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = cor;
+            Console.Write(carta);
+            Console.ForegroundColor = aux;
+        }
+        public static void PrintSelecao(string txt)
+        {
+
             ConsoleColor aux = Console.BackgroundColor;
             Console.BackgroundColor = ConsoleColor.White;
             Console.Write(txt);
@@ -119,27 +150,52 @@ namespace Pif_paf
         }
         public static void ImprimeMao(Mao mao)
         {
-            Console.Write("|");
+
             foreach (Carta cart in mao.GetListaCartas())
             {
-                string  txt = cart.ToString();
-                while (txt.Length < 9)
-                {
-                    txt += " ";
-                }
+                string txt = cart.Letra.ToString();
+                Console.Write("|");
 
-                if(mao.Selecao == cart)
+                if (mao.Selecao == cart)
                 {
-                    Print(txt);
+                    PrintSelecao(txt);
                 }
                 else
                 {
                     Console.Write(txt);
                 }
-                Console.Write("|");
+
+                if (txt == "10")
+                {
+                    Console.Write(" ");
+                }
+                else
+                {
+                    Console.Write("  ");
+                }
             }
-            Console.WriteLine();
-           
+            Console.WriteLine("    |");
+
+            //print nipes
+            foreach (Carta cart in mao.GetListaCartas())
+            {
+                string txt = cart.Nipe.ToString();
+                Console.Write("|");
+
+                if (cart.Cor == Cor.vermelha)
+                {
+                    PrintCarta(txt, ConsoleColor.Red);
+                }
+                else
+                {
+                    PrintCarta(txt, ConsoleColor.DarkGray);
+                }
+
+
+
+            }
+            Console.WriteLine("    |");
+
 
         }
     }

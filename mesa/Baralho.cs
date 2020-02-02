@@ -7,9 +7,9 @@ namespace mesa
     class Baralho : Pilha
     {
        public int QntTotalCartas { get; private set; }
-        public Baralho(int qntCartas) : base()
+        public Baralho(int qnt) : base()
         {
-            QntTotalCartas = qntCartas;
+            QntTotalCartas = qnt;
         }
         public void Embaralhar()
         {

@@ -8,6 +8,7 @@ namespace mesa
     {
         private List<Carta> Cartas  = new List<Carta>();
         public Carta Selecao { get; set; }
+        public bool Visibilidade { get; private set; }
         public Mao(Baralho baralho, int maoInicial)
         {
             for (int i = 0; i < maoInicial; i++)
@@ -15,6 +16,7 @@ namespace mesa
                 Cartas.Add(baralho.RemoveTop());
             }
             Selecao = null;
+            Visibilidade = true;
         }
 
         public List<Carta> GetListaCartas()

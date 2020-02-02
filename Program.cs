@@ -10,29 +10,29 @@ namespace Pif_paf
         static void Main(string[] args)
         {
             
-            JogoPifpaf jogo = new JogoPifpaf();
-            Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
+            JogoPifpaf jogo = new JogoPifpaf(2);
+            Tela.ImprimeMesa(jogo);
 
             while (true)
             {
                 try
                 {
-                    Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
+                    Tela.ImprimeMesa(jogo);
 
                     jogo.Mao.AdcCarta(Tela.Compra(jogo.Baralho, jogo.Cemiterio));
-                    Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
+                    Tela.ImprimeMesa(jogo);
 
                     Console.Write("Decarte uma carta (posição): ");
                     int pos = Tela.EntrarPosicao();
                     jogo.Mao.Marcar(pos);
-                    Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
+                    Tela.ImprimeMesa(jogo);
                     if (Tela.Confirmar())
                     {
                         jogo.Cemiterio.AdcCarta(jogo.Mao.Descartar(pos));
                         jogo.Mao.DesMarcar();
 
                     }
-                    Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
+                    Tela.ImprimeMesa(jogo);
                     char ch = 's';
 
                     while (ch == 's')
@@ -41,20 +41,21 @@ namespace Pif_paf
                         ch = char.Parse(Console.ReadLine());
                         if (ch == 's')
                         {
-                            Console.Write("Origem: ");
-                            int origem = int.Parse(Console.ReadLine());
+                            Console.Write("Origem (posiçao): ");
+                            int origem = Tela.EntrarPosicao();
                             jogo.Mao.Marcar(origem);
-                            Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
+                            Tela.ImprimeMesa(jogo);
 
-                            Console.Write("Destino: ");
-                            int destino = int.Parse(Console.ReadLine());
+                            Console.Write("Destino (posição): ");
+                            int destino = Tela.EntrarPosicao(); 
 
                             jogo.MoverCarta(origem, destino);
                             jogo.Mao.DesMarcar();
 
-                            Tela.ImprimeMesa(jogo.Baralho, jogo.Cemiterio, jogo.Mao);
+                            Tela.ImprimeMesa(jogo);
                         }
                     }
+                    jogo.MudarJogador();
                 }
                 catch (PifpafExeption e)
                 {
