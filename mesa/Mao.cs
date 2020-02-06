@@ -49,7 +49,7 @@ namespace mesa
         }
         public Carta Descartar(int posicao)
         {
-            
+
             if (!ValidarPosicao(posicao))
             {
                 throw new PifpafExeption("Digite uma posiçaõ existente!");
@@ -65,7 +65,7 @@ namespace mesa
 
         public void Marcar(int indice)
         {
-            
+
             if (!ValidarPosicao(indice))
             {
                 throw new PifpafExeption("Digite uma posiçaõ existente!");
@@ -83,7 +83,7 @@ namespace mesa
 
         public void MoverCarta(int origem, int destino)
         {
-            
+
             if (!ValidarPosicao(destino))
             {
                 throw new PifpafExeption("Digite uma posiçaõ existente!");
@@ -93,13 +93,13 @@ namespace mesa
                 Cartas.Insert(destino, Descartar(origem));
             }
         }
-        public bool VerifPares(Carta a, Carta b)
+        public bool VerifPar(Carta a, Carta b)
         {
-            if (a.Letra == b.Letra && a.Nipe != b.Nipe)
-            {
-                return true;
-            }
-            return false;
+            return a.Letra == b.Letra && a.Nipe != b.Nipe;
+        }
+        public bool VerifSeq(Carta a, Carta b)
+        {
+            return a.Ordem < b.Ordem && a.Nipe == b.Nipe;
         }
         public int VerifTrincas()
         {
@@ -109,7 +109,7 @@ namespace mesa
 
             for (int i = 0; i < Cartas.Count - 1; i++)
             {
-                if (VerifPares(Cartas[i], Cartas[i + 1]))
+                if (VerifPar(Cartas[i], Cartas[i + 1]))
                 {
                     aux.Add(Cartas[i + 1]);
                 }
@@ -127,6 +127,29 @@ namespace mesa
             }
             return qntTrincas;
         }
+        public int VerifSequencias()
+        {
+            List<Carta> aux = new List<Carta>();
+            int qntSequencias = 0;
+            for (int i = 0; i < Cartas.Count - 1; i++)
+            {
+                if(VerifSeq(Cartas[i], Cartas[i + 1]))
+                {
+                    aux.Add(Cartas[i + 1]);
+                }
+                else
+                {
+                    aux.Clear();
+                }
+                if (aux.Count == 2)
+                {
+                    aux.Add(Cartas[i]);
+                    qntSequencias++;
+                    aux.Clear();
+                }
+            }
+            return 1;
+        }
         public void VerifTrincas2()
         {
             //Carta[] vet = new Carta[3];
@@ -136,7 +159,7 @@ namespace mesa
             {
                 for (int j = 1; j < Cartas.Count; j++)
                 {
-                    if (VerifPares(Cartas[i], Cartas[j]))
+                    if (VerifPar(Cartas[i], Cartas[j]))
                     {
                         aux.Add(Cartas[j]);
                     }

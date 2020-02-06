@@ -8,6 +8,7 @@ namespace Pif_paf
         public Baralho Baralho;
         public Pilha Cemiterio;
         Random r = new Random();
+       
         public Ai(int numero, Mao mao, Baralho baralho, Pilha cemiterio) :base(numero, mao)
         {
             Baralho = baralho;

@@ -5,11 +5,10 @@ using Pif_paf;
 namespace mesa
 {
     class Baralho : Pilha
-    {
-       public int QntTotalCartas { get; private set; }
-        public Baralho(int qnt) : base()
+    {      
+        public Baralho() 
         {
-            QntTotalCartas = qnt;
+          
         }
         public void Embaralhar()
         {

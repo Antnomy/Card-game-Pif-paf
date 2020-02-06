@@ -8,8 +8,10 @@ namespace Pif_paf
     class Program
     {
         static void Main(string[] args)
-        {
-           
+        {          
+            Console.WriteLine("Fim do timer");
+            Console.ReadLine();
+
             JogoPifpaf jogo = new JogoPifpaf(2);
             Tela.ImprimeMesa(jogo);
 
@@ -54,7 +56,7 @@ namespace Pif_paf
                                 Tela.ImprimeMesa(jogo);
                                 Console.Write("Origem (posiçao): ");
                                 int origem = Tela.EntrarPosicao();
-                                jogo.Mao.Marcar(origem);
+                                jogo.Mao.Marcar(origem - 1);
                                 Tela.ImprimeMesa(jogo);
 
                                 Console.Write("Destino (posição): ");
@@ -88,6 +90,7 @@ namespace Pif_paf
                         Console.ReadLine();
                     }
                     Console.WriteLine("Qnt trincas: " + jogo.Mao.VerifTrincas());
+                    Console.WriteLine("Qnt sequenciass: " + jogo.Mao.VerifSequencias());
                     Console.ReadLine();
                     jogo.MudarJogador();
                 }
