@@ -13,12 +13,13 @@ namespace Pif_paf
             Baralho = baralho;
             Cemiterio = cemiterio;
             Mao = mao;
+            Nome = "CPU";
         }
         public void Jogar()
         {
-            Baralho.RemoveTop();
+            Mao.AdcCarta(Baralho.RemoveTop());          
+            Mao.GetListaCartas().Insert(SelecRandonIndiceMao(), Mao.Descartar(SelecRandonIndiceMao()));
             Cemiterio.AdcCarta(Mao.Descartar(SelecRandonIndiceMao()));
-            Mao.GetListaCartas().Insert(SelecRandonIndiceMao() - 1, Mao.Descartar(SelecRandonIndiceMao()));
         }
         public bool Confirmar()
         {        

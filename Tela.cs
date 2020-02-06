@@ -61,9 +61,9 @@ namespace Pif_paf
         public static void ImprimeMesa(JogoPifpaf jogo)
         {
             Console.Clear();
-            int indiceAdeversario = jogo.indiceAnterior;
-            Console.WriteLine("Jogador " + indiceAdeversario);
-            Desenho(jogo.Jogadores[indiceAdeversario].Mao, false);
+            
+            Console.WriteLine(jogo.Jogadores[0].Nome + " " + 0);
+            Desenho(jogo.Jogadores[0].Mao, true);
             string carta = "vazio";
             qntCemiterio = jogo.Cemiterio.QntCartas();
             if (qntCemiterio > 0)
@@ -73,19 +73,20 @@ namespace Pif_paf
 
 
 
-            Console.WriteLine("                                            " + qntCemiterio + "          " + jogo.Baralho.QntCartas());
-            Console.WriteLine("                                         ----------  ---------");
-            Console.WriteLine("                                         |" + carta + "   |  |?      |");
-            Console.WriteLine("                                         |        |  |       |");
-            Console.WriteLine("                                         |        |  |       |");
-            Console.WriteLine("                                         |        |  |       |");
-            Console.WriteLine("                                         ----------  ---------");
+            Console.WriteLine("                " + qntCemiterio + "                             " + jogo.Baralho.QntCartas());
+            Console.WriteLine("             -------                      ----------");
+            Console.WriteLine("            |" + carta + "  |                     |?        ||");
+            Console.WriteLine("            |       |                     |         ||");
+            Console.WriteLine("            |       |                     |         ||");
+            Console.WriteLine("            |       |                     |         ||");
+            Console.WriteLine("             -------                      ----------");
+            
 
             Console.WriteLine();
-            Console.WriteLine("Jogador " + jogo.JogadorAtual.Numero);
-            Desenho(jogo.JogadorAtual.Mao, true);
-            Posicoes(jogo.JogadorAtual.Mao.QntCartas());
-            Linha(jogo.JogadorAtual.Mao.QntCartas());
+            Console.WriteLine("Jogador " + jogo.Jogadores[1].Numero);
+            Desenho(jogo.Jogadores[1].Mao, true);
+            Posicoes(jogo.Jogadores[1].Mao.QntCartas());
+            Linha(jogo.Jogadores[1].Mao.QntCartas());
         }
         public static int EntrarPosicao()
         {

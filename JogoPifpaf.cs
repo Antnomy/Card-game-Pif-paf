@@ -21,10 +21,9 @@ namespace mesa
 
             DefinirCartas();
             Baralho.Embaralhar();
-            for (int i = 0; i < Jogadores.Length; i++)
-            {
-                Jogadores[i] = new Jogador(i, new Mao(Baralho, 9));
-            }
+            Jogadores[0] = new Ai(0, new Mao(Baralho, 9), Baralho, Cemiterio);
+            Jogadores[1] = new Jogador(1, new Mao(Baralho, 9));
+
             JogadorAtual = Jogadores[1];
             Mao = JogadorAtual.Mao;
            
@@ -35,14 +34,14 @@ namespace mesa
         }
         public void MudarJogador()
         {
-            if (JogadorAtual.Numero == Jogadores.Length - 1)
+            if (JogadorAtual.Numero == 1)
             {
                 indiceAnterior = JogadorAtual.Numero; 
                 JogadorAtual = Jogadores[0];
             }
             else
             {
-                JogadorAtual = Jogadores[JogadorAtual.Numero + 1];
+                JogadorAtual = Jogadores[1];
                 indiceAnterior = JogadorAtual.Numero;
             }
         }
