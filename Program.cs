@@ -9,15 +9,13 @@ namespace Pif_paf
     {
         static void Main(string[] args)
         {          
-            Console.WriteLine("Fim do timer");
-            Console.ReadLine();
-
+           
             JogoPifpaf jogo = new JogoPifpaf(2);
             Tela.ImprimeMesa(jogo);
 
 
 
-            while (true)
+            while (!jogo.FimJogo)
             {
                 if (jogo.JogadorAtual is Ai)
                 {
@@ -64,6 +62,9 @@ namespace Pif_paf
 
                                 jogo.MoverCarta(origem - 1, destino - 1);
                                 jogo.Mao.DesMarcar();
+                                jogo.Mao.RemoveGrupo(origem - 1);
+                                
+                               
 
                                 Tela.ImprimeMesa(jogo);
                             }
@@ -92,6 +93,7 @@ namespace Pif_paf
                     Console.WriteLine("Qnt trincas: " + jogo.Mao.VerifTrincas());
                     Console.WriteLine("Qnt sequenciass: " + jogo.Mao.VerifSequencias());
                     Console.ReadLine();
+
                     jogo.MudarJogador();
                 }
                 

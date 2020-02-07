@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using Pif_paf;
+using Enuns;
 
 namespace mesa
 {
@@ -65,7 +66,6 @@ namespace mesa
 
         public void Marcar(int indice)
         {
-
             if (!ValidarPosicao(indice))
             {
                 throw new PifpafExeption("Digite uma posiçaõ existente!");
@@ -74,11 +74,18 @@ namespace mesa
             {
                 Selecao = Cartas[indice];
             }
-
         }
         public void DesMarcar()
         {
             Selecao = null;
+        }
+        public void RemoveGrupo(int indice)
+        {
+            Cartas[indice].Grupo = Grupo.Nenhum;
+        }
+        public void RemoveGrupo()
+        {
+            Cartas.ForEach(carta => carta.Grupo = Grupo.Nenhum);
         }
 
         public void MoverCarta(int origem, int destino)
@@ -119,7 +126,8 @@ namespace mesa
                 }
                 if (aux.Count == 2)
                 {
-                    aux.Add(Cartas[i]);
+                    aux.Insert(0, Cartas[i - 1]);
+                    aux.ForEach(carta => carta.Grupo = Grupo.Trincas);
                     qntTrincas++;
                     aux.Clear();
                 }
@@ -132,8 +140,8 @@ namespace mesa
             List<Carta> aux = new List<Carta>();
             int qntSequencias = 0;
             for (int i = 0; i < Cartas.Count - 1; i++)
-            {
-                if(VerifSeq(Cartas[i], Cartas[i + 1]))
+            {               
+                if (VerifSeq(Cartas[i], Cartas[i + 1]))
                 {
                     aux.Add(Cartas[i + 1]);
                 }
@@ -142,13 +150,18 @@ namespace mesa
                     aux.Clear();
                 }
                 if (aux.Count == 2)
-                {
-                    aux.Add(Cartas[i]);
+                {                  
                     qntSequencias++;
+                    aux.Insert(0, Cartas[i-1]);
+                    aux.ForEach(carta => carta.Grupo = Grupo.Sequencias);
+                    Trincas.Add(new Trinca(aux.ToArray()));
+                    
+                    Trincas.ForEach(x => System.Console.WriteLine(x));
+                    System.Console.ReadLine();
                     aux.Clear();
                 }
             }
-            return 1;
+            return qntSequencias;
         }
         public void VerifTrincas2()
         {

@@ -42,12 +42,13 @@ namespace Pif_paf
             }
             Console.WriteLine();
         }
-        public static void Desenho(Mao mao, bool visibilidade)
+
+        public static void ImprimeMao(Mao mao, bool visibilidade)
         {
             Linha(mao.QntCartas());
             if (mao.Visibilidade == true && visibilidade == true)
             {
-                ImprimeMao(mao);
+                ImprimeCartas(mao);
             }
             else
             {
@@ -56,6 +57,8 @@ namespace Pif_paf
             Corpo(mao.QntCartas());
             Corpo(mao.QntCartas());
             Linha(mao.QntCartas());
+            Posicoes(mao.QntCartas());
+            Linha(mao.QntCartas());
 
         }
         public static void ImprimeMesa(JogoPifpaf jogo)
@@ -63,30 +66,25 @@ namespace Pif_paf
             Console.Clear();
             
             Console.WriteLine(jogo.Jogadores[0].Nome + " " + 0);
-            Desenho(jogo.Jogadores[0].Mao, true);
+            ImprimeMao(jogo.Jogadores[0].Mao, true);
             string carta = "vazio";
             qntCemiterio = jogo.Cemiterio.QntCartas();
             if (qntCemiterio > 0)
             {
                 carta = jogo.Cemiterio.Cartas[qntCemiterio - 1] + "";
             }
-
-
-
-            Console.WriteLine("                " + qntCemiterio + "                             " + jogo.Baralho.QntCartas());
-            Console.WriteLine("             -------                      ----------");
-            Console.WriteLine("            |" + carta + "  |                     |?        ||");
-            Console.WriteLine("            |       |                     |         ||");
-            Console.WriteLine("            |       |                     |         ||");
-            Console.WriteLine("            |       |                     |         ||");
-            Console.WriteLine("             -------                      ----------");
-            
-
+            //Console.WriteLine("                " + qntCemiterio + "                             " + jogo.Baralho.QntCartas());
+            Console.WriteLine("     Cemiterio                Monte");
+            Console.WriteLine("     --------                --------");
+            Console.WriteLine("    |" + carta + "   |              |        |");
+            Console.WriteLine("    |        |              |   X    |");
+            Console.WriteLine("    |        |              |        |");
+            Console.WriteLine("    |        |              |        |");
+            Console.WriteLine("     --------                --------");
             Console.WriteLine();
             Console.WriteLine("Jogador " + jogo.Jogadores[1].Numero);
-            Desenho(jogo.Jogadores[1].Mao, true);
-            Posicoes(jogo.Jogadores[1].Mao.QntCartas());
-            Linha(jogo.Jogadores[1].Mao.QntCartas());
+            ImprimeMao(jogo.Jogadores[1].Mao, true);
+           
         }
         public static int EntrarPosicao()
         {
@@ -133,30 +131,42 @@ namespace Pif_paf
             }
         }
 
-        public static void PrintCarta(string carta, ConsoleColor cor)
+        public static void Print(string txt, ConsoleColor cor)
         {
 
             ConsoleColor aux = Console.ForegroundColor;
             Console.ForegroundColor = cor;
-            Console.Write(carta);
+            Console.Write(txt);
             Console.ForegroundColor = aux;
         }
         public static void PrintSelecao(string txt)
         {
-
-            ConsoleColor aux = Console.BackgroundColor;
+            
             Console.BackgroundColor = ConsoleColor.White;
             Console.Write(txt);
-            Console.BackgroundColor = aux;
+            Console.BackgroundColor = default;
         }
-        public static void ImprimeMao(Mao mao)
+        public static void ImprimeCartas(Mao mao)
         {
 
             foreach (Carta cart in mao.GetListaCartas())
             {
                 string txt = cart.Letra.ToString();
-                Console.Write("|");
-
+                // Grupo
+                switch (cart.Grupo)
+                {
+                    case Grupo.Trincas:
+                        Print("|", ConsoleColor.Green);
+                        break;
+                    case Grupo.Sequencias:
+                        Print("|", ConsoleColor.Blue);
+                        break;
+                    default:                      
+                        Console.Write("|");
+                        break;
+                }
+                
+                //se esta marcada
                 if (mao.Selecao == cart)
                 {
                     PrintSelecao(txt);
@@ -165,7 +175,7 @@ namespace Pif_paf
                 {
                     Console.Write(txt);
                 }
-
+                //Se é 10
                 if (txt == "10")
                 {
                     Console.Write(" ");
@@ -174,6 +184,7 @@ namespace Pif_paf
                 {
                     Console.Write("  ");
                 }
+                
             }
             Console.WriteLine("    |");
 
@@ -185,11 +196,11 @@ namespace Pif_paf
 
                 if (cart.Cor == Cor.vermelha)
                 {
-                    PrintCarta(txt, ConsoleColor.Red);
+                    Print(txt, ConsoleColor.Red);
                 }
                 else
                 {
-                    PrintCarta(txt, ConsoleColor.DarkGray);
+                    Print(txt, ConsoleColor.DarkGray);
                 }
 
 
