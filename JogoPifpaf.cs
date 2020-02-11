@@ -40,7 +40,7 @@ namespace mesa
         }
         public void MudarJogador()
         {
-            if (JogadorAtual.Numero == 1)
+            if (JogadorAtual.Numero == 2)
             {
                 indiceAnterior = JogadorAtual.Numero; 
                 JogadorAtual = Jogadores[0];

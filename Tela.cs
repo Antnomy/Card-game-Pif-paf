@@ -65,7 +65,7 @@ namespace Pif_paf
         {
             Console.Clear();
             
-            Console.WriteLine(jogo.Jogadores[0].Nome + " " + 0);
+            Console.WriteLine(jogo.Jogadores[0].Nome + " " + jogo.Jogadores[0].Numero);
             ImprimeMao(jogo.Jogadores[0].Mao, true);
             string carta = "vazio";
             qntCemiterio = jogo.Cemiterio.QntCartas();
@@ -96,6 +96,29 @@ namespace Pif_paf
         public static int EntrarPosicao()
         {
             return int.Parse(Console.ReadLine());
+        }
+
+        public static void Espera(int segundos, bool mostraContagem)
+        {
+            TimeSpan t1 = new TimeSpan(100000000);
+            long cont = 0;
+            int seg = 0;
+
+            while (seg != segundos)
+            {
+                cont++;
+                if (cont == t1.Ticks)
+                {
+                    seg++;
+                    cont = 0;
+                    if (mostraContagem)
+                    {
+                        Console.Clear();
+                        Console.WriteLine(seg + " seg");
+                    }
+                }
+
+            }
         }
 
         public static int EntrarPosicao(Ai ai)
@@ -130,11 +153,11 @@ namespace Pif_paf
                 {
                     Console.Write("Nome: ");
                     nome = Console.ReadLine();
-                    jogadores[i] = new Jogador(i, null, nome, false);
+                    jogadores[i] = new Jogador(i + 1, null, nome, false);
                 }
                 else
                 {
-                    jogadores[i] = new Jogador(i, null, "NPC", true);
+                    jogadores[i] = new Jogador(i + 1, null, "NPC", true);
                 }
             }
             return jogadores;

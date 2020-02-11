@@ -1,16 +1,17 @@
 ﻿
 using System;
 using mesa;
-
+using utilitarios;
 
 namespace Pif_paf
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
-           
 
+            Tela.Espera(5, true);
             JogoPifpaf jogo = new JogoPifpaf(Tela.Jogadores());
             
             while (!jogo.FimJogo)
@@ -36,7 +37,7 @@ namespace Pif_paf
 
                     try
                     {
-                        jogo.Mao = jogo.JogadorAtual.Mao;
+                       
                         Tela.ImprimeMesa(jogo);
                         jogo.Mao.AdcCarta(Tela.Compra(jogo.Baralho, jogo.Cemiterio));
                         jogo.Mao.VerifTrincas();
@@ -59,7 +60,7 @@ namespace Pif_paf
                                 Console.Write("Destino (posição): ");
                                 int destino = Tela.EntrarPosicao();
 
-                                jogo.MoverCarta(origem - 1, destino - 1);
+                                jogo.Mao.MoverCarta(origem - 1, destino - 1);
                                 jogo.Mao.DesMarcar();
 
                                 jogo.Mao.RemoveGrupos();
