@@ -20,10 +20,13 @@ namespace mesa
             {
                 throw new PifpafExeption("Não há mais cartas para sacar!");
             }
-
-            Carta aux = Cartas[Cartas.Count -1];
-            Cartas.Remove(Cartas[Cartas.Count - 1]);
+            Carta aux = Top();
+            Cartas.Remove(Top());
             return aux;
+        }
+        public Carta Top()
+        {
+            return Cartas[Cartas.Count - 1];
         }
         public int QntCartas()
         {

@@ -8,26 +8,26 @@ namespace Pif_paf
     class Program
     {
         static void Main(string[] args)
-        {          
+        {
            
-            JogoPifpaf jogo = new JogoPifpaf(2);
-            Tela.ImprimeMesa(jogo);
 
-
-
+            JogoPifpaf jogo = new JogoPifpaf(Tela.Jogadores());
+            
             while (!jogo.FimJogo)
             {
-                if (jogo.JogadorAtual is Ai)
-                {
-                    Console.WriteLine("Ai player");
+                jogo.Mao = jogo.JogadorAtual.Mao;
+                if (jogo.JogadorAtual.Auto)
+                {                  
                     Tela.ImprimeMesa(jogo);
-                    
-                    Ai cpu = jogo.JogadorAtual as Ai;
-                    cpu.Jogar();
+                   
+                    jogo.Ai.SetMao(jogo.Mao);
+                    jogo.Ai.AutoPlay();
+                    jogo.Mao.VerifTrincas();
+                    jogo.Mao.VerifSequencias();
                     Tela.ImprimeMesa(jogo);
-                    jogo.MudarJogador();
 
-                    Console.WriteLine("Continuar");
+                    
+                    Console.WriteLine("CPU terminou, " + jogo.Mao.TotalArranjos());
                     Console.ReadLine();
                 }
                 else
@@ -36,18 +36,18 @@ namespace Pif_paf
 
                     try
                     {
-
+                        jogo.Mao = jogo.JogadorAtual.Mao;
                         Tela.ImprimeMesa(jogo);
-
                         jogo.Mao.AdcCarta(Tela.Compra(jogo.Baralho, jogo.Cemiterio));
+                        jogo.Mao.VerifTrincas();
+                        jogo.Mao.VerifSequencias();
+
                         Tela.ImprimeMesa(jogo);
-
-
                         char ch = 's';
-
+                        string quest = "Deseja mover uma carta (s/n)? ";
                         while (ch == 's')
                         {
-                            Console.Write("Mover uma carta (s/n)? ");
+                            Console.Write(quest);
                             ch = char.Parse(Console.ReadLine());
                             if (ch == 's')
                             {
@@ -56,23 +56,23 @@ namespace Pif_paf
                                 int origem = Tela.EntrarPosicao();
                                 jogo.Mao.Marcar(origem - 1);
                                 Tela.ImprimeMesa(jogo);
-
                                 Console.Write("Destino (posição): ");
                                 int destino = Tela.EntrarPosicao();
 
                                 jogo.MoverCarta(origem - 1, destino - 1);
                                 jogo.Mao.DesMarcar();
-                                jogo.Mao.RemoveGrupo(origem - 1);
-                                
-                               
 
+                                jogo.Mao.RemoveGrupos();
+                                jogo.Mao.VerifTrincas();
+                                jogo.Mao.VerifSequencias();
                                 Tela.ImprimeMesa(jogo);
+                                quest = "Mover outra carta (s/n)? ";
                             }
                         }
 
                         Tela.ImprimeMesa(jogo);
                         Console.Write("Decarte uma carta (posição): ");
-                        
+
                         int pos = Tela.EntrarPosicao();
                         jogo.Mao.Marcar(pos - 1);
                         Tela.ImprimeMesa(jogo);
@@ -81,22 +81,28 @@ namespace Pif_paf
                             jogo.Cemiterio.AdcCarta(jogo.Mao.Descartar(pos - 1));
                             jogo.Mao.DesMarcar();
 
+                            jogo.Mao.RemoveGrupos();
+                            jogo.Mao.VerifTrincas();
+                            jogo.Mao.VerifSequencias();
+                           
                         }
                         
-                        
+
                     }
                     catch (PifpafExeption e)
                     {
                         Console.WriteLine("Erro!... " + e.Message);
                         Console.ReadLine();
-                    }
-                    Console.WriteLine("Qnt trincas: " + jogo.Mao.VerifTrincas());
-                    Console.WriteLine("Qnt sequenciass: " + jogo.Mao.VerifSequencias());
-                    Console.ReadLine();
-
-                    jogo.MudarJogador();
+                    }                   
+                   
                 }
-                
+                if (jogo.JogadorAtual.Mao.TotalArranjos() == 3)
+                {
+                    jogo.FimJogo = true;
+                    Tela.Resultado(jogo);
+                }
+
+                jogo.MudarJogador();
             }
         }
     }

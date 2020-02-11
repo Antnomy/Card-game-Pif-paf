@@ -8,7 +8,8 @@ namespace mesa
     class Mao
     {
         private List<Carta> Cartas = new List<Carta>();
-        private List<Trinca> Trincas = new List<Trinca>();
+        private int Trincas;
+        private int Sequencias;
         public Carta Selecao { get; set; }
         public bool Visibilidade { get; private set; }
         public Mao(Baralho baralho, int maoInicial)
@@ -19,6 +20,8 @@ namespace mesa
             }
             Selecao = null;
             Visibilidade = true;
+            Trincas = 0;
+            Sequencias = 0;
         }
 
         public List<Carta> GetListaCartas()
@@ -79,11 +82,12 @@ namespace mesa
         {
             Selecao = null;
         }
-        public void RemoveGrupo(int indice)
+        public void RemoveGrupos(int indice)
         {
+            //Remove o grupo da carta no indice informado
             Cartas[indice].Grupo = Grupo.Nenhum;
         }
-        public void RemoveGrupo()
+        public void RemoveGrupos()
         {
             Cartas.ForEach(carta => carta.Grupo = Grupo.Nenhum);
         }
@@ -110,10 +114,9 @@ namespace mesa
         }
         public int VerifTrincas()
         {
-            //Carta[] vet = new Carta[3];
+            Trincas = 0;           
             List<Carta> aux = new List<Carta>();
-            int qntTrincas = 0;
-
+           
             for (int i = 0; i < Cartas.Count - 1; i++)
             {
                 if (VerifPar(Cartas[i], Cartas[i + 1]))
@@ -128,17 +131,18 @@ namespace mesa
                 {
                     aux.Insert(0, Cartas[i - 1]);
                     aux.ForEach(carta => carta.Grupo = Grupo.Trincas);
-                    qntTrincas++;
+                    Trincas++;
                     aux.Clear();
                 }
 
             }
-            return qntTrincas;
+            return Trincas;
         }
         public int VerifSequencias()
         {
             List<Carta> aux = new List<Carta>();
-            int qntSequencias = 0;
+            Sequencias = 0;
+
             for (int i = 0; i < Cartas.Count - 1; i++)
             {               
                 if (VerifSeq(Cartas[i], Cartas[i + 1]))
@@ -151,21 +155,20 @@ namespace mesa
                 }
                 if (aux.Count == 2)
                 {                  
-                    qntSequencias++;
+                    Sequencias++;
                     aux.Insert(0, Cartas[i-1]);
-                    aux.ForEach(carta => carta.Grupo = Grupo.Sequencias);
-                    Trincas.Add(new Trinca(aux.ToArray()));
-                    
-                    Trincas.ForEach(x => System.Console.WriteLine(x));
-                    System.Console.ReadLine();
+                    aux.ForEach(carta => carta.Grupo = Grupo.Sequencias);             
                     aux.Clear();
                 }
             }
-            return qntSequencias;
+            return Sequencias;
+        }
+        public int TotalArranjos()
+        {
+            return Trincas + Sequencias;
         }
         public void VerifTrincas2()
         {
-            //Carta[] vet = new Carta[3];
             List<Carta> aux = new List<Carta>();
 
             for (int i = 0; i < Cartas.Count; i++)

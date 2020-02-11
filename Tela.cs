@@ -73,18 +73,25 @@ namespace Pif_paf
             {
                 carta = jogo.Cemiterio.Cartas[qntCemiterio - 1] + "";
             }
-            //Console.WriteLine("                " + qntCemiterio + "                             " + jogo.Baralho.QntCartas());
-            Console.WriteLine("     Cemiterio                Monte");
+            Console.WriteLine("    " + qntCemiterio + "                      " + jogo.Baralho.QntCartas());
+            Console.WriteLine("    Cemiterio                Monte");
             Console.WriteLine("     --------                --------");
-            Console.WriteLine("    |" + carta + "   |              |        |");
-            Console.WriteLine("    |        |              |   X    |");
-            Console.WriteLine("    |        |              |        |");
-            Console.WriteLine("    |        |              |        |");
-            Console.WriteLine("     --------                --------");
+            Console.WriteLine("   |" + carta + "   |              |        |");
+            Console.WriteLine("   |        |              |   X    |");
+            Console.WriteLine("   |        |              |        |");
+            Console.WriteLine("   |        |              |        |");
+            Console.WriteLine("    --------                --------");
             Console.WriteLine();
-            Console.WriteLine("Jogador " + jogo.Jogadores[1].Numero);
+            Console.WriteLine(jogo.Jogadores[1].Nome + " " + jogo.Jogadores[1].Numero);
             ImprimeMao(jogo.Jogadores[1].Mao, true);
            
+        }
+        public static void Resultado(JogoPifpaf jogo)
+        {
+            Console.Clear();
+            Console.WriteLine(jogo.JogadorAtual.Nome + " Bateu...");
+            Console.WriteLine("Trincas + Pares: " + jogo.JogadorAtual.Mao.TotalArranjos());
+            Console.ReadLine();
         }
         public static int EntrarPosicao()
         {
@@ -107,6 +114,30 @@ namespace Pif_paf
             {
                 return false;
             }
+        }
+        public static Jogador[] Jogadores()
+        {
+            Console.Write("Numero de jogadores: ");
+            int n = int.Parse(Console.ReadLine());
+            char tipo;
+            string nome;
+            Jogador[] jogadores = new Jogador[n];
+            for (int i = 0; i < n ; i++)
+            {
+                Console.Write($"#{i+1} jogador ou Ai (j/a)? ");
+                tipo = char.Parse(Console.ReadLine());
+                if (tipo == 'j' || tipo == 'J')
+                {
+                    Console.Write("Nome: ");
+                    nome = Console.ReadLine();
+                    jogadores[i] = new Jogador(i, null, nome, false);
+                }
+                else
+                {
+                    jogadores[i] = new Jogador(i, null, "NPC", true);
+                }
+            }
+            return jogadores;
         }
         public static Carta Compra(Baralho baralho, Pilha cemiterio)
         {
@@ -148,7 +179,6 @@ namespace Pif_paf
         }
         public static void ImprimeCartas(Mao mao)
         {
-
             foreach (Carta cart in mao.GetListaCartas())
             {
                 string txt = cart.Letra.ToString();
@@ -183,8 +213,7 @@ namespace Pif_paf
                 else
                 {
                     Console.Write("  ");
-                }
-                
+                }              
             }
             Console.WriteLine("    |");
 
@@ -202,13 +231,8 @@ namespace Pif_paf
                 {
                     Print(txt, ConsoleColor.DarkGray);
                 }
-
-
-
             }
             Console.WriteLine("    |");
-
-
         }
     }
 }
