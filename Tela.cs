@@ -61,12 +61,20 @@ namespace Pif_paf
             Linha(mao.QntCartas());
 
         }
+        public static void Player(int indice, JogoPifpaf jogo)
+        {
+            Console.WriteLine(jogo.Jogadores[indice].Numero + "-" + jogo.Jogadores[indice].Nome);
+            if (jogo.JogadorAtual.Equals(jogo.Jogadores[indice]))
+            {
+                Console.WriteLine(" << Playing...");
+            }
+        }
         public static void ImprimeMesa(JogoPifpaf jogo)
         {
             Console.Clear();
-            
-            Console.WriteLine(jogo.Jogadores[0].Nome + " " + jogo.Jogadores[0].Numero);
-            ImprimeMao(jogo.Jogadores[0].Mao, true);
+
+            Player(1, jogo);
+            ImprimeMao(jogo.Jogadores[1].Mao, true);
             string carta = "vazio";
             qntCemiterio = jogo.Cemiterio.QntCartas();
             if (qntCemiterio > 0)
@@ -82,9 +90,10 @@ namespace Pif_paf
             Console.WriteLine("   |        |              |        |");
             Console.WriteLine("    --------                --------");
             Console.WriteLine();
-            Console.WriteLine(jogo.Jogadores[1].Nome + " " + jogo.Jogadores[1].Numero);
-            ImprimeMao(jogo.Jogadores[1].Mao, true);
            
+            Player(0, jogo);
+            ImprimeMao(jogo.Jogadores[0].Mao, true);
+
         }
         public static void Resultado(JogoPifpaf jogo)
         {
@@ -142,23 +151,17 @@ namespace Pif_paf
         {
             Console.Write("Numero de jogadores: ");
             int n = int.Parse(Console.ReadLine());
-            char tipo;
+
             string nome;
             Jogador[] jogadores = new Jogador[n];
-            for (int i = 0; i < n ; i++)
+
+            Console.WriteLine($"#{1} jogador:");
+            Console.Write("Nome: ");
+            nome = Console.ReadLine();
+            jogadores[0] = new Jogador(1, null, nome, false);
+            for (int i = 1; i < n; i++)
             {
-                Console.Write($"#{i+1} jogador ou Ai (j/a)? ");
-                tipo = char.Parse(Console.ReadLine());
-                if (tipo == 'j' || tipo == 'J')
-                {
-                    Console.Write("Nome: ");
-                    nome = Console.ReadLine();
-                    jogadores[i] = new Jogador(i + 1, null, nome, false);
-                }
-                else
-                {
-                    jogadores[i] = new Jogador(i + 1, null, "NPC", true);
-                }
+                jogadores[i] = new Jogador(i + 1, null, "NPC", true);
             }
             return jogadores;
         }
@@ -195,7 +198,7 @@ namespace Pif_paf
         }
         public static void PrintSelecao(string txt)
         {
-            
+
             Console.BackgroundColor = ConsoleColor.White;
             Console.Write(txt);
             Console.BackgroundColor = default;
@@ -205,6 +208,7 @@ namespace Pif_paf
             foreach (Carta cart in mao.GetListaCartas())
             {
                 string txt = cart.Letra.ToString();
+                //txt = txt + "   ";
                 // Grupo
                 switch (cart.Grupo)
                 {
@@ -214,11 +218,14 @@ namespace Pif_paf
                     case Grupo.Sequencias:
                         Print("|", ConsoleColor.Blue);
                         break;
-                    default:                      
+                    case Grupo.Pares:
+                        Print("|", ConsoleColor.Yellow);
+                        break;
+                    default:
                         Console.Write("|");
                         break;
                 }
-                
+
                 //se esta marcada
                 if (mao.Selecao == cart)
                 {
@@ -236,7 +243,7 @@ namespace Pif_paf
                 else
                 {
                     Console.Write("  ");
-                }              
+                }
             }
             Console.WriteLine("    |");
 
@@ -244,6 +251,7 @@ namespace Pif_paf
             foreach (Carta cart in mao.GetListaCartas())
             {
                 string txt = cart.Nipe.ToString();
+
                 Console.Write("|");
 
                 if (cart.Cor == Cor.vermelha)

@@ -53,7 +53,6 @@ namespace mesa
         }
         public Carta Descartar(int posicao)
         {
-
             if (!ValidarPosicao(posicao))
             {
                 throw new PifpafExeption("Digite uma posiçaõ existente!");
@@ -102,15 +101,33 @@ namespace mesa
             else
             {
                 Cartas.Insert(destino, Descartar(origem));
+                /*DesMarcar();
+                RemoveGrupos();
+                VerifTrincas();
+                VerifSequencias();*/
             }
+           
         }
         public bool VerifPar(Carta a, Carta b)
         {
             return a.Letra == b.Letra && a.Nipe != b.Nipe;
         }
+
+        public bool VerifMenor(Carta a, Carta b)
+        {
+            return a.Ordem < b.Ordem; 
+        }
         public bool VerifSeq(Carta a, Carta b)
         {
-            return a.Ordem < b.Ordem && a.Nipe == b.Nipe;
+            return a.Ordem == b.Ordem - 1 && a.Nipe == b.Nipe;         
+        }
+        public bool VerifProx(Carta a, Carta b)
+        {
+            return a.Ordem == b.Ordem + 1 && a.Nipe == b.Nipe;
+        }
+        public bool VerifIguiais(Carta a, Carta b)
+        {
+            return a.Ordem == b.Ordem && a.Nipe == b.Nipe;
         }
         public int VerifTrincas()
         {
@@ -119,9 +136,11 @@ namespace mesa
            
             for (int i = 0; i < Cartas.Count - 1; i++)
             {
-                if (VerifPar(Cartas[i], Cartas[i + 1]))
+                if (VerifPar(Cartas[i], Cartas[i + 1]) && (Cartas[i].Grupo == Grupo.Nenhum || Cartas[i].Grupo == Grupo.Pares))
                 {
                     aux.Add(Cartas[i + 1]);
+                    Cartas[i].Grupo = Grupo.Pares;
+                    Cartas[i + 1].Grupo = Grupo.Pares;
                 }
                 else
                 {
@@ -145,9 +164,12 @@ namespace mesa
 
             for (int i = 0; i < Cartas.Count - 1; i++)
             {               
-                if (VerifSeq(Cartas[i], Cartas[i + 1]))
+                if (VerifSeq(Cartas[i], Cartas[i + 1]) && (Cartas[i].Grupo == Grupo.Nenhum || Cartas[i].Grupo == Grupo.Pares))
                 {
                     aux.Add(Cartas[i + 1]);
+                    Cartas[i].Grupo = Grupo.Pares;
+                    Cartas[i + 1].Grupo = Grupo.Pares;
+
                 }
                 else
                 {
@@ -192,6 +214,17 @@ namespace mesa
                 }
                 aux.Clear();
             }
+        }
+        public bool BuscaSeq(Carta carta)
+        {
+            foreach (Carta item in Cartas)
+            {
+                if(VerifPar(carta, item))
+                {
+                    return true;
+                }              
+            }
+            return false;
         }
         public int QntCartas()
         {

@@ -1,6 +1,7 @@
 ﻿
 using System;
 using mesa;
+using Enuns;
 using utilitarios;
 
 namespace Pif_paf
@@ -10,37 +11,60 @@ namespace Pif_paf
         
         static void Main(string[] args)
         {
-
-            Tela.Espera(5, true);
-            JogoPifpaf jogo = new JogoPifpaf(Tela.Jogadores());
             
+           
+            
+            JogoPifpaf jogo = new JogoPifpaf(Tela.Jogadores());
+           
+
             while (!jogo.FimJogo)
             {
                 jogo.Mao = jogo.JogadorAtual.Mao;
                 if (jogo.JogadorAtual.Auto)
-                {                  
-                    Tela.ImprimeMesa(jogo);
-                   
-                    jogo.Ai.SetMao(jogo.Mao);
-                    jogo.Ai.AutoPlay();
-                    jogo.Mao.VerifTrincas();
-                    jogo.Mao.VerifSequencias();
+                {                                                      
+                    jogo.Ai.Mao = jogo.Mao;
                     Tela.ImprimeMesa(jogo);
 
-                    
-                    Console.WriteLine("CPU terminou, " + jogo.Mao.TotalArranjos());
-                    Console.ReadLine();
+                    //jogo.Ai.AutoPlay();
+                    Tempo.Timer(2, false);
+                    if (jogo.Ai.SeCemiterioArmaJogo())
+                    {
+                        Console.WriteLine("compra do cemiterio ");
+                        Console.ReadLine();
+                        jogo.Mao.AdcCarta(jogo.Ai.Cemiterio.RemoveTop());
+                    }
+                    else
+                    {
+                        Console.WriteLine("compra do deck ");
+                        Console.ReadLine();
+                        jogo.Mao.AdcCarta(jogo.Ai.Baralho.RemoveTop());
+                    }
+                    Tela.ImprimeMesa(jogo);
+
+
+                    Tempo.Timer(4, false);
+                    jogo.Mao.RemoveGrupos();
+                    jogo.Ai.ArrjarSeqSemIguias();
+                    jogo.Mao.VerifSequencias();
+
+                    jogo.Ai.ArranjarTrincas();
+                    jogo.Mao.VerifTrincas();
+                    Tela.ImprimeMesa(jogo);
+
+                    Tempo.Timer(2, false);
+                    jogo.Ai.SelecDescarte();
+                    Tela.ImprimeMesa(jogo);
+                    Tempo.Timer(3, false);
+
+
                 }
                 else
                 {
-
-
                     try
-                    {
-                       
+                    {                     
                         Tela.ImprimeMesa(jogo);
                         jogo.Mao.AdcCarta(Tela.Compra(jogo.Baralho, jogo.Cemiterio));
-                        jogo.Mao.VerifTrincas();
+                       jogo.Mao.VerifTrincas();
                         jogo.Mao.VerifSequencias();
 
                         Tela.ImprimeMesa(jogo);
@@ -62,7 +86,6 @@ namespace Pif_paf
 
                                 jogo.Mao.MoverCarta(origem - 1, destino - 1);
                                 jogo.Mao.DesMarcar();
-
                                 jogo.Mao.RemoveGrupos();
                                 jogo.Mao.VerifTrincas();
                                 jogo.Mao.VerifSequencias();
@@ -81,7 +104,6 @@ namespace Pif_paf
                         {
                             jogo.Cemiterio.AdcCarta(jogo.Mao.Descartar(pos - 1));
                             jogo.Mao.DesMarcar();
-
                             jogo.Mao.RemoveGrupos();
                             jogo.Mao.VerifTrincas();
                             jogo.Mao.VerifSequencias();
@@ -97,12 +119,16 @@ namespace Pif_paf
                     }                   
                    
                 }
-                if (jogo.JogadorAtual.Mao.TotalArranjos() == 3)
+                jogo.VerifTodosJogos();
+                Console.WriteLine(jogo.JogadorAtual.Nome + " jogos: " + jogo.Mao.TotalArranjos());
+                Console.ReadLine();
+
+                /*if (jogo.JogadorAtual.Mao.TotalArranjos() == 3)
                 {
                     jogo.FimJogo = true;
                     Tela.Resultado(jogo);
-                }
-
+                }*/
+               
                 jogo.MudarJogador();
             }
         }

@@ -2,6 +2,7 @@
 {
     enum Grupo
     {
+        Pares,
         Trincas,
         Sequencias,
         Nenhum
