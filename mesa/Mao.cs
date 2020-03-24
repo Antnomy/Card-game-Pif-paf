@@ -8,10 +8,15 @@ namespace mesa
     class Mao
     {
         private List<Carta> Cartas = new List<Carta>();
-        private int Trincas;
-        private int Sequencias;
+        public int Trincas { get; private set; }
+        public int Sequencias { get; private set; }
         public Carta Selecao { get; set; }
         public bool Visibilidade { get; private set; }
+
+        public Mao()
+        {
+
+        }
         public Mao(Baralho baralho, int maoInicial)
         {
             for (int i = 0; i < maoInicial; i++)
@@ -33,25 +38,7 @@ namespace mesa
         {
             Cartas.Add(carta);
         }
-        public void RemovCarta(Carta carta)
-        {
-            Cartas.Remove(carta);
-        }
-
-        public void CompraCarta(Pilha cartas)
-        {
-            Cartas.Add(cartas.RemoveTop());
-        }
-
-        public bool ValidarPosicao(int posicao)
-        {
-            if (posicao < Cartas.Count && posicao >= 0)
-            {
-                return true;
-            }
-            return false;
-        }
-        public Carta Descartar(int posicao)
+        public Carta RemovCarta(int posicao)
         {
             if (!ValidarPosicao(posicao))
             {
@@ -63,7 +50,30 @@ namespace mesa
                 Cartas.Remove(Cartas[posicao]);
                 return aux;
             }
+        }
 
+        
+
+        public bool ValidarPosicao(int posicao)
+        {
+            if (posicao < Cartas.Count && posicao >= 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        public void Descartar(int posicao, Pilha pilha)
+        {
+            if (!ValidarPosicao(posicao))
+            {
+                throw new PifpafExeption("Digite uma posiçaõ existente!");
+            }
+            else
+            {
+                Carta aux = Cartas[posicao];
+                Cartas.Remove(Cartas[posicao]);
+                pilha.AdcCarta(aux);
+            }
         }
 
         public void Marcar(int indice)
@@ -93,20 +103,14 @@ namespace mesa
 
         public void MoverCarta(int origem, int destino)
         {
-
             if (!ValidarPosicao(destino))
             {
                 throw new PifpafExeption("Digite uma posiçaõ existente!");
             }
             else
             {
-                Cartas.Insert(destino, Descartar(origem));
-                /*DesMarcar();
-                RemoveGrupos();
-                VerifTrincas();
-                VerifSequencias();*/
-            }
-           
+                Cartas.Insert(destino, RemovCarta(origem));               
+            }           
         }
         public bool VerifPar(Carta a, Carta b)
         {
@@ -119,7 +123,15 @@ namespace mesa
         }
         public bool VerifSeq(Carta a, Carta b)
         {
-            return a.Ordem == b.Ordem - 1 && a.Nipe == b.Nipe;         
+            if(a.Letra == "K" && b.Letra == "A" && a.Nipe == b.Nipe)
+            {
+                return true;
+            }
+            else
+            {
+                return a.Ordem == b.Ordem - 1 && a.Nipe == b.Nipe;
+            }
+                   
         }
         public bool VerifProx(Carta a, Carta b)
         {
@@ -136,7 +148,7 @@ namespace mesa
            
             for (int i = 0; i < Cartas.Count - 1; i++)
             {
-                if (VerifPar(Cartas[i], Cartas[i + 1]) && (Cartas[i].Grupo == Grupo.Nenhum || Cartas[i].Grupo == Grupo.Pares))
+                if (VerifPar(Cartas[i], Cartas[i + 1]) && (Cartas[i].Grupo == Grupo.Nenhum || Cartas[i].Grupo == Grupo.Pares) && (Cartas[i + 1].Grupo == Grupo.Nenhum || Cartas[i + 1].Grupo == Grupo.Pares))
                 {
                     aux.Add(Cartas[i + 1]);
                     Cartas[i].Grupo = Grupo.Pares;
@@ -185,6 +197,29 @@ namespace mesa
             }
             return Sequencias;
         }
+        public int VerifSequenciasV2()
+        {
+          
+            Sequencias = 0;
+
+            for (int i = 0; i < Cartas.Count - 2; i++)
+            {
+                if (VerifSeq(Cartas[i], Cartas[i + 1]) && (Cartas[i].Grupo == Grupo.Nenhum || Cartas[i].Grupo == Grupo.Pares))
+                {                    
+                    Cartas[i].Grupo = Grupo.Pares;
+                    Cartas[i + 1].Grupo = Grupo.Pares;
+                    i++;
+                    if(VerifSeq(Cartas[i + 1], Cartas[i + 2]) && (Cartas[i + 1].Grupo == Grupo.Nenhum || Cartas[i + 1].Grupo == Grupo.Pares))
+                    {
+                        Cartas[i].Grupo = Grupo.Sequencias;
+                        Cartas[i + 1].Grupo = Grupo.Sequencias;
+                        Cartas[i + 2].Grupo = Grupo.Sequencias;
+                        i++;
+                    }
+                }              
+            }
+            return Sequencias;
+        }
         public int TotalArranjos()
         {
             return Trincas + Sequencias;
@@ -215,16 +250,13 @@ namespace mesa
                 aux.Clear();
             }
         }
-        public bool BuscaSeq(Carta carta)
+        public int BuscaAnt(Carta carta)
+        {          
+          return Cartas.FindIndex(item=> VerifPar(carta, item));                   
+        }
+        public int BuscaProx(Carta carta)
         {
-            foreach (Carta item in Cartas)
-            {
-                if(VerifPar(carta, item))
-                {
-                    return true;
-                }              
-            }
-            return false;
+            return Cartas.FindIndex(item => VerifProx(carta, item));
         }
         public int QntCartas()
         {

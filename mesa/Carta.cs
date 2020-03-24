@@ -19,7 +19,10 @@ namespace mesa
             Grupo = Grupo.Nenhum;
             
         }
-       
+       public void SetValor(int valor)
+        {
+            Valor = Valor;
+        }
         public override string ToString()
         {
             return Letra + " " + Nipe;

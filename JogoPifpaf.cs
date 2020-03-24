@@ -11,9 +11,10 @@ namespace mesa
         public Mao Mao;
         public Ai Ai;
         public bool FimJogo { get; set; }
+        public int Turno;
         public Jogador[] Jogadores;
         public Jogador JogadorAtual;
-        public int indiceAnterior;
+        
 
         public JogoPifpaf(Jogador[] jogadores)
         {
@@ -21,13 +22,13 @@ namespace mesa
             Cemiterio = new Pilha();
             Ai = new Ai(Baralho, Cemiterio, null);
 
+            Turno = 1;
             Jogadores = jogadores;
-            indiceAnterior = 0;
             FimJogo = false;
 
             DefinirCartas();
             //Baralho.Embaralhar();
-
+           // Baralho.Embaralhar();
             for (int i = 0; i < Jogadores.Length; i++)
             {
                 Jogadores[i].Mao = new Mao(Baralho, 9);
@@ -35,19 +36,32 @@ namespace mesa
             JogadorAtual = Jogadores[1];
         }
 
+        public void DarCartas()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < Jogadores.Length; j++)
+                {
+                    Jogadores[j].Mao.AdcCarta(Baralho.RemoveTop());
+                }
+            }
+        }
+
         public void MudarJogador()
         {
-            if (JogadorAtual.Numero == 2)
+            int i = JogadorAtual.Numero;
+
+            if (i < Jogadores.Length)
             {
-              
-                JogadorAtual = Jogadores[0];
-                Mao = JogadorAtual.Mao;
+                JogadorAtual = Jogadores[i];
+                Mao = JogadorAtual.Mao;               
+                Turno++;
             }
             else
             {
-                JogadorAtual = Jogadores[1];
+                JogadorAtual = Jogadores[0];
                 Mao = JogadorAtual.Mao;
-
+                Turno++;
             }
         }
         public void VerifTodosJogos()
@@ -117,27 +131,32 @@ namespace mesa
 
             //cartas texte
             //Carta c1 = new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha);
-            
-            Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Cop, Cor.vermelha));
-
             Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Esp, Cor.preta));
-            Baralho.AdcCarta(new Carta("3", 10, 3, Nipe.Cop, Cor.vermelha));
-            //Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Pau, Cor.preta));
-            Baralho.AdcCarta(new Carta("2", 10, 2, Nipe.Esp, Cor.preta));
-           
-            
-            
-            Baralho.AdcCarta(new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha));
-            Baralho.AdcCarta(new Carta("3", 10, 3, Nipe.Esp, Cor.preta));
-            Baralho.AdcCarta(new Carta("7", 10, 7, Nipe.Esp, Cor.preta));
-           
+            Baralho.AdcCarta(new Carta("Q", 10, 12, Nipe.Esp, Cor.preta));
 
-
-
-            Baralho.AdcCarta(new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha));
             Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Esp, Cor.preta));
-            Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Cop, Cor.vermelha));
+            
+            //Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Esp, Cor.preta));
+            //Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Cop, Cor.vermelha));
+            Baralho.AdcCarta(new Carta("3", 10, 3, Nipe.Cop, Cor.vermelha));
+            Baralho.AdcCarta(new Carta("7", 10, 7, Nipe.Esp, Cor.preta));
+            Baralho.AdcCarta(new Carta("4", 10, 4, Nipe.Cop, Cor.vermelha));
+            //Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Pau, Cor.preta));
+            //Baralho.AdcCarta(new Carta("2", 10, 2, Nipe.Esp, Cor.preta));
+            //Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Esp, Cor.preta));
+            Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Our, Cor.vermelha));
 
+            //Baralho.AdcCarta(new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha));
+            Baralho.AdcCarta(new Carta("3", 10, 3, Nipe.Esp, Cor.preta));
+            
+
+
+
+
+            Baralho.AdcCarta(new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha));
+            
+            Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Cop, Cor.vermelha));
+            
 
             //posi 0
 

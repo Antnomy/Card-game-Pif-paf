@@ -39,7 +39,6 @@ namespace mesa
             {
                 txt.AppendLine(cart.ToString());
             }
-
             return txt.ToString();
         }
     }
