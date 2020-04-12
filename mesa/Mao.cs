@@ -119,7 +119,14 @@ namespace mesa
 
         public bool VerifMenor(Carta a, Carta b)
         {
-            return a.Ordem < b.Ordem; 
+            if (a.Letra == "K" && b.Letra == "A" && a.Nipe == b.Nipe)
+            {
+                return true;
+            }
+            else
+            {
+                return a.Ordem < b.Ordem;
+            }
         }
         public bool VerifSeq(Carta a, Carta b)
         {
@@ -135,7 +142,14 @@ namespace mesa
         }
         public bool VerifProx(Carta a, Carta b)
         {
-            return a.Ordem == b.Ordem + 1 && a.Nipe == b.Nipe;
+            if (a.Letra == "A" && b.Letra == "K" && a.Nipe == b.Nipe)
+            {
+                return true;
+            }
+            else
+            {
+                return a.Ordem == b.Ordem + 1 && a.Nipe == b.Nipe;
+            }
         }
         public bool VerifIguiais(Carta a, Carta b)
         {
@@ -176,7 +190,7 @@ namespace mesa
 
             for (int i = 0; i < Cartas.Count - 1; i++)
             {               
-                if (VerifSeq(Cartas[i], Cartas[i + 1]) && (Cartas[i].Grupo == Grupo.Nenhum || Cartas[i].Grupo == Grupo.Pares))
+                if (VerifSeq(Cartas[i], Cartas[i + 1]))
                 {
                     aux.Add(Cartas[i + 1]);
                     Cartas[i].Grupo = Grupo.Pares;

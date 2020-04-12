@@ -111,10 +111,10 @@ namespace Pif_paf
             }*/
             
             Console.WriteLine();
-            Console.WriteLine(">>> FIM DE JOGO! " +jogo.JogadorAtual.Nome + " BATEU!!...");
-            Console.WriteLine(jogo.JogadorAtual.Mao.Trincas + " Trincas(s), " + jogo.JogadorAtual.Mao.Sequencias + " Sequencia(s)");
+            Console.WriteLine(">>> FIM DE JOGO! " +jogo.JogadorAnterior().Nome + " BATEU!!...");
+            Console.WriteLine(jogo.JogadorAnterior().Mao.Trincas + " Trincas(s), " + jogo.JogadorAnterior().Mao.Sequencias + " Sequencia(s)");
             Console.WriteLine();
-            ImprimeMao(jogo.JogadorAtual.Mao, true);                                                   
+            ImprimeMao(jogo.JogadorAnterior().Mao, true);                                                   
         }
         public static int EntrarPosicao()
         {

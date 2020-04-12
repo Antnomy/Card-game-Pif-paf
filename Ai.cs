@@ -108,7 +108,7 @@ namespace Pif_paf
             {
                 for (int j = i + 1; j < Mao.GetListaCartas().Count; j++)
                 {
-                    if (Mao.VerifPar(Mao.GetListaCartas()[i], Mao.GetListaCartas()[j]) && Livre(Mao.GetListaCartas()[i], Mao.GetListaCartas()[j]))
+                    if (Mao.VerifPar(Mao.GetListaCartas()[i], Mao.GetListaCartas()[j]) && Livre(Mao.GetListaCartas()[i]) && Livre(Mao.GetListaCartas()[j]))
                     {
                         Mao.MoverCarta(j, i);
                     }
@@ -142,27 +142,25 @@ namespace Pif_paf
                     if (Mao.VerifSeq(Mao.GetListaCartas()[i], Mao.GetListaCartas()[j]) && !Mao.VerifSeq(Mao.GetListaCartas()[i], Mao.GetListaCartas()[i + 1]))
                     {
                         Mao.MoverCarta(j, i + 1);
-                        break;
+
                     }
                 }
             }
-            //Ant
-            for (int i = Mao.GetListaCartas().Count - 1; i >= 1; i--)
+            for (int i = Mao.GetListaCartas().Count - 1; i != 0; i--)
             {
-                for (int j = i - 1; j >= 0; j--)
+                for (int j = i - 1; j != 0; j--)
                 {
                     if (Mao.VerifSeq(Mao.GetListaCartas()[i], Mao.GetListaCartas()[j]) && !Mao.VerifSeq(Mao.GetListaCartas()[i], Mao.GetListaCartas()[i - 1]))
                     {
-                        Mao.MoverCarta(j, i - 1);
-                        break;
+                        Mao.MoverCarta(j, i);
+
                     }
                 }
             }
-
         }
-        public bool Livre(Carta a, Carta b)
+        public bool Livre(Carta carta)
         {
-            if ((a.Grupo == Grupo.Nenhum && b.Grupo == Grupo.Nenhum) || (a.Grupo == Grupo.Pares && b.Grupo == Grupo.Pares))
+            if (carta.Grupo == Grupo.Nenhum || carta.Grupo == Grupo.Pares)
             {
                 return true;
             }
@@ -184,21 +182,49 @@ namespace Pif_paf
                     }
                 }
             }
-            As();
+            // As();
         }
         public void As()
         {
             for (int i = 0; i < Mao.GetListaCartas().Count; i++)
             {
-                if(Mao.GetListaCartas()[i].Letra == "K")
+                if (Mao.GetListaCartas()[i].Letra == "K")
                 {
-                    int indice = Mao.GetListaCartas().FindIndex(item => item.Letra == "A" && item.Nipe == Mao.GetListaCartas()[i].Nipe);                   
-                    if (indice != -1)
+                    int indice = Mao.GetListaCartas().FindIndex(item => item.Letra == "A" && item.Nipe == Mao.GetListaCartas()[i].Nipe);
+
+                    if (indice != -1 && Livre(Mao.GetListaCartas()[i]) && Livre(Mao.GetListaCartas()[indice]) && i - indice > 1)
                     {
                         Mao.MoverCarta(indice, i);
                     }
                 }
-            }            
+            }
+        }
+        public void texte()
+        {
+            insertion_sort();
+            List<Carta> jogo = new List<Carta>();
+            List<Carta> aux = new List<Carta>();
+            int tam = Mao.GetListaCartas().Count;
+
+            for (int i = 0; i < tam - 1; i++)
+            {
+                jogo.Add(Mao.GetListaCartas()[i]);
+                for (int j = i + 1; j < tam; j++)
+                {
+                    if (Mao.VerifSeq(Mao.GetListaCartas()[i], Mao.GetListaCartas()[j]) && !Mao.VerifSeq(Mao.GetListaCartas()[i], Mao.GetListaCartas()[i + 1]))
+                    {
+                        jogo.Add(Mao.GetListaCartas()[j]);
+                        break;
+                    }
+                }
+                if (jogo.Count == 3)
+                {
+                    aux.AddRange(jogo);
+                    jogo.Clear();
+                }
+            }
+            Mao.GetListaCartas().Clear();
+            Mao.GetListaCartas().AddRange(aux);
         }
         public void insertion_sort()
         {
