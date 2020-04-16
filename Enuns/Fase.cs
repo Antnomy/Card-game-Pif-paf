@@ -2,10 +2,8 @@
 {
     enum Fase
     {
-        Compra,
-        Descarte,
-        Selecao,
-        Movimentacao,
-        Fim
+        compra,
+        movimentacao,
+        descarte,       
     }
 }

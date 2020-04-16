@@ -61,60 +61,74 @@ namespace Pif_paf
             Linha(mao.QntCartas());
 
         }
+        private static string ListaPlayers(Jogador[] jogadores)
+        {
+            string aux = "    ";
+            for (int i = 0; i < jogadores.Length; i++)
+            {
+                aux+= jogadores[i].Nome +", ";
+            }
+            return aux;
+        }
         public static void Player(int indice, JogoPifpaf jogo)
         {
             
             if (jogo.JogadorAtual.Equals(jogo.Jogadores[indice]))
             {
-                Console.Write(jogo.Jogadores[indice].Numero + "-" + jogo.Jogadores[indice].Nome);
-                Console.WriteLine(" << Playing...");
+                PrintSelecao(jogo.Jogadores[indice].Numero + "- " + jogo.Jogadores[indice].Nome, ConsoleColor.DarkCyan);
+                Console.Write(" << Vez...     ");
             }
             else
             {
-                Console.WriteLine(jogo.Jogadores[indice].Numero + "-" + jogo.Jogadores[indice].Nome);
+                Console.Write(jogo.Jogadores[indice].Numero + "- " + jogo.Jogadores[indice].Nome + "           ");
             }
+            Console.WriteLine("T " + jogo.Jogadores[indice].Mao.Trincas +" - S "+ jogo.Jogadores[indice].Mao.Sequencias);
+            ImprimeMao(jogo.Jogadores[indice].Mao, true);
         }
         public static void ImprimeMesa(JogoPifpaf jogo)
         {
             Console.Clear();
-
-            Player(1, jogo);
-            ImprimeMao(jogo.Jogadores[1].Mao, true);
+            if (jogo.JogadorAtual.Numero != 1)
+            {
+                Player(jogo.JogadorAtual.Numero - 1, jogo);
+            }
+            else
+            {
+                Player(jogo.JogadorAtual.Numero, jogo);
+            }
             string carta = "vazio";
             qntCemiterio = jogo.Cemiterio.QntCartas();
             if (qntCemiterio > 0)
             {
-                carta = jogo.Cemiterio.Cartas[qntCemiterio - 1] + "";
+                carta = jogo.Cemiterio.Top() + "";
             }
             Console.WriteLine("    " + qntCemiterio + "                      " + jogo.Baralho.QntCartas());
-            Console.WriteLine("    Cemiterio                Monte");
-            Console.WriteLine("     --------                --------");
+            Console.WriteLine("    Cemiterio                Monte       Jogadores:");
+            Console.WriteLine("     --------                --------" + ListaPlayers(jogo.Jogadores));
             Console.WriteLine("   |" + carta + "   |              |        |");
             Console.WriteLine("   |        |              |   X    |");
-            Console.WriteLine("   |        |              |        |" + "    Turno - " + jogo.Turno + " " + jogo.JogadorAtual.Nome + " " + jogo.JogadorAtual.Numero);
+            Console.WriteLine("   |        |              |        |" + "    Turno - " + jogo.Turno);
             Console.WriteLine("   |        |              |        |");
             Console.WriteLine("    --------                --------");
             Console.WriteLine();
-           
-            Player(0, jogo);
-            ImprimeMao(jogo.Jogadores[0].Mao, true);
 
+            Player(0, jogo);
         }
         public static void Resultado(JogoPifpaf jogo)
         {
             Console.Clear();
-           /* for (int i = 0; i < jogo.Jogadores.Length; i++)
-            {
-                Console.WriteLine(jogo.Jogadores[i].Nome + " " + jogo.Jogadores[i].Mao.Trincas + " Trincas(s), " + jogo.Jogadores[i].Mao.Sequencias + " Sequencia(s)");
-                ImprimeMao(jogo.Jogadores[0].Mao, true);
-                Console.WriteLine();
-            }*/
-            
+            /* for (int i = 0; i < jogo.Jogadores.Length; i++)
+             {
+                 Console.WriteLine(jogo.Jogadores[i].Nome + " " + jogo.Jogadores[i].Mao.Trincas + " Trincas(s), " + jogo.Jogadores[i].Mao.Sequencias + " Sequencia(s)");
+                 ImprimeMao(jogo.Jogadores[0].Mao, true);
+                 Console.WriteLine();
+             }*/
+
             Console.WriteLine();
-            Console.WriteLine(">>> FIM DE JOGO! " +jogo.JogadorAnterior().Nome + " BATEU!!...");
+            Console.WriteLine(">>> FIM DE JOGO! " + jogo.JogadorAnterior().Nome + " BATEU!!...");
             Console.WriteLine(jogo.JogadorAnterior().Mao.Trincas + " Trincas(s), " + jogo.JogadorAnterior().Mao.Sequencias + " Sequencia(s)");
             Console.WriteLine();
-            ImprimeMao(jogo.JogadorAnterior().Mao, true);                                                   
+            ImprimeMao(jogo.JogadorAnterior().Mao, true);
         }
         public static int EntrarPosicao()
         {
@@ -141,7 +155,7 @@ namespace Pif_paf
                     }
                 }
             }
-        }        
+        }
         public static bool Confirmar()
         {
             Console.Write("Confirmar (s/n)?");
@@ -159,8 +173,10 @@ namespace Pif_paf
         {
             Console.Write("Numero de jogadores: ");
             int n = int.Parse(Console.ReadLine());
-
+            
+            Random r = new Random();
             string nome;
+            string[] bots = new string[] { "João", "Antônio", "Junior", "John Macllaine", "Moises", "Spirit", "Phantom", "G-virus", "T-virus", "ANJ" };
             Jogador[] jogadores = new Jogador[n];
 
             Console.WriteLine($"#{1} jogador:");
@@ -169,7 +185,7 @@ namespace Pif_paf
             jogadores[0] = new Jogador(1, null, nome, false);
             for (int i = 1; i < n; i++)
             {
-                jogadores[i] = new Jogador(i + 1, null, "NPC", true);
+                jogadores[i] = new Jogador(i + 1, null, "BOT " + bots[r.Next(9)], true);
             }
             return jogadores;
         }
@@ -198,20 +214,19 @@ namespace Pif_paf
 
         public static void Print(string txt, ConsoleColor cor)
         {
-
             ConsoleColor aux = Console.ForegroundColor;
             Console.ForegroundColor = cor;
             Console.Write(txt);
             Console.ForegroundColor = aux;
         }
-        public static void PrintSelecao(string txt)
+        public static void PrintSelecao(string txt, ConsoleColor cor)
         {
 
-            Console.BackgroundColor = ConsoleColor.White;
+            Console.BackgroundColor = cor;
             Console.Write(txt);
             Console.BackgroundColor = default;
         }
-       
+
         public static void ImprimeCartas(Mao mao)
         {
             foreach (Carta cart in mao.GetListaCartas())
@@ -238,7 +253,7 @@ namespace Pif_paf
                 //se esta marcada
                 if (mao.Selecao == cart)
                 {
-                    PrintSelecao(txt);
+                    PrintSelecao(txt, ConsoleColor.White);
                 }
                 else
                 {

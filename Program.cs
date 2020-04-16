@@ -12,19 +12,7 @@ namespace Pif_paf
         {
             JogoPifpaf jogo = new JogoPifpaf(Tela.Jogadores());
 
-            /*Baralho Baralho = new Baralho();
-            Pilha Cemiterio = new Pilha();
-            Mao Mao = new Mao();
-            Ai ai = new Ai(Baralho, Cemiterio, Mao);
-            Carta c1 = new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha);
-            Carta c2 = new Carta("3", 10, 2, Nipe.Cop, Cor.vermelha);
-            
 
-            c1.Grupo = Grupo.Trincas;
-            c2.Grupo = Grupo.Pares;
-
-            Console.WriteLine(ai.Livre(c1, c2));
-            Console.ReadLine();*/
 
             while (!jogo.FimJogo)
             {
@@ -34,7 +22,7 @@ namespace Pif_paf
                     jogo.Ai.Mao = jogo.Mao;
                     Tela.ImprimeMesa(jogo);
 
-                    //jogo.Ai.AutoPlay();
+
                     Tela.Espera(2, false);
                     if (jogo.Ai.SeCemiterioArmaJogo())
                     {
@@ -54,7 +42,7 @@ namespace Pif_paf
                     jogo.Ai.As();
                     jogo.Mao.VerifSequencias();
 
-                    //jogo.Ai.ArranjarTrincas();
+                    jogo.Ai.ArranjarTrincas();
                     jogo.Mao.VerifTrincas();
                     Tela.ImprimeMesa(jogo);
                     Tela.Espera(2, false);
@@ -74,76 +62,84 @@ namespace Pif_paf
                     try
                     {
                         Tela.ImprimeMesa(jogo);
-                        if (jogo.Mao.QntCartas() == 9)
+                        if (jogo.fase == Fase.compra)
                         {
                             jogo.Mao.AdcCarta(Tela.Compra(jogo.Baralho, jogo.Cemiterio));
+                            jogo.fase = Fase.movimentacao;
+
                         }
-                        jogo.Mao.VerifTrincas();
-                        jogo.Mao.VerifSequencias();
 
-                        Tela.ImprimeMesa(jogo);
-                        char ch = 's';
-                        string quest = "Deseja mover uma carta (s/n)? ";
-                        while (ch == 's')
+                        if (jogo.fase == Fase.movimentacao)
                         {
-                            Console.Write(quest);
-                            ch = char.Parse(Console.ReadLine());
-                            if (ch == 's')
-                            {
-                                Tela.ImprimeMesa(jogo);
-                                Console.Write("Origem (posiçao): ");
-                                int origem = Tela.EntrarPosicao();
-                                jogo.Mao.Marcar(origem - 1);
-                                Tela.ImprimeMesa(jogo);
-                                Console.Write("Destino (posição): ");
-                                int destino = Tela.EntrarPosicao();
 
-                                jogo.Mao.MoverCarta(origem - 1, destino - 1);
+                            jogo.Mao.VerifTrincas();
+                            jogo.Mao.VerifSequencias();
+                            Tela.ImprimeMesa(jogo);
+                            char ch = 's';
+                            string quest = "Deseja mover uma carta (s/n)? ";
+                            while (ch == 's')
+                            {
+                                Console.Write(quest);
+                                ch = char.Parse(Console.ReadLine());
+                                if (ch == 's')
+                                {
+                                    Tela.ImprimeMesa(jogo);
+                                    Console.Write("Origem (posiçao): ");
+                                    int origem = Tela.EntrarPosicao();
+                                    jogo.Mao.Marcar(origem - 1);
+                                    Tela.ImprimeMesa(jogo);
+                                    Console.Write("Destino (posição): ");
+                                    int destino = Tela.EntrarPosicao();
+
+                                    jogo.Mao.MoverCarta(origem - 1, destino - 1);
+                                    jogo.Mao.DesMarcar();
+                                    jogo.Mao.RemoveGrupos();
+                                    jogo.Mao.VerifTrincas();
+                                    jogo.Mao.VerifSequencias();
+                                    Tela.ImprimeMesa(jogo);
+                                    quest = "Mover outra carta (s/n)? ";
+                                }
+                            }
+                            jogo.fase = Fase.descarte;
+                        }
+
+                        if (jogo.fase == Fase.descarte)
+                        {
+                            Tela.ImprimeMesa(jogo);
+                            Console.Write("Decarte uma carta (posição): ");
+
+                            int pos = Tela.EntrarPosicao();
+                            jogo.Mao.Marcar(pos - 1);
+                            Tela.ImprimeMesa(jogo);
+                            if (Tela.Confirmar())
+                            {
+                                jogo.Cemiterio.AdcCarta(jogo.Mao.RemovCarta(pos - 1));
                                 jogo.Mao.DesMarcar();
                                 jogo.Mao.RemoveGrupos();
                                 jogo.Mao.VerifTrincas();
                                 jogo.Mao.VerifSequencias();
-                                Tela.ImprimeMesa(jogo);
-                                quest = "Mover outra carta (s/n)? ";
+
                             }
+                            jogo.fase = Fase.compra;
                         }
 
-                        Tela.ImprimeMesa(jogo);
-                        Console.Write("Decarte uma carta (posição): ");
-
-                        int pos = Tela.EntrarPosicao();
-                        jogo.Mao.Marcar(pos - 1);
-                        Tela.ImprimeMesa(jogo);
-                        if (Tela.Confirmar())
-                        {
-                            jogo.Cemiterio.AdcCarta(jogo.Mao.RemovCarta(pos - 1));
-                            jogo.Mao.DesMarcar();
-                            jogo.Mao.RemoveGrupos();
-                            jogo.Mao.VerifTrincas();
-                            jogo.Mao.VerifSequencias();
-
-                        }
-                        
-
-
-                        
-
+                        Console.WriteLine(jogo.JogadorAtual.Nome + " jogos: " + jogo.Mao.TotalArranjos());
+                        Console.ReadLine();
+                        jogo.MudarJogador();
                     }
                     catch (PifpafExeption e)
                     {
-                        Console.WriteLine("Erro!... " + e.Message);
+                        Console.WriteLine();
+                        Tela.Print(e.Message, ConsoleColor.Red);
                         Console.ReadLine();
                     }
                     catch (FormatException e)
                     {
-                        Console.WriteLine("Erro!... " + e.Message);
+                        Console.WriteLine();
+                        Tela.Print("Formato incorreto.!", ConsoleColor.Red);
                         Console.ReadLine();
                     }
-                    Console.WriteLine(jogo.JogadorAtual.Nome + " jogos: " + jogo.Mao.TotalArranjos());
-                    Console.ReadLine();
-                    jogo.MudarJogador();
-                    Console.WriteLine(jogo.JogadorAtual.Nome + " jogos: " + jogo.Mao.TotalArranjos());
-                    Console.ReadLine();
+
                 }
 
 
@@ -152,9 +148,10 @@ namespace Pif_paf
                     jogo.FimJogo = true;
                     Tela.Resultado(jogo);
                 }
-
-
-
+                /*if (jogo.Baralho.QntCartas() == 0)
+                {
+                    jogo.AdcCemiterioParaBaralho();
+                }*/
             }
         }
     }

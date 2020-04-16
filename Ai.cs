@@ -35,7 +35,7 @@ namespace Pif_paf
 
             Mao.RemoveGrupos();
 
-            ArrjarSeq();
+            
             Mao.VerifSequencias();
 
             ArranjarTrincas();
@@ -85,79 +85,23 @@ namespace Pif_paf
                 return false;
             }
         }
-        public int DifOrdem(Carta a, Carta b)
-        {
-            if (a.Nipe == b.Nipe)
-            {
-                return a.Ordem - b.Ordem;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-        public bool VerifSeq2(Carta a, Carta b)
-        {
-            return a.Ordem == b.Ordem - 2 && a.Nipe == b.Nipe;
-        }
-
+        
         public void ArranjarTrincas()
         {
             for (int i = 0; i < Mao.GetListaCartas().Count - 1; i++)
             {
                 for (int j = i + 1; j < Mao.GetListaCartas().Count; j++)
                 {
-                    if (Mao.VerifPar(Mao.GetListaCartas()[i], Mao.GetListaCartas()[j]) && Livre(Mao.GetListaCartas()[i]) && Livre(Mao.GetListaCartas()[j]))
+                    if (Mao.VerifPar(Mao.GetListaCartas()[i], Mao.GetListaCartas()[j]) && Mao.GetListaCartas()[i].Livre() && Mao.GetListaCartas()[j].Livre())
                     {
                         Mao.MoverCarta(j, i);
                     }
                 }
             }
         }
-        public int BuscaProx(Carta carta)
-        {
-            return Mao.GetListaCartas().FindIndex(item => Mao.VerifProx(carta, item));
-        }
-        public void ArrjarSeq()
-        {
-            int posicao;
-            for (int i = 0; i < Mao.GetListaCartas().Count - 1; i++)
-            {
-                posicao = BuscaProx(Mao.GetListaCartas()[i]);
-                if (posicao != -1)
-                {
-                    Mao.MoverCarta(posicao, i + 1);
-                }
-
-            }
-        }
-        public void ArrjarSeqSemIguias()
-        {
-            //Prox
-            for (int i = 0; i < Mao.GetListaCartas().Count - 1; i++)
-            {
-                for (int j = i + 1; j < Mao.GetListaCartas().Count; j++)
-                {
-                    if (Mao.VerifSeq(Mao.GetListaCartas()[i], Mao.GetListaCartas()[j]) && !Mao.VerifSeq(Mao.GetListaCartas()[i], Mao.GetListaCartas()[i + 1]))
-                    {
-                        Mao.MoverCarta(j, i + 1);
-
-                    }
-                }
-            }
-            for (int i = Mao.GetListaCartas().Count - 1; i != 0; i--)
-            {
-                for (int j = i - 1; j != 0; j--)
-                {
-                    if (Mao.VerifSeq(Mao.GetListaCartas()[i], Mao.GetListaCartas()[j]) && !Mao.VerifSeq(Mao.GetListaCartas()[i], Mao.GetListaCartas()[i - 1]))
-                    {
-                        Mao.MoverCarta(j, i);
-
-                    }
-                }
-            }
-        }
+       
+       
+       
         public bool Livre(Carta carta)
         {
             if (carta.Grupo == Grupo.Nenhum || carta.Grupo == Grupo.Pares)
@@ -182,7 +126,7 @@ namespace Pif_paf
                     }
                 }
             }
-            // As();
+          
         }
         public void As()
         {
@@ -192,40 +136,14 @@ namespace Pif_paf
                 {
                     int indice = Mao.GetListaCartas().FindIndex(item => item.Letra == "A" && item.Nipe == Mao.GetListaCartas()[i].Nipe);
 
-                    if (indice != -1 && Livre(Mao.GetListaCartas()[i]) && Livre(Mao.GetListaCartas()[indice]) && i - indice > 1)
+                    if (indice != -1 && Mao.GetListaCartas()[i].Livre() && Mao.GetListaCartas()[indice].Livre() && i - indice > 1)
                     {
                         Mao.MoverCarta(indice, i);
                     }
                 }
             }
         }
-        public void texte()
-        {
-            insertion_sort();
-            List<Carta> jogo = new List<Carta>();
-            List<Carta> aux = new List<Carta>();
-            int tam = Mao.GetListaCartas().Count;
-
-            for (int i = 0; i < tam - 1; i++)
-            {
-                jogo.Add(Mao.GetListaCartas()[i]);
-                for (int j = i + 1; j < tam; j++)
-                {
-                    if (Mao.VerifSeq(Mao.GetListaCartas()[i], Mao.GetListaCartas()[j]) && !Mao.VerifSeq(Mao.GetListaCartas()[i], Mao.GetListaCartas()[i + 1]))
-                    {
-                        jogo.Add(Mao.GetListaCartas()[j]);
-                        break;
-                    }
-                }
-                if (jogo.Count == 3)
-                {
-                    aux.AddRange(jogo);
-                    jogo.Clear();
-                }
-            }
-            Mao.GetListaCartas().Clear();
-            Mao.GetListaCartas().AddRange(aux);
-        }
+        
         public void insertion_sort()
         {
             int i, j;
@@ -243,20 +161,5 @@ namespace Pif_paf
                 Mao.GetListaCartas()[j + 1] = atual;
             }
         }
-
-        public static int ComparaSeq(Carta a, Carta b)
-        {
-            if (a.Ordem > b.Ordem && a.Nipe == b.Nipe)
-            {
-                Console.WriteLine("sim");
-                Console.ReadLine();
-                return -1;
-
-            }
-            return 1;
-        }
-
-
-
     }
 }

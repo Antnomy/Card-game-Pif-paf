@@ -23,6 +23,14 @@ namespace mesa
         {
             Valor = Valor;
         }
+        public bool Livre()
+        {
+            if (Grupo == Grupo.Nenhum || Grupo == Grupo.Pares)
+            {
+                return true;
+            }
+            return false;
+        }
         public override string ToString()
         {
             return Letra + " " + Nipe;

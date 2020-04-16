@@ -14,7 +14,7 @@ namespace mesa
         public int Turno;
         public Jogador[] Jogadores;
         public Jogador JogadorAtual;
-
+        public Fase fase;
 
         public JogoPifpaf(Jogador[] jogadores)
         {
@@ -24,18 +24,19 @@ namespace mesa
 
             Turno = 1;
             Jogadores = jogadores;
+            fase = Fase.compra;
             FimJogo = false;
 
             DefinirCartas();
             //Baralho.Embaralhar();
-            // Baralho.Embaralhar();
+            //Baralho.Embaralhar();
+
             for (int i = 0; i < Jogadores.Length; i++)
             {
                 Jogadores[i].Mao = new Mao(Baralho, 9);
             }
             JogadorAtual = Jogadores[0];
         }
-
         public void DarCartas()
         {
             for (int i = 0; i < 10; i++)
@@ -87,6 +88,11 @@ namespace mesa
                 return true;
             }
             return false;
+        }
+        public void AdcCemiterioParaBaralho()
+        {
+            Baralho.Cartas.AddRange(Cemiterio.Cartas);
+            Cemiterio.Cartas.Clear();
         }
         public void DefinirCartas()
         {

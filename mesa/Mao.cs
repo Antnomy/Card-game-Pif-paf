@@ -52,8 +52,7 @@ namespace mesa
             }
         }
 
-        
-
+       
         public bool ValidarPosicao(int posicao)
         {
             if (posicao < Cartas.Count && posicao >= 0)
@@ -162,7 +161,7 @@ namespace mesa
            
             for (int i = 0; i < Cartas.Count - 1; i++)
             {
-                if (VerifPar(Cartas[i], Cartas[i + 1]) && (Cartas[i].Grupo == Grupo.Nenhum || Cartas[i].Grupo == Grupo.Pares) && (Cartas[i + 1].Grupo == Grupo.Nenhum || Cartas[i + 1].Grupo == Grupo.Pares))
+                if (VerifPar(Cartas[i], Cartas[i + 1]) && Cartas[i].Livre() && Cartas[i + 1].Livre())
                 {
                     aux.Add(Cartas[i + 1]);
                     Cartas[i].Grupo = Grupo.Pares;
