@@ -98,10 +98,7 @@ namespace Pif_paf
                     }
                 }
             }
-        }
-       
-       
-       
+        }     
         public bool Livre(Carta carta)
         {
             if (carta.Grupo == Grupo.Nenhum || carta.Grupo == Grupo.Pares)
@@ -126,9 +123,22 @@ namespace Pif_paf
                     }
                 }
             }
-          
+
+            Mao.VerifSequencias();
+            for (int i = 0; i < Mao.GetListaCartas().Count; i++)
+            {
+                if (Mao.GetListaCartas()[i].Letra == "K")
+                {
+                    int indice = Mao.GetListaCartas().FindIndex(item => item.Letra == "A" && item.Nipe == Mao.GetListaCartas()[i].Nipe);
+
+                    if (indice != -1 && Mao.GetListaCartas()[i].Livre() && Mao.GetListaCartas()[indice].Livre() && i - indice > 1)
+                    {
+                        Mao.MoverCarta(indice, i);
+                    }
+                }
+            }
         }
-        public void As()
+        public void AltAs()
         {
             for (int i = 0; i < Mao.GetListaCartas().Count; i++)
             {

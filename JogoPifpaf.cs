@@ -27,7 +27,7 @@ namespace mesa
             fase = Fase.compra;
             FimJogo = false;
 
-            DefinirCartas();
+            Definir52Cartas();
             //Baralho.Embaralhar();
             //Baralho.Embaralhar();
 
@@ -92,9 +92,10 @@ namespace mesa
         public void AdcCemiterioParaBaralho()
         {
             Baralho.Cartas.AddRange(Cemiterio.Cartas);
+            Baralho.Embaralhar();
             Cemiterio.Cartas.Clear();
         }
-        public void DefinirCartas()
+        public void Definir52Cartas()
         {
 
             Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Cop, Cor.vermelha));
@@ -159,13 +160,13 @@ namespace mesa
             Baralho.AdcCarta(new Carta("J", 10, 11, Nipe.Esp, Cor.preta));
             //Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Esp, Cor.preta));
             Baralho.AdcCarta(new Carta("Q", 10, 12, Nipe.Esp, Cor.preta));
-
+            Baralho.AdcCarta(new Carta("5", 10, 5, Nipe.Cop, Cor.vermelha));
             Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Esp, Cor.preta));
             Baralho.AdcCarta(new Carta("3", 10, 3, Nipe.Cop, Cor.vermelha));
             //Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Esp, Cor.preta));
             //Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Cop, Cor.vermelha));
             Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Esp, Cor.preta));
-            Baralho.AdcCarta(new Carta("Q", 10, 12, Nipe.Esp, Cor.preta));
+            //Baralho.AdcCarta(new Carta("Q", 10, 12, Nipe.Esp, Cor.preta));
 
             Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Esp, Cor.preta));
             //Baralho.AdcCarta(new Carta("7", 10, 7, Nipe.Esp, Cor.preta));

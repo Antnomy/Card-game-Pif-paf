@@ -100,13 +100,20 @@ namespace Pif_paf
             qntCemiterio = jogo.Cemiterio.QntCartas();
             if (qntCemiterio > 0)
             {
-                carta = jogo.Cemiterio.Top() + "";
+                carta = jogo.Cemiterio.Top().Letra + " ";
             }
             Console.WriteLine("    " + qntCemiterio + "                      " + jogo.Baralho.QntCartas());
-            Console.WriteLine("    Cemiterio                Monte       Jogadores:");
+            Console.WriteLine("    Cemiterio                Monte       Jogadores: "+ jogo.Jogadores.Length);
             Console.WriteLine("     --------                --------" + ListaPlayers(jogo.Jogadores));
-            Console.WriteLine("   |" + carta + "   |              |        |");
+
+            Console.Write("   |" + carta );
+            if (qntCemiterio > 0)
+            {
+                jogo.Cemiterio.Top().PrintNipe();
+            }
+            Console.WriteLine("   |              |        |");
             Console.WriteLine("   |        |              |   X    |");
+
             Console.WriteLine("   |        |              |        |" + "    Turno - " + jogo.Turno);
             Console.WriteLine("   |        |              |        |");
             Console.WriteLine("    --------                --------");
@@ -156,10 +163,15 @@ namespace Pif_paf
                 }
             }
         }
-        public static bool Confirmar()
+        public static bool Confirmar(string txt)
         {
-            Console.Write("Confirmar (s/n)?");
+            Console.Write(txt);
             char ch = char.Parse(Console.ReadLine());
+
+            if(ch != 'n' && ch != 's')
+            {
+                throw new PifpafExeption("Erro! Digite: (s) para Sim e (n) para Não");
+            }
             if (ch == 's')
             {
                 return true;
@@ -171,21 +183,23 @@ namespace Pif_paf
         }
         public static Jogador[] Jogadores()
         {
-            Console.Write("Numero de jogadores: ");
+            Console.Write("Informe o numero de jogadores max 8 (Enter): ");
             int n = int.Parse(Console.ReadLine());
             
             Random r = new Random();
             string nome;
-            string[] bots = new string[] { "João", "Antônio", "Junior", "John Macllaine", "Moises", "Spirit", "Phantom", "G-virus", "T-virus", "ANJ" };
+            string[] bots = new string[]
+            { "João", "Antônio", "Junior", "John Macllaine", "Moises", "Spirit", "Phantom", "G-virus", "T-virus", "ANJ", "SUBROSA", "Fallen", "Matheus", "Snike",
+            "Yami Yugi", "Dark Magician", "Blue eyes", "GOD"};
             Jogador[] jogadores = new Jogador[n];
 
-            Console.WriteLine($"#{1} jogador:");
-            Console.Write("Nome: ");
+            
+            Console.Write("Seu nome: ");
             nome = Console.ReadLine();
             jogadores[0] = new Jogador(1, null, nome, false);
             for (int i = 1; i < n; i++)
             {
-                jogadores[i] = new Jogador(i + 1, null, "BOT " + bots[r.Next(9)], true);
+                jogadores[i] = new Jogador(i + 1, null, "BOT " + bots[r.Next(18)], true);
             }
             return jogadores;
         }
@@ -269,10 +283,10 @@ namespace Pif_paf
                     Console.Write("  ");
                 }
             }
-            Console.WriteLine("    |");
+            //Console.WriteLine("    |");
 
             //print nipes
-            foreach (Carta cart in mao.GetListaCartas())
+            /*foreach (Carta cart in mao.GetListaCartas())
             {
                 string txt = cart.Nipe.ToString();
 
@@ -286,6 +300,12 @@ namespace Pif_paf
                 {
                     Print(txt, ConsoleColor.DarkGray);
                 }
+            }*/
+            Console.WriteLine("    |");
+            foreach (Carta cart in mao.GetListaCartas())
+            {
+                Console.Write("|");
+                cart.PrintNipe();
             }
             Console.WriteLine("    |");
         }

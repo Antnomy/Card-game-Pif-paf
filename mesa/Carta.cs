@@ -1,4 +1,5 @@
-﻿using Enuns;
+﻿using System;
+using Enuns;
 namespace mesa
 {
     class Carta
@@ -30,6 +31,24 @@ namespace mesa
                 return true;
             }
             return false;
+        }
+        private void Print(ConsoleColor cor)
+        {
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = cor;
+            Console.Write(Nipe);
+            Console.ForegroundColor = aux;
+        }
+        public void PrintNipe()
+        {
+            if (Cor == Cor.vermelha)
+            {
+                Print(ConsoleColor.Red);
+            }
+            else
+            {
+                Print(ConsoleColor.DarkGray);
+            }
         }
         public override string ToString()
         {

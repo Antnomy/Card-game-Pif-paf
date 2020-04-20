@@ -115,18 +115,7 @@ namespace mesa
         {
             return a.Letra == b.Letra && a.Nipe != b.Nipe;
         }
-
-        public bool VerifMenor(Carta a, Carta b)
-        {
-            if (a.Letra == "K" && b.Letra == "A" && a.Nipe == b.Nipe)
-            {
-                return true;
-            }
-            else
-            {
-                return a.Ordem < b.Ordem;
-            }
-        }
+     
         public bool VerifSeq(Carta a, Carta b)
         {
             if(a.Letra == "K" && b.Letra == "A" && a.Nipe == b.Nipe)
@@ -150,10 +139,13 @@ namespace mesa
                 return a.Ordem == b.Ordem + 1 && a.Nipe == b.Nipe;
             }
         }
-        public bool VerifIguiais(Carta a, Carta b)
+        public bool VerifMenor(Carta a, Carta b)
         {
-            return a.Ordem == b.Ordem && a.Nipe == b.Nipe;
+            
+                return a.Ordem < b.Ordem;
+            
         }
+
         public int VerifTrincas()
         {
             Trincas = 0;           
@@ -177,6 +169,7 @@ namespace mesa
                     aux.ForEach(carta => carta.Grupo = Grupo.Trincas);
                     Trincas++;
                     aux.Clear();
+                    i++;
                 }
 
             }
@@ -194,83 +187,28 @@ namespace mesa
                     aux.Add(Cartas[i + 1]);
                     Cartas[i].Grupo = Grupo.Pares;
                     Cartas[i + 1].Grupo = Grupo.Pares;
-
                 }
                 else
                 {
                     aux.Clear();
                 }
                 if (aux.Count == 2)
-                {                  
+                {
+                    
                     Sequencias++;
-                    aux.Insert(0, Cartas[i-1]);
+                    aux.Insert(0, Cartas[i - 1]);
                     aux.ForEach(carta => carta.Grupo = Grupo.Sequencias);             
                     aux.Clear();
+                    i++;
                 }
             }
             return Sequencias;
-        }
-        public int VerifSequenciasV2()
-        {
-          
-            Sequencias = 0;
-
-            for (int i = 0; i < Cartas.Count - 2; i++)
-            {
-                if (VerifSeq(Cartas[i], Cartas[i + 1]) && (Cartas[i].Grupo == Grupo.Nenhum || Cartas[i].Grupo == Grupo.Pares))
-                {                    
-                    Cartas[i].Grupo = Grupo.Pares;
-                    Cartas[i + 1].Grupo = Grupo.Pares;
-                    i++;
-                    if(VerifSeq(Cartas[i + 1], Cartas[i + 2]) && (Cartas[i + 1].Grupo == Grupo.Nenhum || Cartas[i + 1].Grupo == Grupo.Pares))
-                    {
-                        Cartas[i].Grupo = Grupo.Sequencias;
-                        Cartas[i + 1].Grupo = Grupo.Sequencias;
-                        Cartas[i + 2].Grupo = Grupo.Sequencias;
-                        i++;
-                    }
-                }              
-            }
-            return Sequencias;
-        }
+        }      
         public int TotalArranjos()
         {
             return Trincas + Sequencias;
-        }
-        public void VerifTrincas2()
-        {
-            List<Carta> aux = new List<Carta>();
-
-            for (int i = 0; i < Cartas.Count; i++)
-            {
-                for (int j = 1; j < Cartas.Count; j++)
-                {
-                    if (VerifPar(Cartas[i], Cartas[j]))
-                    {
-                        aux.Add(Cartas[j]);
-                    }
-                    if (aux.Count == 2)
-                    {
-                        aux.Add(Cartas[i]);
-                        System.Console.WriteLine("Trinca");
-                        foreach (Carta item in aux)
-                        {
-                            System.Console.WriteLine(item);
-                        }
-                        System.Console.ReadLine();
-                    }
-                }
-                aux.Clear();
-            }
-        }
-        public int BuscaAnt(Carta carta)
-        {          
-          return Cartas.FindIndex(item=> VerifPar(carta, item));                   
-        }
-        public int BuscaProx(Carta carta)
-        {
-            return Cartas.FindIndex(item => VerifProx(carta, item));
-        }
+        }       
+       
         public int QntCartas()
         {
             return Cartas.Count;
