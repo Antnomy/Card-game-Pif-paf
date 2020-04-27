@@ -53,6 +53,7 @@ namespace Pif_paf
             else
             {
                 Costas(mao.QntCartas());
+                Costas(mao.QntCartas());
             }
             Corpo(mao.QntCartas());
             Corpo(mao.QntCartas());
@@ -70,7 +71,7 @@ namespace Pif_paf
             }
             return aux;
         }
-        public static void Player(int indice, JogoPifpaf jogo)
+        public static void Player(int indice, JogoPifpaf jogo, bool mostrarJogos)
         {
             
             if (jogo.JogadorAtual.Equals(jogo.Jogadores[indice]))
@@ -82,19 +83,39 @@ namespace Pif_paf
             {
                 Console.Write(jogo.Jogadores[indice].Numero + "- " + jogo.Jogadores[indice].Nome + "           ");
             }
-            Console.WriteLine("T " + jogo.Jogadores[indice].Mao.Trincas +" - S "+ jogo.Jogadores[indice].Mao.Sequencias);
-            ImprimeMao(jogo.Jogadores[indice].Mao, true);
+            if (mostrarJogos)
+            {
+                Console.Write("T " + jogo.Jogadores[indice].Mao.Trincas + " - S " + jogo.Jogadores[indice].Mao.Sequencias);            
+            }
+
+            Console.WriteLine();
+            ImprimeMao(jogo.Jogadores[indice].Mao, mostrarJogos);
+        }
+        public static void Avatar(Jogador[] jogadores)
+        {
+             void Body(string parte)
+            {
+                for (int i = 0; i < jogadores.Length; i++)
+                {
+                    Console.Write(parte);
+                }
+            }
+            string[] aux = new string[4] { " _(_)_  ", "|     |  ", "-------  ", "* * * *  " };
+            Body(aux[0]);
+            Body(aux[1]);
+            Body(aux[2]);
+            Body(aux[3]);
         }
         public static void ImprimeMesa(JogoPifpaf jogo)
         {
             Console.Clear();
             if (jogo.JogadorAtual.Numero != 1)
             {
-                Player(jogo.JogadorAtual.Numero - 1, jogo);
+                Player(jogo.JogadorAtual.Numero - 1, jogo, false);
             }
             else
             {
-                Player(jogo.JogadorAtual.Numero, jogo);
+                Player(jogo.JogadorAtual.Numero, jogo, false);
             }
             string carta = "vazio";
             qntCemiterio = jogo.Cemiterio.QntCartas();
@@ -103,7 +124,8 @@ namespace Pif_paf
                 carta = jogo.Cemiterio.Top().Letra + " ";
             }
             Console.WriteLine("    " + qntCemiterio + "                      " + jogo.Baralho.QntCartas());
-            Console.WriteLine("    Cemiterio                Monte       Jogadores: "+ jogo.Jogadores.Length);
+            Console.Write("    Cemiterio                Maço        Jogadores: "+ jogo.Jogadores.Length);
+            Avatar(jogo.Jogadores);
             Console.WriteLine("     --------                --------" + ListaPlayers(jogo.Jogadores));
 
             Console.Write("   |" + carta );
@@ -119,7 +141,7 @@ namespace Pif_paf
             Console.WriteLine("    --------                --------");
             Console.WriteLine();
 
-            Player(0, jogo);
+            Player(0, jogo, true);
         }
         public static void Resultado(JogoPifpaf jogo)
         {
@@ -166,13 +188,17 @@ namespace Pif_paf
         public static bool Confirmar(string txt)
         {
             Console.Write(txt);
-            char ch = char.Parse(Console.ReadLine());
+            string st = Console.ReadLine();
 
-            if(ch != 'n' && ch != 's')
+            if(st != "n" && st != "s" && st != "")
             {
-                throw new PifpafExeption("Erro! Digite: (s) para Sim e (n) para Não");
+                throw new PifpafExeption("Erro! Digite somente uma das opções acima...ENTER para continuar:");
             }
-            if (ch == 's')
+            if (st == "s")
+            {
+                return true;
+            }
+            else if(st == "")
             {
                 return true;
             }
@@ -183,14 +209,20 @@ namespace Pif_paf
         }
         public static Jogador[] Jogadores()
         {
+
             Console.Write("Informe o numero de jogadores max 8 (Enter): ");
             int n = int.Parse(Console.ReadLine());
             
+            if(n < 2 || n > 8)
+            {
+                //throw new PifpafExeption("!!..Digite um numero entre 2 e 8");
+                n = 2;
+            }
             Random r = new Random();
             string nome;
             string[] bots = new string[]
             { "João", "Antônio", "Junior", "John Macllaine", "Moises", "Spirit", "Phantom", "G-virus", "T-virus", "ANJ", "SUBROSA", "Fallen", "Matheus", "Snike",
-            "Yami Yugi", "Dark Magician", "Blue eyes", "GOD"};
+            "Yami Yugi", "Dark Magician", "Blue eyes", "GOD", "Kurosaki", "Seya", "Lucifer"};
             Jogador[] jogadores = new Jogador[n];
 
             
@@ -199,7 +231,7 @@ namespace Pif_paf
             jogadores[0] = new Jogador(1, null, nome, false);
             for (int i = 1; i < n; i++)
             {
-                jogadores[i] = new Jogador(i + 1, null, "BOT " + bots[r.Next(18)], true);
+                jogadores[i] = new Jogador(i + 1, null, "bot " + bots[r.Next(20)], true);
             }
             return jogadores;
         }
@@ -215,6 +247,13 @@ namespace Pif_paf
             {
                 Console.Write("!Comprar do Maço ou Cemiterio (m, c)?: ");
                 char c = char.Parse(Console.ReadLine());
+
+                if (c != 'm' && c != 'c')
+                {
+                    throw new PifpafExeption("Erro! Digite: (m) ou (c)");
+                }
+
+                
                 if (c == 'm')
                 {
                     return baralho.RemoveTop();
@@ -239,6 +278,13 @@ namespace Pif_paf
             Console.BackgroundColor = cor;
             Console.Write(txt);
             Console.BackgroundColor = default;
+        }
+        public static void DesenhaSetas()
+        {
+            Console.WriteLine();
+            PrintSelecao(" <-- 4   ", ConsoleColor.DarkGreen);
+            Console.Write("   5   ");
+            PrintSelecao(" 6 -->   ", ConsoleColor.DarkGreen);
         }
 
         public static void ImprimeCartas(Mao mao)

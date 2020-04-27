@@ -6,8 +6,7 @@ namespace mesa
 {
     class Pilha
     {
-        public List<Carta> Cartas { get; protected set; } = new List<Carta>();
-       
+        public List<Carta> Cartas { get; protected set; } = new List<Carta>();       
         public void AdcCarta(Carta carta)
         {
             Cartas.Add(carta);
@@ -16,6 +15,12 @@ namespace mesa
         {
             Carta aux = carta;
             Cartas.Remove(carta);
+            return aux;
+        }
+        public Carta RemovePosicao(int posicao)
+        {
+            Carta aux = Cartas[posicao];
+            Cartas.Remove(Cartas[posicao]);
             return aux;
         }
         public Carta RemoveTop()

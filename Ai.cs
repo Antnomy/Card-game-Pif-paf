@@ -43,20 +43,31 @@ namespace Pif_paf
 
 
         }
+        public void Comprar()
+        {
+            if (SeCemiterioArmaJogo())
+            {
+                Mao.AdcCarta(Cemiterio.RemoveTop());
+            }
+            else
+            {
+                Mao.AdcCarta(Baralho.RemoveTop());
+            }
+        }
         public void SelecDescarte()
         {
             int indice = Mao.GetListaCartas().FindIndex(carta => carta.Grupo == Grupo.Nenhum);
 
             if (indice != -1)
             {
-                Cemiterio.AdcCarta(Mao.RemovCarta(indice));
+                Cemiterio.AdcCarta(Mao.Descartar(indice));
             }
             else
             {
                 indice = Mao.GetListaCartas().FindIndex(carta => carta.Grupo == Grupo.Pares);
                 if (indice != -1)
                 {
-                    Cemiterio.AdcCarta(Mao.RemovCarta(indice));
+                    Cemiterio.AdcCarta(Mao.Descartar(indice));
                 }
             }
         }
@@ -67,7 +78,7 @@ namespace Pif_paf
         }
 
 
-        public bool SeCemiterioArmaJogo()
+        private bool SeCemiterioArmaJogo()
         {
             if (Cemiterio.QntCartas() > 0)
             {
@@ -123,7 +134,7 @@ namespace Pif_paf
                     }
                 }
             }
-
+            //Verifica alternativo: As depois do Rei.
             Mao.VerifSequencias();
             for (int i = 0; i < Mao.GetListaCartas().Count; i++)
             {
@@ -138,22 +149,7 @@ namespace Pif_paf
                 }
             }
         }
-        public void AltAs()
-        {
-            for (int i = 0; i < Mao.GetListaCartas().Count; i++)
-            {
-                if (Mao.GetListaCartas()[i].Letra == "K")
-                {
-                    int indice = Mao.GetListaCartas().FindIndex(item => item.Letra == "A" && item.Nipe == Mao.GetListaCartas()[i].Nipe);
-
-                    if (indice != -1 && Mao.GetListaCartas()[i].Livre() && Mao.GetListaCartas()[indice].Livre() && i - indice > 1)
-                    {
-                        Mao.MoverCarta(indice, i);
-                    }
-                }
-            }
-        }
-        
+       
         public void insertion_sort()
         {
             int i, j;

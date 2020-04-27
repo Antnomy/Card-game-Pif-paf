@@ -5,9 +5,8 @@ using Enuns;
 
 namespace mesa
 {
-    class Mao
-    {
-        private List<Carta> Cartas = new List<Carta>();
+    class Mao : Pilha
+    {       
         public int Trincas { get; private set; }
         public int Sequencias { get; private set; }
         public Carta Selecao { get; set; }
@@ -33,26 +32,6 @@ namespace mesa
         {
             return Cartas;
         }
-
-        public void AdcCarta(Carta carta)
-        {
-            Cartas.Add(carta);
-        }
-        public Carta RemovCarta(int posicao)
-        {
-            if (!ValidarPosicao(posicao))
-            {
-                throw new PifpafExeption("Digite uma posiçaõ existente!");
-            }
-            else
-            {
-                Carta aux = Cartas[posicao];
-                Cartas.Remove(Cartas[posicao]);
-                return aux;
-            }
-        }
-
-       
         public bool ValidarPosicao(int posicao)
         {
             if (posicao < Cartas.Count && posicao >= 0)
@@ -61,17 +40,31 @@ namespace mesa
             }
             return false;
         }
+        public Carta Descartar(int posicao)
+        {
+            if (!ValidarPosicao(posicao))
+            {
+                throw new PifpafExeption("Digite uma posiçaõ existente!! ENTER para continuar: ");
+            }
+            else
+            {
+                Cartas[posicao].Grupo = Grupo.Nenhum;
+                return RemoveCarta(Cartas[posicao]);
+            }
+        }
+
+       
+        
         public void Descartar(int posicao, Pilha pilha)
         {
             if (!ValidarPosicao(posicao))
             {
-                throw new PifpafExeption("Digite uma posiçaõ existente!");
+                throw new PifpafExeption("Digite uma posiçaõ existente!! ENTER para continuar: ");
             }
             else
             {
-                Carta aux = Cartas[posicao];
-                Cartas.Remove(Cartas[posicao]);
-                pilha.AdcCarta(aux);
+                
+                pilha.AdcCarta(RemoveCarta(Cartas[posicao]));
             }
         }
 
@@ -79,7 +72,7 @@ namespace mesa
         {
             if (!ValidarPosicao(indice))
             {
-                throw new PifpafExeption("Digite uma posiçaõ existente!");
+                throw new PifpafExeption("Digite uma posiçaõ existente! ENTER para continuar:");
             }
             else
             {
@@ -104,12 +97,31 @@ namespace mesa
         {
             if (!ValidarPosicao(destino))
             {
-                throw new PifpafExeption("Digite uma posiçaõ existente!");
+                throw new PifpafExeption("Digite uma Posiçaõ existente! ENTER para continuar:");
             }
             else
             {
-                Cartas.Insert(destino, RemovCarta(origem));               
+                Cartas.Insert(destino, RemoveCarta(Cartas[origem]));
+                
             }           
+        }
+        public void MoverSelecao(int seta, int origem)
+        {
+            int destino = origem - 1;
+            if (seta == 4)
+            {
+                if (destino >= 0)
+                {
+                    MoverCarta(origem, destino);
+                    Marcar(destino);
+                }
+                else
+                {
+                    destino = QntCartas() - 1;
+                    MoverCarta(origem, destino);
+                    Marcar(destino);
+                }
+            }
         }
         public bool VerifPar(Carta a, Carta b)
         {
@@ -163,11 +175,13 @@ namespace mesa
                 {
                     aux.Clear();
                 }
-                if (aux.Count == 2)
+
+                if (aux.Count == 2 && Cartas[i + 1].Nipe != Cartas[i - 1].Nipe)
                 {
+                    Trincas++;
                     aux.Insert(0, Cartas[i - 1]);
                     aux.ForEach(carta => carta.Grupo = Grupo.Trincas);
-                    Trincas++;
+                    
                     aux.Clear();
                     i++;
                 }
@@ -208,11 +222,7 @@ namespace mesa
         {
             return Trincas + Sequencias;
         }       
-       
-        public int QntCartas()
-        {
-            return Cartas.Count;
-        }
+              
         public override string ToString()
         {
             StringBuilder txt = new StringBuilder("|");

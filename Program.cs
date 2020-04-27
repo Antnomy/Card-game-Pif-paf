@@ -1,8 +1,6 @@
 ﻿
 using System;
 using mesa;
-using Enuns;
-
 
 namespace Pif_paf
 {
@@ -10,11 +8,14 @@ namespace Pif_paf
     {
         static void Main(string[] args)
         {
-            
             Console.WriteLine("   Jogo de Cartas Pifpaf");
             Console.WriteLine();
-            JogoPifpaf jogo = new JogoPifpaf(Tela.Jogadores());
+            Jogador[] jogadores = Tela.Jogadores();
 
+            JogoPifpaf jogo = new JogoPifpaf(jogadores);
+
+            //variavel para modificar pergunta sobre opção de mover as cartas p/ mover novamente
+            string msg = "";
 
             while (!jogo.FimJogo)
             {
@@ -23,25 +24,14 @@ namespace Pif_paf
                 {
                     jogo.Ai.Mao = jogo.Mao;
                     Tela.ImprimeMesa(jogo);
-
-
                     Tela.Espera(2, false);
-                    if (jogo.Ai.SeCemiterioArmaJogo())
-                    {
-                        jogo.Mao.AdcCarta(jogo.Ai.Cemiterio.RemoveTop());
-                    }
-                    else
-                    {
-                        jogo.Mao.AdcCarta(jogo.Ai.Baralho.RemoveTop());
-                    }
+                    jogo.Ai.Comprar();
+
                     Tela.ImprimeMesa(jogo);
                     Tela.Espera(4, false);
 
-                    jogo.Ai.ArrjarSeqtIn();
-                    //jogo.Mao.VerifSequencias();
-
-                    //jogo.Ai.AltAs();
                     jogo.Mao.RemoveGrupos();
+                    jogo.Ai.ArrjarSeqtIn();
                     jogo.Mao.VerifSequencias();
 
                     jogo.Ai.ArranjarTrincas();
@@ -53,8 +43,8 @@ namespace Pif_paf
                     Tela.ImprimeMesa(jogo);
                     Tela.Espera(3, false);
 
-                    Console.WriteLine(jogo.JogadorAtual.Nome + " jogos: " + jogo.Mao.TotalArranjos());
-                    Console.ReadLine();
+                    //Console.WriteLine(jogo.JogadorAtual.Nome + " trincas: " + jogo.Mao.Trincas);
+                    //Console.ReadLine();
 
                     jogo.MudarJogador();
 
@@ -73,32 +63,41 @@ namespace Pif_paf
 
                         if (jogo.fase == Fase.movimentacao)
                         {
+                            jogo.Mao.DesMarcar();
 
-                            jogo.Mao.VerifTrincas();
+                            jogo.Mao.RemoveGrupos();                          
                             jogo.Mao.VerifSequencias();
+                            jogo.Mao.VerifTrincas();
                             Tela.ImprimeMesa(jogo);
 
-
-                            if (Tela.Confirmar("Deseja mover uma carta (s/n)? "))
+                            if(msg == "")
+                            {
+                                msg = "Deseja mover uma carta (n/s)?";
+                            }
+                           
+                            if (Tela.Confirmar(msg))
                             {
                                 Tela.ImprimeMesa(jogo);
                                 Console.Write("Origem (posiçao): ");
                                 int origem = Tela.EntrarPosicao();
                                 jogo.Mao.Marcar(origem - 1);
+
                                 Tela.ImprimeMesa(jogo);
                                 Console.Write("Destino (posição): ");
                                 int destino = Tela.EntrarPosicao();
 
                                 jogo.Mao.MoverCarta(origem - 1, destino - 1);
                                 jogo.Mao.DesMarcar();
+
                                 jogo.Mao.RemoveGrupos();
                                 jogo.Mao.VerifTrincas();
                                 jogo.Mao.VerifSequencias();
                                 Tela.ImprimeMesa(jogo);
-
+                                msg = "Deseja mover outra carta (n/s)? ";
                             }
                             else
                             {
+                                msg = "";
                                 jogo.fase = Fase.descarte;
                             }
                         }
@@ -114,7 +113,7 @@ namespace Pif_paf
                             Tela.ImprimeMesa(jogo);
                             if (Tela.Confirmar("Confirmar (s/n)? "))
                             {
-                                jogo.Cemiterio.AdcCarta(jogo.Mao.RemovCarta(pos - 1));
+                                jogo.Cemiterio.AdcCarta(jogo.Mao.Descartar(pos - 1));
 
                                 jogo.Mao.RemoveGrupos();
                                 jogo.Mao.VerifTrincas();
@@ -126,26 +125,26 @@ namespace Pif_paf
                             }
                         }
 
-                        Console.WriteLine(jogo.JogadorAtual.Nome + " jogos: " + jogo.Mao.TotalArranjos());
-                        Console.ReadLine();
+                        //Console.WriteLine(jogo.JogadorAtual.Nome + " jogos: " + jogo.Mao.TotalArranjos());
+                        //Console.ReadLine();
 
                     }
                     catch (PifpafExeption e)
                     {
                         Console.WriteLine();
                         Tela.Print(e.Message, ConsoleColor.Red);
+                        Console.WriteLine();
                         Console.ReadLine();
                     }
                     catch (FormatException)
                     {
                         Console.WriteLine();
-                        Tela.Print("Formato incorreto.!", ConsoleColor.Red);
+                        Tela.Print("Incorreto! Digite uma das opções acima!! ENTER para continuar...", ConsoleColor.Red);
+                        Console.WriteLine();
                         Console.ReadLine();
                     }
 
                 }
-
-
                 if (jogo.VerifSeBateu())
                 {
                     jogo.FimJogo = true;
@@ -154,7 +153,7 @@ namespace Pif_paf
                 if (jogo.Baralho.QntCartas() == 0)
                 {
                     jogo.AdcCemiterioParaBaralho();
-                    Console.WriteLine("!As cartas do baralho acabaram, o cemiterio sera adcionado sera usado ");
+                    Console.WriteLine("As cartas do baralho acabaram, o cemiterio sera adcionado sera usado!. ENTER para continuar.");
                     Console.Read();
                 }
             }
