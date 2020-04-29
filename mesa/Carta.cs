@@ -32,22 +32,24 @@ namespace mesa
             }
             return false;
         }
-        private void Print(ConsoleColor cor)
+        private void Print(ConsoleColor foreground, ConsoleColor background)
         {
             ConsoleColor aux = Console.ForegroundColor;
-            Console.ForegroundColor = cor;
+            Console.ForegroundColor = foreground;
+            Console.BackgroundColor = background;
             Console.Write(Nipe);
             Console.ForegroundColor = aux;
+            Console.BackgroundColor = default;
         }
         public void PrintNipe()
         {
             if (Cor == Cor.vermelha)
             {
-                Print(ConsoleColor.Red);
+                Print(ConsoleColor.Red, ConsoleColor.White);
             }
             else
             {
-                Print(ConsoleColor.DarkGray);
+                Print(ConsoleColor.Black, ConsoleColor.White);
             }
         }
         public override string ToString()

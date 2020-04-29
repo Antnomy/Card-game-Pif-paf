@@ -23,6 +23,7 @@ namespace Pif_paf
                 if (jogo.JogadorAtual.Auto)
                 {
                     jogo.Ai.Mao = jogo.Mao;
+                    jogo.fase = Fase.compra;
                     Tela.ImprimeMesa(jogo);
                     Tela.Espera(2, false);
                     jogo.Ai.Comprar();
@@ -30,6 +31,7 @@ namespace Pif_paf
                     Tela.ImprimeMesa(jogo);
                     Tela.Espera(4, false);
 
+                    jogo.fase = Fase.movimentacao;
                     jogo.Mao.RemoveGrupos();
                     jogo.Ai.ArrjarSeqtIn();
                     jogo.Mao.VerifSequencias();
@@ -39,9 +41,12 @@ namespace Pif_paf
                     Tela.ImprimeMesa(jogo);
                     Tela.Espera(2, false);
 
+                    jogo.fase = Fase.descarte;
                     jogo.Ai.SelecDescarte();
                     Tela.ImprimeMesa(jogo);
                     Tela.Espera(3, false);
+
+                    jogo.fase = Fase.compra;
 
                     //Console.WriteLine(jogo.JogadorAtual.Nome + " trincas: " + jogo.Mao.Trincas);
                     //Console.ReadLine();
