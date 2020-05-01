@@ -82,7 +82,7 @@ namespace Pif_paf
         {
             if (Cemiterio.QntCartas() > 0)
             {
-                if (Mao.GetListaCartas().Find(carta => Mao.VerifPar(carta, Cemiterio.Top()) || Mao.VerifSeq(carta, Cemiterio.Top()) || Mao.VerifProx(carta, Cemiterio.Top())) != null)
+                if (Mao.GetListaCartas().Find(carta => carta.Livre() && (Mao.VerifPar(carta, Cemiterio.Top()) || Mao.VerifSeq(carta, Cemiterio.Top()) || Mao.VerifProx(carta, Cemiterio.Top()))) != null)
                 {
                     return true;
                 }

@@ -1,6 +1,7 @@
 ﻿
 using System;
 using mesa;
+using Enuns;
 
 namespace Pif_paf
 {
@@ -8,6 +9,23 @@ namespace Pif_paf
     {
         static void Main(string[] args)
         {
+            Carta a = new Carta("A", 10, 1, Nipe.Pau, Cor.preta);
+            Carta b = new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha);
+            Tela.ImpCarta(a, true, false);
+
+            Console.Write("     ");
+            Console.CursorTop = 0;
+            Tela.ImpCarta(b, false, false);
+            Console.WriteLine();
+            Tela.Deck(ConsoleColor.Red);
+            Tela.Print("#", ConsoleColor.Green);
+            Console.Write(" ");
+            Tela.Print("#", ConsoleColor.Green);
+            Console.Write("espera tecla: ");
+            Console.ReadKey(true);
+            Console.WriteLine("Uhuu");
+            Console.ReadLine();
+
             Console.WriteLine("   Jogo de Cartas Pifpaf");
             Console.WriteLine();
             Jogador[] jogadores = Tela.Jogadores();
@@ -22,13 +40,18 @@ namespace Pif_paf
                 jogo.Mao = jogo.JogadorAtual.Mao;
                 if (jogo.JogadorAtual.Auto)
                 {
+                    msg = "   Em espera!...";
                     jogo.Ai.Mao = jogo.Mao;
                     jogo.fase = Fase.compra;
                     Tela.ImprimeMesa(jogo);
-                    Tela.Espera(2, false);
+                    Console.WriteLine(msg);
+
+                    Tela.Espera(3, false);
+                    Console.WriteLine(msg);
                     jogo.Ai.Comprar();
 
                     Tela.ImprimeMesa(jogo);
+                    Console.WriteLine(msg);
                     Tela.Espera(4, false);
 
                     jogo.fase = Fase.movimentacao;
@@ -39,18 +62,20 @@ namespace Pif_paf
                     jogo.Ai.ArranjarTrincas();
                     jogo.Mao.VerifTrincas();
                     Tela.ImprimeMesa(jogo);
+                    Console.WriteLine(msg);
                     Tela.Espera(2, false);
 
                     jogo.fase = Fase.descarte;
                     jogo.Ai.SelecDescarte();
                     Tela.ImprimeMesa(jogo);
+                    Console.WriteLine(msg);
                     Tela.Espera(3, false);
 
                     jogo.fase = Fase.compra;
 
                     //Console.WriteLine(jogo.JogadorAtual.Nome + " trincas: " + jogo.Mao.Trincas);
                     //Console.ReadLine();
-
+                    msg = "";
                     jogo.MudarJogador();
 
                 }
@@ -83,12 +108,12 @@ namespace Pif_paf
                             if (Tela.Confirmar(msg))
                             {
                                 Tela.ImprimeMesa(jogo);
-                                Console.Write("Origem (posiçao): ");
+                                Console.Write("  Origem (posiçao): ");
                                 int origem = Tela.EntrarPosicao();
                                 jogo.Mao.Marcar(origem - 1);
 
                                 Tela.ImprimeMesa(jogo);
-                                Console.Write("Destino (posição): ");
+                                Console.Write("  Destino (posição): ");
                                 int destino = Tela.EntrarPosicao();
 
                                 jogo.Mao.MoverCarta(origem - 1, destino - 1);
@@ -111,7 +136,7 @@ namespace Pif_paf
                         {
                             jogo.Mao.DesMarcar();
                             Tela.ImprimeMesa(jogo);
-                            Console.Write("Decarte uma carta (posição): ");
+                            Console.Write("  Decarte uma carta (posição): ");
 
                             int pos = Tela.EntrarPosicao();
                             jogo.Mao.Marcar(pos - 1);
