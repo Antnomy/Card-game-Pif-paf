@@ -3,6 +3,7 @@
     enum Cor
     {
         preta,
-        vermelha
+        vermelha,
+        cinza
     }
 }

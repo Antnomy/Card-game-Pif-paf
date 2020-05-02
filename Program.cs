@@ -11,19 +11,17 @@ namespace Pif_paf
         {
             Carta a = new Carta("A", 10, 1, Nipe.Pau, Cor.preta);
             Carta b = new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha);
-            Tela.ImpCarta(a, true, false);
+            Tela.ImpCarta(a, false, false);
 
-            Console.Write("     ");
+            Console.Write("    ");
             Console.CursorTop = 0;
             Tela.ImpCarta(b, false, false);
             Console.WriteLine();
-            Tela.Deck(ConsoleColor.Red);
-            Tela.Print("#", ConsoleColor.Green);
-            Console.Write(" ");
-            Tela.Print("#", ConsoleColor.Green);
-            Console.Write("espera tecla: ");
-            Console.ReadKey(true);
-            Console.WriteLine("Uhuu");
+
+
+            ConsoleKey t = Tela.LerTecla();
+            Console.WriteLine();
+            Console.WriteLine("Tecla digitada: " + t);
             Console.ReadLine();
 
             Console.WriteLine("   Jogo de Cartas Pifpaf");
@@ -102,7 +100,7 @@ namespace Pif_paf
 
                             if(msg == "")
                             {
-                                msg = "Deseja mover uma carta (n/s)?";
+                                msg = "Deseja mover uma carta (Enter/Esc)?..";
                             }
                            
                             if (Tela.Confirmar(msg))
@@ -115,15 +113,22 @@ namespace Pif_paf
                                 Tela.ImprimeMesa(jogo);
                                 Console.Write("  Destino (posição): ");
                                 int destino = Tela.EntrarPosicao();
+                                jogo.Mao.DesMarcar();
 
-                                jogo.Mao.MoverCarta(origem - 1, destino - 1);
+                                jogo.Mao.MoverCarta(origem - 1, destino - 1);                                
+                                jogo.Mao.Marcar(destino - 1);
+                                Tela.ImprimeMesa(jogo);
+                                Tela.Espera(2, false);
                                 jogo.Mao.DesMarcar();
 
                                 jogo.Mao.RemoveGrupos();
                                 jogo.Mao.VerifTrincas();
                                 jogo.Mao.VerifSequencias();
+
+                                
+                               
                                 Tela.ImprimeMesa(jogo);
-                                msg = "Deseja mover outra carta (n/s)? ";
+                                msg = "Deseja mover outra carta (Enter/Esc)?..";
                             }
                             else
                             {
@@ -141,7 +146,7 @@ namespace Pif_paf
                             int pos = Tela.EntrarPosicao();
                             jogo.Mao.Marcar(pos - 1);
                             Tela.ImprimeMesa(jogo);
-                            if (Tela.Confirmar("Confirmar (s/n)? "))
+                            if (Tela.Confirmar("Confirmar (Enter/Esc)?.."));
                             {
                                 jogo.Cemiterio.AdcCarta(jogo.Mao.Descartar(pos - 1));
 
@@ -171,7 +176,7 @@ namespace Pif_paf
                         Console.WriteLine();
                         Tela.Print("Incorreto! Digite uma das opções acima!! ENTER para continuar...", ConsoleColor.Red);
                         Console.WriteLine();
-                        Console.ReadLine();
+                        Console.ReadLine();                       
                     }
 
                 }

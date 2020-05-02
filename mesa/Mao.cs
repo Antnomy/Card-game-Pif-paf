@@ -9,6 +9,7 @@ namespace mesa
     {       
         public int Trincas { get; private set; }
         public int Sequencias { get; private set; }
+        public int selec { get; set; }
         public Carta Selecao { get; set; }
         public bool Visibilidade { get; private set; }
 
@@ -22,6 +23,7 @@ namespace mesa
             {
                 Cartas.Add(baralho.RemoveTop());
             }
+            selec = -1;
             Selecao = null;
             Visibilidade = true;
             Trincas = 0;
@@ -76,12 +78,14 @@ namespace mesa
             }
             else
             {
-                Selecao = Cartas[indice];
+                //Selecao = Cartas[indice];
+                selec = indice;
             }
         }
         public void DesMarcar()
         {
-            Selecao = null;
+            //Selecao = null;
+            selec = -1;
         }
         public void RemoveGrupos(int indice)
         {

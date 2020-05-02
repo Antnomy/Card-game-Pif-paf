@@ -10,6 +10,26 @@ namespace Pif_paf
 
         public static int qntCemiterio;
 
+        public static ConsoleKey LerTecla()
+        {
+            ConsoleKeyInfo tecla;
+            tecla = Console.ReadKey(true);
+            return tecla.Key;
+        }
+        public static void Dicas()
+        {
+            Console.Write("Dicas:");
+            WriteLineSet(6);
+            Print("&", ConsoleColor.Yellow);
+            Console.Write(" - pares");
+            WriteLineSet(9);
+            Print("&", ConsoleColor.Green);
+            Console.Write(" - trincas");
+            WriteLineSet(11);
+            Print("&", ConsoleColor.Blue);
+            Console.Write(" - Sequencias");
+            WriteLineSet(14);            
+        }
         public static void WriteLineSet(int recuo)
         {
             if (Console.CursorLeft >= recuo)
@@ -25,12 +45,12 @@ namespace Pif_paf
         }
         public static void Linha(int tamanho)
         {
-            Console.Write("   ");
+            Console.Write("  +-");
             for (int i = 0; i < tamanho; i++)
             {
                 Console.Write("----");
             }
-            Console.WriteLine("----");
+            Console.WriteLine("--+");
         }
         public static void Corpo(int tamanho)
         {
@@ -50,14 +70,26 @@ namespace Pif_paf
             }
             Console.WriteLine("    |");
         }
-        public static void Posicoes(int tamanho)
+        public static void Posicoes(int tamanho, int posicaoSelecionada)
         {
+            
             Console.Write("  |");
             for (int i = 1; i <= tamanho; i++)
             {
-                Console.Write($" {i}  ");
+                if(i == posicaoSelecionada + 1)
+                {
+                    PrintBk($" {i} ", ConsoleColor.Blue);
+                    Console.Write(" ");
+                }
+                else
+                {
+                    Console.Write($" {i}  ");
+                }
+                
             }
             Console.WriteLine("   |");
+            Linha(tamanho);
+
         }
         public static void Deck(ConsoleColor cor)
         {
@@ -72,45 +104,24 @@ namespace Pif_paf
             Print("| <( )> |", cor);
             WriteLineSet(9);
             Print("+-------+", cor);
-            Console.WriteLine();
+            
         }
 
-        public static void ImprimeMao(Mao mao, bool visibilidade)
+        public static void ImprimeMao(Mao mao, bool verso, bool posicoes)
         {
             Linha(mao.QntCartas());
-            if (mao.Visibilidade == true && visibilidade == true)
+            if (mao.Visibilidade == true && verso == true)
             {
-                ImprimeCartas2(mao.Cartas, mao.Selecao);
+                ImprimeCartas2(mao.Cartas, mao.Selecao, true);
             }
             else
             {
-                Costas(mao.QntCartas());
-                Costas(mao.QntCartas());
+                ImprimeCartas2(mao.Cartas, mao.Selecao, false);
             }
-            //Corpo(mao.QntCartas());
-            // Corpo(mao.QntCartas());
-            Linha(mao.QntCartas());
-            Posicoes(mao.QntCartas());
-            Linha(mao.QntCartas());
 
+            
         }
-        private static string ListaPlayers(Jogador[] jogadores)
-        {
-            string aux = "";
-            string pl;
-
-            for (int i = 1; i < jogadores.Length; i++)
-            {
-                pl = jogadores[i].Nome;
-                if (pl.Length > 8)
-                {
-                    pl = pl.Remove(8);
-                }
-                aux += pl + "     ";
-
-            }
-            return aux;
-        }
+        
         private static void ListaPlayers2(Jogador[] jogadores)
         {
 
@@ -129,26 +140,59 @@ namespace Pif_paf
             }
 
         }
-        public static void Player(int indice, JogoPifpaf jogo, bool mostrarJogos)
+        public static void Player(int indice, JogoPifpaf jogo, bool mostrarInf, bool verso)
         {
+            Mao mao = jogo.Jogadores[indice].Mao;
 
             if (jogo.JogadorAtual.Equals(jogo.Jogadores[indice]))
             {
                 Console.Write(jogo.Jogadores[indice].Numero + "- ");
                 Console.Write(jogo.Jogadores[indice].Nome);
-                Print(" << Vez...     ", ConsoleColor.Green);
+                Print(" << Vez...     ", ConsoleColor.Cyan);
             }
             else
             {
                 Console.Write(jogo.Jogadores[indice].Numero + "- " + jogo.Jogadores[indice].Nome + "           ");
             }
-            if (mostrarJogos)
+
+            //trincas e sequencias
+            if (mostrarInf)
             {
                 Console.Write("T " + jogo.Jogadores[indice].Mao.Trincas + " - S " + jogo.Jogadores[indice].Mao.Sequencias);
             }
-
             Console.WriteLine();
-            ImprimeMao(jogo.Jogadores[indice].Mao, mostrarJogos);
+            Linha(jogo.Jogadores[indice].Mao.QntCartas());
+
+            //grupos
+            if (mostrarInf)
+            {
+                Console.Write("    ");
+                foreach (var carta in mao.Cartas)
+                {
+
+                    ImprimeGrupo(carta.Grupo);
+                    Console.Write("   ");
+                }
+                Console.WriteLine();
+            }
+
+            if ( verso)
+            {
+
+                ImprimeCartas2(mao.Cartas, mao.Selecao, true);
+            }
+            else
+            {
+                ImprimeCartas2(mao.Cartas, mao.Selecao, false);
+            }
+            Linha(jogo.Jogadores[indice].Mao.QntCartas());
+
+            //posicoes
+            if (mostrarInf)
+            {
+                int indiceSelecionado = jogo.Jogadores[indice].Mao.selec;
+                Posicoes(jogo.Jogadores[indice].Mao.QntCartas(), indiceSelecionado);
+            }
         }
         public static void Fases(Fase fase)
         {
@@ -231,16 +275,20 @@ namespace Pif_paf
             //Body(aux[3], false);
             Console.WriteLine();
         }
+        
         public static void ImprimeMesa(JogoPifpaf jogo)
         {
             Console.Clear();
-            if (jogo.JogadorAtual.Numero != 1)
+            int indice = jogo.JogadorAtual.Numero;
+            if (indice != 1)
             {
-                Player(jogo.JogadorAtual.Numero - 1, jogo, true);
+                Player(indice - 1, jogo, false, true);
+                
             }
             else
             {
-                Player(jogo.JogadorAtual.Numero, jogo, true);
+                Player(jogo.JogadorAtual.Numero, jogo, false, true);
+                
             }
 
             /*Avatares(jogo.Jogadores, jogo.JogadorAtual, jogo.fase);*/
@@ -252,7 +300,7 @@ namespace Pif_paf
             
             if (qntCemiterio > 0)
             {
-                Console.WriteLine("    +-------+");
+                Console.WriteLine();
                 Console.Write("    ");
 
                 ImpCarta(jogo.Cemiterio.Top(), false, false);
@@ -281,15 +329,20 @@ namespace Pif_paf
                 Console.WriteLine();
 
             }
-            Console.Write("                            ");
+            Console.Write("                             ");
             Console.CursorTop -= 6;
-            Deck(ConsoleColor.Blue);
-            
+            Deck(ConsoleColor.Gray);
+            Console.Write("     ");
+            Console.CursorTop-= 4;
+            Dicas();
             Console.WriteLine();
             Console.WriteLine();
 
             Console.Write("   ");
-            Player(0, jogo, true);
+            Player(0, jogo, true, false);
+
+            //posicoes
+           
         }
         public static void Resultado(JogoPifpaf jogo)
         {
@@ -305,7 +358,7 @@ namespace Pif_paf
             Console.WriteLine(">>> FIM DE JOGO! " + jogo.JogadorAnterior().Nome + " BATEU!!...");
             Console.WriteLine(jogo.JogadorAnterior().Mao.Trincas + " Trincas(s), " + jogo.JogadorAnterior().Mao.Sequencias + " Sequencia(s)");
             Console.WriteLine();
-            ImprimeMao(jogo.JogadorAnterior().Mao, true);
+            ImprimeMao(jogo.JogadorAnterior().Mao, true, false);
         }
         public static int EntrarPosicao()
         {
@@ -338,20 +391,16 @@ namespace Pif_paf
             Console.Write("  ");
             Print(">>", ConsoleColor.Yellow);
             Console.Write(" " + txt);
-            string st = Console.ReadLine();
+            ConsoleKey t = LerTecla();
 
-            if (st != "n" && st != "s" && st != "")
+            if (t != ConsoleKey.Enter && t != ConsoleKey.Escape)
             {
                 throw new PifpafExeption("Erro! Digite somente uma das opções acima...ENTER para continuar:");
             }
-            if (st == "s")
+            if (t == ConsoleKey.Enter)
             {
                 return true;
-            }
-            else if (st == "")
-            {
-                return true;
-            }
+            }            
             else
             {
                 return false;
@@ -452,7 +501,7 @@ namespace Pif_paf
             {
                 Print(elemento, ConsoleColor.Red);
             }
-            else
+            else if(cor == Cor.preta)
             {
                 Print(elemento, ConsoleColor.DarkGray);
             }
@@ -482,16 +531,16 @@ namespace Pif_paf
             switch (grupo)
             {
                 case Grupo.Trincas:
-                    Print("*", ConsoleColor.Green);
+                    Print("&", ConsoleColor.Green);
                     break;
                 case Grupo.Sequencias:
-                    Print("*", ConsoleColor.Blue);
+                    Print("&", ConsoleColor.Blue);
                     break;
                 case Grupo.Pares:
-                    Print("*", ConsoleColor.Yellow);
+                    Print("&", ConsoleColor.Yellow);
                     break;
                 default:
-                    Console.Write("*");
+                    Console.Write("&");
                     break;
             }
         }
@@ -499,9 +548,11 @@ namespace Pif_paf
         {
             string letra;
             string nipe;
+            
 
             if (verso)
             {
+               
                 letra = " <(";
                 nipe = " <<";
             }
@@ -517,7 +568,8 @@ namespace Pif_paf
             {
                 letra = "10 ";
             }
-
+            Console.Write("+---");
+            WriteLineSet(4);
             Console.Write("|");
             if (selecionada)
             {
@@ -597,7 +649,7 @@ namespace Pif_paf
             }
             Console.WriteLine("    |");*/
         }
-        public static void ImprimeCartas2(List<Carta> cartas, Carta cartaSelecionada)
+        public static void ImprimeCartas2(List<Carta> cartas, Carta cartaSelecionada, bool verso)
         {
             bool selecao;
             Console.Write("  ");
@@ -611,15 +663,17 @@ namespace Pif_paf
                 {
                     selecao = false;
                 }
-                Console.Write("  ");
-                ImprimeGrupo(item.Grupo);
-                WriteLineSet(3);
-                ImpCarta(item, false, selecao);
+                //Console.Write("  ");
+                //ImprimeGrupo(item.Grupo);
+                //WriteLineSet(3);
+                ImpCarta(item, verso, selecao);
                 Console.Write("    ");
                 Console.CursorTop -= 5;
                 
             }
-            Console.CursorTop++;
+           
+            Console.Write("----+");
+            WriteLineSet(5);
             Console.Write("    |");
             WriteLineSet(1);
             Console.Write("|");
@@ -630,6 +684,7 @@ namespace Pif_paf
             //WriteLineSet(1);
 
             Console.WriteLine();
+           
             //Console.CursorTop += 4;
         }
 
