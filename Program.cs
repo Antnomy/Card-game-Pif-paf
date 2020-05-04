@@ -11,17 +11,17 @@ namespace Pif_paf
         {
             Carta a = new Carta("A", 10, 1, Nipe.Pau, Cor.preta);
             Carta b = new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha);
-            Tela.ImpCarta(a, false, false);
+            Tela.ImpCarta(a, false, ConsoleColor.Red, false);
 
             Console.Write("    ");
             Console.CursorTop = 0;
-            Tela.ImpCarta(b, false, false);
+            Tela.ImpCarta(b, false, ConsoleColor.Red, false);
+            ConsoleKey c = Console.ReadKey(true).Key;
             Console.WriteLine();
+            Console.WriteLine(c);
 
 
-            ConsoleKey t = Tela.LerTecla();
-            Console.WriteLine();
-            Console.WriteLine("Tecla digitada: " + t);
+           
             Console.ReadLine();
 
             Console.WriteLine("   Jogo de Cartas Pifpaf");
@@ -100,35 +100,37 @@ namespace Pif_paf
 
                             if(msg == "")
                             {
-                                msg = "Deseja mover uma carta (Enter/Esc)?..";
+                                msg = "Deseja mover uma carta (Enter/Del)?..";
                             }
                            
                             if (Tela.Confirmar(msg))
                             {
                                 Tela.ImprimeMesa(jogo);
-                                Console.Write("  Origem (posiçao): ");
+                                Console.Write("  Origem (Posiçao): ");
                                 int origem = Tela.EntrarPosicao();
                                 jogo.Mao.Marcar(origem - 1);
 
                                 Tela.ImprimeMesa(jogo);
-                                Console.Write("  Destino (posição): ");
+                                Console.Write("  Destino (Posição): ");
                                 int destino = Tela.EntrarPosicao();
                                 jogo.Mao.DesMarcar();
 
-                                jogo.Mao.MoverCarta(origem - 1, destino - 1);                                
+                                jogo.Mao.MoverCarta(origem - 1, destino - 1);
+                                jogo.Mao.RemoveGrupos();
+                                jogo.Mao.VerifTrincas();
+                                jogo.Mao.VerifSequencias();
+
                                 jogo.Mao.Marcar(destino - 1);
                                 Tela.ImprimeMesa(jogo);
                                 Tela.Espera(2, false);
                                 jogo.Mao.DesMarcar();
 
-                                jogo.Mao.RemoveGrupos();
-                                jogo.Mao.VerifTrincas();
-                                jogo.Mao.VerifSequencias();
+                                
 
                                 
                                
                                 Tela.ImprimeMesa(jogo);
-                                msg = "Deseja mover outra carta (Enter/Esc)?..";
+                                msg = "Deseja mover outra carta (Enter/Del)?..";
                             }
                             else
                             {
@@ -146,7 +148,7 @@ namespace Pif_paf
                             int pos = Tela.EntrarPosicao();
                             jogo.Mao.Marcar(pos - 1);
                             Tela.ImprimeMesa(jogo);
-                            if (Tela.Confirmar("Confirmar (Enter/Esc)?.."));
+                            if (Tela.Confirmar("Confirmar (Enter/Del)?.."));
                             {
                                 jogo.Cemiterio.AdcCarta(jogo.Mao.Descartar(pos - 1));
 
@@ -181,9 +183,19 @@ namespace Pif_paf
 
                 }
                 if (jogo.VerifSeBateu())
-                {
-                    jogo.FimJogo = true;
+                {                 
                     Tela.Resultado(jogo);
+
+                    Console.WriteLine();
+                    if(Tela.Confirmar("Deseja jogar novamente (Enter/Del)?"))
+                    {
+                        jogo = new JogoPifpaf(jogadores);
+                    }
+                    else
+                    {
+                        jogo.FimJogo = true;
+                    }
+                    
                 }
                 if (jogo.Baralho.QntCartas() == 0)
                 {
