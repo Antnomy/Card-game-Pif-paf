@@ -30,7 +30,7 @@ namespace mesa
             Definir52Cartas();
             Definir52Cartas();
 
-            //Baralho.Embaralhar();
+            Baralho.Embaralhar();
             //Baralho.Embaralhar();
 
             for (int i = 0; i < Jogadores.Length; i++)
@@ -154,7 +154,7 @@ namespace mesa
             Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Pau, Cor.preta));
             
 
-            Baralho.AdcCarta(new Carta("Q", 10, 12, Nipe.Pau, Cor.preta));
+            /*Baralho.AdcCarta(new Carta("Q", 10, 12, Nipe.Pau, Cor.preta));
             //cartas texte
             //Carta c1 = new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha);
             Baralho.AdcCarta(new Carta("J", 10, 11, Nipe.Esp, Cor.preta));
@@ -199,7 +199,7 @@ namespace mesa
             Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Pau, Cor.preta));
             Baralho.AdcCarta(new Carta("3", 10, 3, Nipe.Cop, Cor.vermelha));
             Baralho.AdcCarta(new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha));
-            Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Cop, Cor.vermelha));
+            Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Cop, Cor.vermelha));*/
             
 
 

@@ -7,25 +7,28 @@ namespace Pif_paf
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
-            Carta a = new Carta("A", 10, 1, Nipe.Pau, Cor.preta);
+            
+
+            /*Carta a = new Carta("A", 10, 1, Nipe.Pau, Cor.preta);
             Carta b = new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha);
-            Tela.ImpCarta(a, false, ConsoleColor.Red, false);
+            Tela.ImpCarta(a, false, ConsoleColor.Red);
 
             Console.Write("    ");
             Console.CursorTop = 0;
-            Tela.ImpCarta(b, false, ConsoleColor.Red, false);
+            Tela.ImpCarta(b, false, ConsoleColor.Red);
             ConsoleKey c = Console.ReadKey(true).Key;
             Console.WriteLine();
             Console.WriteLine(c);
 
 
            
-            Console.ReadLine();
+            Console.ReadLine();*/
 
-            Console.WriteLine("   Jogo de Cartas Pifpaf");
-            Console.WriteLine();
+            
+          
             Jogador[] jogadores = Tela.Jogadores();
 
             JogoPifpaf jogo = new JogoPifpaf(jogadores);
@@ -38,7 +41,7 @@ namespace Pif_paf
                 jogo.Mao = jogo.JogadorAtual.Mao;
                 if (jogo.JogadorAtual.Auto)
                 {
-                    msg = "   Em espera!...";
+                    msg = "   Aguarde!...";
                     jogo.Ai.Mao = jogo.Mao;
                     jogo.fase = Fase.compra;
                     Tela.ImprimeMesa(jogo);
@@ -100,7 +103,7 @@ namespace Pif_paf
 
                             if(msg == "")
                             {
-                                msg = "Deseja mover uma carta (Enter/Del)?..";
+                                msg = "Deseja mover uma carta (Enter/Esc)?..";
                             }
                            
                             if (Tela.Confirmar(msg))
@@ -130,7 +133,7 @@ namespace Pif_paf
                                 
                                
                                 Tela.ImprimeMesa(jogo);
-                                msg = "Deseja mover outra carta (Enter/Del)?..";
+                                msg = "Deseja mover outra carta (Enter/Esc)?..";
                             }
                             else
                             {
@@ -143,12 +146,15 @@ namespace Pif_paf
                         {
                             jogo.Mao.DesMarcar();
                             Tela.ImprimeMesa(jogo);
-                            Console.Write("  Decarte uma carta (posição): ");
+                            Console.Write("  Decarte uma carta (Posição): ");
 
                             int pos = Tela.EntrarPosicao();
                             jogo.Mao.Marcar(pos - 1);
                             Tela.ImprimeMesa(jogo);
-                            if (Tela.Confirmar("Confirmar (Enter/Del)?.."));
+
+
+
+                            if (Tela.Confirmar("Confirmar (Enter/Esc)?"))
                             {
                                 jogo.Cemiterio.AdcCarta(jogo.Mao.Descartar(pos - 1));
 
@@ -161,9 +167,6 @@ namespace Pif_paf
                                 jogo.fase = Fase.compra;
                             }
                         }
-
-                        //Console.WriteLine(jogo.JogadorAtual.Nome + " jogos: " + jogo.Mao.TotalArranjos());
-                        //Console.ReadLine();
 
                     }
                     catch (PifpafExeption e)
@@ -187,7 +190,7 @@ namespace Pif_paf
                     Tela.Resultado(jogo);
 
                     Console.WriteLine();
-                    if(Tela.Confirmar("Deseja jogar novamente (Enter/Del)?"))
+                    if(Tela.Confirmar("Deseja jogar novamente (Enter/Esc)?"))
                     {
                         jogo = new JogoPifpaf(jogadores);
                     }
