@@ -52,6 +52,25 @@ namespace mesa
                 Print(ConsoleColor.Black, ConsoleColor.White);
             }
         }
+        public string ToStringNipe()
+        {
+            switch (Nipe)
+            {
+                case Nipe.Cop:
+                    return "♥  ";
+                    
+                case Nipe.Our:
+                    return "♦  ";
+                   
+                case Nipe.Esp:
+                    return "♠  ";
+                    
+                case Nipe.Pau:
+                    return "♣  ";
+                default:
+                    return " ? ";
+            }
+        }
         public override string ToString()
         {
             return Letra + " " + Nipe;

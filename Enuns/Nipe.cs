@@ -2,6 +2,7 @@
 {
     enum Nipe
     {
+        //"♥ ♣ ♠ ♦"
         Cop,
         Esp,
         Our,

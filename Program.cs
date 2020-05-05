@@ -1,4 +1,4 @@
-﻿
+﻿using System.Text;
 using System;
 using mesa;
 using Enuns;
@@ -10,7 +10,7 @@ namespace Pif_paf
         
         static void Main(string[] args)
         {
-            
+            Console.OutputEncoding = Encoding.UTF8;
 
             /*Carta a = new Carta("A", 10, 1, Nipe.Pau, Cor.preta);
             Carta b = new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha);

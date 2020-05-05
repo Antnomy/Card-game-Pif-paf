@@ -8,7 +8,7 @@ namespace Pif_paf
 {
     class Tela
     {
-        //Console.OutputEncoding = Encoding.UTF8;
+        
         public static int qntCemiterio;
 
         public static ConsoleKey LerTecla()
@@ -414,7 +414,7 @@ namespace Pif_paf
             {
                 try
                 {
-                    Console.WriteLine("   Jogo de Cartas Pifpaf");
+                    Console.WriteLine("   Jogo de Cartas Pifpaf ♥ ♣ ♠ ♦");
                     Console.WriteLine();
                     Console.Write("Informe o numero de jogadores max 8 (Enter): ");
                     n = int.Parse(Console.ReadLine());
@@ -576,8 +576,8 @@ namespace Pif_paf
             }
             else
             {
-                letra = carta.Letra.ToString();
-                nipe = carta.Nipe.ToString();
+                letra = carta.Letra;
+                nipe = carta.ToStringNipe();
                 letra = letra + "  ";
                 //Se é 10
                 if (letra == "10  ")
