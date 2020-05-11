@@ -41,17 +41,7 @@ namespace mesa
             Console.ForegroundColor = aux;
             Console.BackgroundColor = default;
         }
-        public void PrintNipe()
-        {
-            if (Cor == Cor.vermelha)
-            {
-                Print(ConsoleColor.Red, ConsoleColor.White);
-            }
-            else
-            {
-                Print(ConsoleColor.Black, ConsoleColor.White);
-            }
-        }
+       
         public string ToStringNipe()
         {
             switch (Nipe)

@@ -20,32 +20,18 @@ namespace Pif_paf
             r = new Random();
         }
 
-        public void AutoPlay()
+        public void AutoMontar()
         {
-
-
-            if (SeCemiterioArmaJogo())
-            {
-                Mao.AdcCarta(Cemiterio.RemoveTop());
-            }
-            else
-            {
-                Mao.AdcCarta(Baralho.RemoveTop());
-            }
-
             Mao.RemoveGrupos();
-
-            
-            Mao.VerifSequencias();
-
+            ArrjarSeqtIn();
+            Mao.VerifSequencias2();
             ArranjarTrincas();
-            Mao.VerifTrincas();
-
-
+            Mao.VerifTrincas2();
+            Mao.VerifPares();
         }
         public void Comprar()
         {
-            if (SeCemiterioArmaJogo())
+            if (CemiterioFazJogo())
             {
                 Mao.AdcCarta(Cemiterio.RemoveTop());
             }
@@ -77,39 +63,44 @@ namespace Pif_paf
             Mao = mao;
         }
 
-
-        private bool SeCemiterioArmaJogo()
+        
+        private bool CemiterioFazJogo()
         {
             if (Cemiterio.QntCartas() > 0)
             {
-                if (Mao.GetListaCartas().Find(carta => carta.Livre() && (Mao.VerifPar(carta, Cemiterio.Top()) || Mao.VerifSeq(carta, Cemiterio.Top()) || Mao.VerifProx(carta, Cemiterio.Top()))) != null)
+                //Se completa uma trinca ou sequencia.
+                if (Mao.GetListaCartas().Find(carta => carta.Livre() && (Mao.VerifPar(carta, Cemiterio.Top()) || Mao.VerifSeq(carta, Cemiterio.Top()) || Mao.VerifSeq(Cemiterio.Top(), carta))) != null)
                 {
                     return true;
                 }
-                else
+
+                //Se é 2 acima ou abaixo de uma sequencia.
+                if (Mao.GetListaCartas().Find(carta => carta.Livre() && (Mao.VerifSeq2p(carta, Cemiterio.Top()) || Mao.VerifSeq2p(Cemiterio.Top(), carta))) != null)
                 {
-                    return false;
+                    return true;
                 }
+                return false;
             }
             else
             {
                 return false;
             }
         }
-        
+
         public void ArranjarTrincas()
         {
             for (int i = 0; i < Mao.GetListaCartas().Count - 1; i++)
             {
                 for (int j = i + 1; j < Mao.GetListaCartas().Count; j++)
                 {
-                    if (Mao.VerifPar(Mao.GetListaCartas()[i], Mao.GetListaCartas()[j]) && Mao.GetListaCartas()[i].Livre() && Mao.GetListaCartas()[j].Livre())
+                    if (Mao.VerifPar(Mao.GetListaCartas()[i], Mao.GetListaCartas()[j])  && Mao.GetListaCartas()[i].Livre() && Mao.GetListaCartas()[j].Livre())
                     {
                         Mao.MoverCarta(j, i);
+                        break;
                     }
                 }
             }
-        }     
+        }
         public bool Livre(Carta carta)
         {
             if (carta.Grupo == Grupo.Nenhum || carta.Grupo == Grupo.Pares)
@@ -149,7 +140,7 @@ namespace Pif_paf
                 }
             }
         }
-       
+
         public void insertion_sort()
         {
             int i, j;

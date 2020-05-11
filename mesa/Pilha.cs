@@ -27,7 +27,7 @@ namespace mesa
         {
             if (QntCartas() == 0)
             {
-                throw new PifpafExeption("Não há mais cartas para sacar!");
+                throw new PifpafExeption("   Não há mais cartas para sacar!");
             }
             Carta aux = Top();
             Cartas.Remove(Top());
