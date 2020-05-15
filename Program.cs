@@ -35,7 +35,7 @@ namespace Pif_paf
             Console.Write("Seu nome: ");
             string nomeJogador = Console.ReadLine();
 
-            JogoPifpaf jogo = new JogoPifpaf(n, nomeJogador,true);
+            JogoPifpaf jogo = new JogoPifpaf(n, nomeJogador,false);
            
             while (!jogo.FimJogo)
             {

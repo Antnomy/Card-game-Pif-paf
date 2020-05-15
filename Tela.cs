@@ -89,7 +89,7 @@ namespace Pif_paf
             {
                 if (i == posicaoSelecionada + 1)
                 {
-                    PrintBk($" {i} ", ConsoleColor.DarkYellow);
+                    PrintBk($" {i} ", ConsoleColor.DarkCyan);
                     Console.Write(" ");
                 }
                 else
@@ -212,17 +212,17 @@ namespace Pif_paf
             {
                 case Fase.compra:
                     Print("*", ConsoleColor.Green);
-                    Console.Write(" * * *");
+                    Console.Write(" * *  ");
                     break;
                 case Fase.movimentacao:
                     Console.Write("* ");
                     Print("*", ConsoleColor.Green);
-                    Console.Write(" * *");
+                    Console.Write(" *  ");
                     break;
                 case Fase.descarte:
                     Console.Write("* * ");
-                    Print("* ", ConsoleColor.Green);
-                    Console.Write("*");
+                    Print("*  ", ConsoleColor.Green);
+                    //Console.Write("*");
                     break;
 
             }

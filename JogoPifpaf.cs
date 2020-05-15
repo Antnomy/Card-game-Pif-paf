@@ -29,7 +29,7 @@ namespace mesa
             Definir52Cartas();
             Definir52Cartas();
 
-            //Baralho.Embaralhar();
+            Baralho.Embaralhar();
            
 
             //Add bots
@@ -130,7 +130,7 @@ namespace mesa
         public void Definir52Cartas()
         {
 
-            /*Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Cop, Cor.vermelha));
+            Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Cop, Cor.vermelha));
             Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Esp, Cor.preta));
             Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Our, Cor.vermelha));
             Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Pau, Cor.preta));
@@ -181,13 +181,13 @@ namespace mesa
             Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Cop, Cor.vermelha));
             Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Esp, Cor.preta));
             Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Our, Cor.vermelha));
-            Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Pau, Cor.preta));*/
+            Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Pau, Cor.preta));
 
           
            
             //cartas texte
             //Carta c1 = new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha);
-            Baralho.AdcCarta(new Carta("J", 10, 11, Nipe.Esp, Cor.preta));
+            /*Baralho.AdcCarta(new Carta("J", 10, 11, Nipe.Esp, Cor.preta));
             //Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Esp, Cor.preta));
             Baralho.AdcCarta(new Carta("Q", 10, 12, Nipe.Esp, Cor.preta));
             Baralho.AdcCarta(new Carta("5", 10, 5, Nipe.Cop, Cor.vermelha));
@@ -229,7 +229,7 @@ namespace mesa
            // Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Pau, Cor.preta));
             Baralho.AdcCarta(new Carta("3", 10, 3, Nipe.Cop, Cor.vermelha));
             Baralho.AdcCarta(new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha));
-            Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Cop, Cor.vermelha));
+            Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Cop, Cor.vermelha));*/
 
 
 
