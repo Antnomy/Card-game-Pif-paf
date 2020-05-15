@@ -10,23 +10,19 @@ namespace Pif_paf
         public Baralho Baralho;
         public Pilha Cemiterio;
         public Mao Mao;
-        private Random r;
-
         public Ai(Baralho baralho, Pilha cemiterio, Mao mao)
         {
             Baralho = baralho;
             Cemiterio = cemiterio;
-            Mao = mao;
-            r = new Random();
+            Mao = mao;           
         }
-
         public void AutoMontar()
         {
             Mao.RemoveGrupos();
             ArrjarSeqtIn();
-            Mao.VerifSequencias2();
+            Mao.VerifSequencias();
             ArranjarTrincas();
-            Mao.VerifTrincas2();
+            Mao.VerifTrincas();
             Mao.VerifPares();
         }
         public void Comprar()
@@ -43,18 +39,21 @@ namespace Pif_paf
         public void SelecDescarte()
         {
             int indice = Mao.GetListaCartas().FindIndex(carta => carta.Grupo == Grupo.Nenhum);
-
+           
+           
             if (indice != -1)
             {
-                Cemiterio.AdcCarta(Mao.Descartar(indice));
+                
+                    Cemiterio.AdcCarta(Mao.Descartar(indice));
+                
+                
             }
             else
             {
                 indice = Mao.GetListaCartas().FindIndex(carta => carta.Grupo == Grupo.Pares);
-                if (indice != -1)
-                {
+                
                     Cemiterio.AdcCarta(Mao.Descartar(indice));
-                }
+                
             }
         }
 
@@ -62,19 +61,29 @@ namespace Pif_paf
         {
             Mao = mao;
         }
-
-        
+       
         private bool CemiterioFazJogo()
         {
             if (Cemiterio.QntCartas() > 0)
             {
-                //Se completa uma trinca ou sequencia.
-                if (Mao.GetListaCartas().Find(carta => carta.Livre() && (Mao.VerifPar(carta, Cemiterio.Top()) || Mao.VerifSeq(carta, Cemiterio.Top()) || Mao.VerifSeq(Cemiterio.Top(), carta))) != null)
+                if (Mao.GetListaCartas().Find(carta => carta.Grupo == Grupo.Nenhum && (Mao.VerifPar(carta, Cemiterio.Top()) || Mao.VerifSeq(carta, Cemiterio.Top()) || Mao.VerifSeq(Cemiterio.Top(), carta))) != null)
                 {
+                                 
+                    return true;
+                }
+                //Se completa uma trinca ou sequencia.
+                if (Mao.GetListaCartas().Find(carta => carta.Grupo == Grupo.Pares && (Mao.VerifPar(carta, Cemiterio.Top()) || Mao.VerifSeq(carta, Cemiterio.Top()) || Mao.VerifSeq(Cemiterio.Top(), carta))) != null)
+                {
+                    if (Mao.GetListaCartas().Exists(carta => Mao.VerifIguais(carta, Cemiterio.Top())))
+                    {
+                       
+                        return false;
+                    }
                     return true;
                 }
 
                 //Se é 2 acima ou abaixo de uma sequencia.
+         
                 if (Mao.GetListaCartas().Find(carta => carta.Livre() && (Mao.VerifSeq2p(carta, Cemiterio.Top()) || Mao.VerifSeq2p(Cemiterio.Top(), carta))) != null)
                 {
                     return true;
@@ -93,7 +102,7 @@ namespace Pif_paf
             {
                 for (int j = i + 1; j < Mao.GetListaCartas().Count; j++)
                 {
-                    if (Mao.VerifPar(Mao.GetListaCartas()[i], Mao.GetListaCartas()[j])  && Mao.GetListaCartas()[i].Livre() && Mao.GetListaCartas()[j].Livre())
+                    if (Mao.VerifPar(Mao.GetListaCartas()[i], Mao.GetListaCartas()[j]) && !Mao.VerifPar(Mao.GetListaCartas()[i], Mao.GetListaCartas()[i + 1]) && Mao.GetListaCartas()[i].Livre() && Mao.GetListaCartas()[j].Livre())
                     {
                         Mao.MoverCarta(j, i);
                         break;

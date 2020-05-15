@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Pif_paf;
 using Enuns;
@@ -109,23 +110,23 @@ namespace mesa
 
             }
         }
-        public void MoverSelecao(int seta, int origem)
+        public void MoverSelecao(int direcao, int origem)
         {
-            int destino = origem - 1;
-            if (seta == 4)
-            {
-                if (destino >= 0)
+            int destino;
+            
+                destino = origem + direcao;
+                if (destino > QntCartas() - 1)
                 {
-                    MoverCarta(origem, destino);
-                    Marcar(destino);
+                    destino = 0;
                 }
-                else
+                
+                if (destino == 0)
                 {
                     destino = QntCartas() - 1;
-                    MoverCarta(origem, destino);
-                    Marcar(destino);
                 }
-            }
+                MoverCarta(origem, destino);
+                Marcar(destino);
+            
         }
         public bool VerifPar(Carta a, Carta b)
         {
@@ -156,54 +157,18 @@ namespace mesa
             }
 
         }
-        /*public bool VerifProx(Carta a, Carta b)
-        {
-            if (a.Letra == "A" && b.Letra == "K" && a.Nipe == b.Nipe)
-            {
-                return true;
-            }
-            else
-            {
-                return a.Ordem == b.Ordem + 1 && a.Nipe == b.Nipe;
-            }
-        }*/
+      
         public bool VerifMenor(Carta a, Carta b)
         {
             return a.Ordem < b.Ordem;
         }
-
-        public int VerifTrincas()
+        public bool VerifIguais(Carta a, Carta b)
         {
-            Trincas = 0;
-            List<Carta> aux = new List<Carta>();
-
-            for (int i = 0; i < Cartas.Count - 1; i++)
-            {
-                if (VerifPar(Cartas[i], Cartas[i + 1]) && Cartas[i].Livre() && Cartas[i + 1].Livre())
-                {
-                    aux.Add(Cartas[i + 1]);
-                    Cartas[i].Grupo = Grupo.Pares;
-                    Cartas[i + 1].Grupo = Grupo.Pares;
-                }
-                else
-                {
-                    aux.Clear();
-                }
-
-                if (aux.Count == 2 && Cartas[i + 1].Nipe != Cartas[i - 1].Nipe)
-                {
-                    Trincas++;
-                    aux.Insert(0, Cartas[i - 1]);
-                    aux.ForEach(carta => carta.Grupo = Grupo.Trincas);
-
-                    aux.Clear();
-                    i++;
-                }
-
-            }
-            return Trincas;
+            return a.Ordem == b.Ordem && a.Nipe == b.Nipe;
         }
-        public void VerifTrincas2()
+
+        
+        public void VerifTrincas()
         {
             Trincas = 0;
             for (int i = 0; i < Cartas.Count - 2; i++)
@@ -217,44 +182,15 @@ namespace mesa
                         Cartas[i + 1].Grupo = Grupo.Trincas;
                         Cartas[i + 2].Grupo = Grupo.Trincas;
                         Trincas++;
-                        i += 3;
+                        i += 2;
                     }
                 }
             }
         }
-        public int VerifSequencias()
+        
+        public void VerifSequencias()
         {
-            List<Carta> aux = new List<Carta>();
-            Sequencias = 0;
 
-            for (int i = 0; i < Cartas.Count - 1; i++)
-            {
-                if (VerifSeq(Cartas[i], Cartas[i + 1]))
-                {
-                    aux.Add(Cartas[i + 1]);
-                    //Cartas[i].Grupo = Grupo.Pares;
-                    //Cartas[i + 1].Grupo = Grupo.Pares;
-                }
-                else
-                {
-                    aux.Clear();
-                }
-                if (aux.Count == 2)
-                {
-
-                    Sequencias++;
-                    aux.Insert(0, Cartas[i - 1]);
-                    aux.ForEach(carta => carta.Grupo = Grupo.Sequencias);
-                    aux.Clear();
-                    i++;
-                }
-            }
-            return Sequencias;
-        }
-
-        public void VerifSequencias2()
-        {
-           
             Sequencias = 0;
 
             for (int i = 0; i < Cartas.Count - 2; i++)
@@ -266,8 +202,8 @@ namespace mesa
                         Cartas[i].Grupo = Grupo.Sequencias;
                         Cartas[i + 1].Grupo = Grupo.Sequencias;
                         Cartas[i + 2].Grupo = Grupo.Sequencias;
-                        Trincas++;
-                        i += 3;
+                        Sequencias++;
+                        i += 2;
 
                     }
                 }
@@ -280,7 +216,7 @@ namespace mesa
                 if (Cartas[i].Livre() && Cartas[i + 1].Livre() && (VerifPar(Cartas[i], Cartas[i + 1]) || VerifSeq(Cartas[i], Cartas[i + 1])))
                 {
                     Cartas[i].Grupo = Grupo.Pares;
-                    Cartas[i + 1].Grupo = Grupo.Pares;
+                    Cartas[i + 1].Grupo = Grupo.Pares;                 
                 }
             }
         }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using mesa;
 using Enuns;
@@ -7,17 +6,14 @@ using Enuns;
 namespace Pif_paf
 {
     class Tela
-    {
-        
+    {       
         public static int qntCemiterio;
-
         public static ConsoleKey LerTecla()
         {
             ConsoleKeyInfo tecla;
             tecla = Console.ReadKey(true);
             return tecla.Key;
-        }
-       
+        }      
         public static void WriteLineSet(int recuo)
         {
             if (Console.CursorLeft >= recuo)
@@ -59,7 +55,6 @@ namespace Pif_paf
         }
         public static void Dicas()
         {
-
             WriteLineSet(6, "Inf:");
             Print("●", ConsoleColor.DarkYellow);
             WriteLineSet(9, " - pares");
@@ -94,7 +89,7 @@ namespace Pif_paf
             {
                 if (i == posicaoSelecionada + 1)
                 {
-                    PrintBk($" {i} ", ConsoleColor.Blue);
+                    PrintBk($" {i} ", ConsoleColor.DarkYellow);
                     Console.Write(" ");
                 }
                 else
@@ -297,11 +292,11 @@ namespace Pif_paf
                 Console.Write("   ");
                 if (indice != 1)
                 {
-                    Player(indice - 1, jogo, false, jogo.VerMaoAdversario);
+                    Player(indice - 1, jogo, !jogo.Visibilidade, jogo.Visibilidade);
                 }
                 else
                 {
-                    Player(jogo.JogadorAtual.Numero, jogo, false, jogo.VerMaoAdversario);
+                    Player(jogo.JogadorAtual.Numero, jogo, !jogo.Visibilidade, jogo.Visibilidade);
                 }
             }
 
@@ -366,8 +361,8 @@ namespace Pif_paf
             Print("______________________________________________", ConsoleColor.DarkGreen);
             Console.WriteLine();
             Console.WriteLine(">> FIM DE JOGO!<< ");
-
-            Print(jogo.JogadorAnterior().Nome + " BATEU!!", ConsoleColor.DarkGreen);
+            Console.Write("  ");
+            Print(jogo.JogadorAnterior().Nome + "BATEU!!", ConsoleColor.DarkGreen);
             Console.WriteLine(" " + jogo.JogadorAnterior().Mao.Trincas + " Trincas(s), " + jogo.JogadorAnterior().Mao.Sequencias + " Sequencia(s)");
             Console.WriteLine();
             int indiceVencedor = jogo.JogadorAnterior().Numero - 1;
@@ -494,9 +489,9 @@ namespace Pif_paf
         public static void DesenhaSetas()
         {
             Console.WriteLine();
-            PrintBk(" <-- 4   ", ConsoleColor.DarkGreen);
-            Console.Write("   5   ");
-            PrintBk(" 6 -->   ", ConsoleColor.DarkGreen);
+            PrintBk(" <--     ", ConsoleColor.DarkGreen);
+            Console.Write("       ");
+            PrintBk("   -->   ", ConsoleColor.DarkGreen);
         }
 
 

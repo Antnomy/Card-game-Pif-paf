@@ -14,8 +14,8 @@ namespace mesa
         public Jogador JogadorAtual;
         public Fase fase;
         public bool FimJogo { get; set; }
-        public bool VerMaoAdversario { get; set; }
-        public JogoPifpaf(int qntJogadores, string nomeJogador, bool verMaoAdversario)
+        public bool Visibilidade { get; set; }
+        public JogoPifpaf(int qntJogadores, string nomeJogador, bool visibilidade)
         {
             Baralho = new Baralho();
             Cemiterio = new Pilha();
@@ -25,11 +25,11 @@ namespace mesa
             //Jogadores = jogadores;
             fase = Fase.compra;
             FimJogo = false;
-            VerMaoAdversario = !verMaoAdversario;
+            Visibilidade = !visibilidade;
             Definir52Cartas();
             Definir52Cartas();
 
-            Baralho.Embaralhar();
+            //Baralho.Embaralhar();
            
 
             //Add bots
@@ -37,7 +37,7 @@ namespace mesa
 
             string[] bots = new string[]
             { "João", "Antônio", "Junior", "John Macllaine", "Moises", "Spirit", "Phantom", "G-virus", "T-virus", "ANJ", "SUBROSA", "Fallen", "Matheus", "Snike",
-            "Yami Yugi", "Dark Magician", "Blue eyes", "GOD", "Kurosaki", "Seya", "Lucifer"};
+            "Yami Yugi", "Dark Magician", "Homem Risonho", "GOD", "Kurosaki", "Seya", "Lucifer"};
             Jogadores = new Jogador[qntJogadores];
 
             if (nome == "")
@@ -130,7 +130,7 @@ namespace mesa
         public void Definir52Cartas()
         {
 
-            Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Cop, Cor.vermelha));
+            /*Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Cop, Cor.vermelha));
             Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Esp, Cor.preta));
             Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Our, Cor.vermelha));
             Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Pau, Cor.preta));
@@ -181,10 +181,10 @@ namespace mesa
             Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Cop, Cor.vermelha));
             Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Esp, Cor.preta));
             Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Our, Cor.vermelha));
-            Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Pau, Cor.preta));
+            Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Pau, Cor.preta));*/
 
-
-            /*Baralho.AdcCarta(new Carta("Q", 10, 12, Nipe.Pau, Cor.preta));
+          
+           
             //cartas texte
             //Carta c1 = new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha);
             Baralho.AdcCarta(new Carta("J", 10, 11, Nipe.Esp, Cor.preta));
@@ -198,12 +198,12 @@ namespace mesa
             //Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Cop, Cor.vermelha));
             Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Esp, Cor.preta));
             //Baralho.AdcCarta(new Carta("Q", 10, 12, Nipe.Esp, Cor.preta));
-
-            Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Esp, Cor.preta));
+            Baralho.AdcCarta(new Carta("Q", 10, 12, Nipe.Our, Cor.vermelha));
+            //Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Esp, Cor.preta));
             //Baralho.AdcCarta(new Carta("7", 10, 7, Nipe.Esp, Cor.preta));
             //Baralho.AdcCarta(new Carta("4", 10, 4, Nipe.Cop, Cor.vermelha));
             //Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Pau, Cor.preta));
-            //Baralho.AdcCarta(new Carta("2", 10, 2, Nipe.Esp, Cor.preta));
+            Baralho.AdcCarta(new Carta("2", 10, 2, Nipe.Esp, Cor.preta));
             //Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Esp, Cor.preta));
             //Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Our, Cor.vermelha));
 
@@ -220,16 +220,16 @@ namespace mesa
 
 
             //posi 0
-
+            Baralho.AdcCarta(new Carta("Q", 10, 12, Nipe.Esp, Cor.preta));
             Baralho.AdcCarta(new Carta("Q", 10, 12, Nipe.Our, Cor.vermelha));
             Baralho.AdcCarta(new Carta("Q", 10, 12, Nipe.Pau, Cor.preta));
             Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Cop, Cor.vermelha));
             Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Esp, Cor.preta));
             Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Our, Cor.vermelha));
-            Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Pau, Cor.preta));
+           // Baralho.AdcCarta(new Carta("K", 10, 13, Nipe.Pau, Cor.preta));
             Baralho.AdcCarta(new Carta("3", 10, 3, Nipe.Cop, Cor.vermelha));
             Baralho.AdcCarta(new Carta("2", 10, 2, Nipe.Cop, Cor.vermelha));
-            Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Cop, Cor.vermelha));*/
+            Baralho.AdcCarta(new Carta("A", 10, 1, Nipe.Cop, Cor.vermelha));
 
 
 

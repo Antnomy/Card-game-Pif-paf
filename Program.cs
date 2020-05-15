@@ -35,7 +35,7 @@ namespace Pif_paf
             Console.Write("Seu nome: ");
             string nomeJogador = Console.ReadLine();
 
-            JogoPifpaf jogo = new JogoPifpaf(n, nomeJogador,false);
+            JogoPifpaf jogo = new JogoPifpaf(n, nomeJogador,true);
            
             while (!jogo.FimJogo)
             {
@@ -59,10 +59,10 @@ namespace Pif_paf
                     jogo.fase = Fase.movimentacao;
                     jogo.Ai.Mao.RemoveGrupos();
                     jogo.Ai.ArrjarSeqtIn();
-                    jogo.Ai.Mao.VerifSequencias2();
+                    jogo.Ai.Mao.VerifSequencias();
 
                     jogo.Ai.ArranjarTrincas();
-                    jogo.Ai.Mao.VerifTrincas2();
+                    jogo.Ai.Mao.VerifTrincas();
                     jogo.Ai.Mao.VerifPares();
 
 
@@ -80,7 +80,6 @@ namespace Pif_paf
                     jogo.fase = Fase.compra;
              
                     jogo.MudarJogador();
-
                 }
                 else
                 {
@@ -108,49 +107,50 @@ namespace Pif_paf
                             jogo.JogadorAtual.Mao.DesMarcar();
 
                             jogo.JogadorAtual.Mao.RemoveGrupos();
-                            jogo.JogadorAtual.Mao.VerifSequencias2();
-                            jogo.JogadorAtual.Mao.VerifTrincas2();
+                            jogo.JogadorAtual.Mao.VerifSequencias();
+                            jogo.JogadorAtual.Mao.VerifTrincas();
                             jogo.JogadorAtual.Mao.VerifPares();
                             Tela.ImprimeMesa(jogo);
 
                            
                             if (Tela.Confirmar("Deseja mover uma carta (s/n)? "))
                             {
+                                
                                 bool t = false;
                                 while (!t)
                                 {
                                     Tela.ImprimeMesa(jogo);
-                                    Console.WriteLine("  > MOVER CARTA < ");
-                                    Console.WriteLine("    * Digite (Posição) para Mover: ");
-                                    Console.Write("    * Digite (  t ) para Terminar:   ");
-                                    int origem = Tela.EntrarPosicao();
+                                   Console.WriteLine("  > MOVER CARTA < ");
+                                   Console.WriteLine("    * Digite (Posição) para Mover: ");
+                                   Console.Write("    * Digite (  t ) para Terminar:   ");
+                                   int origem = Tela.EntrarPosicao();
 
-                                    if(origem == -1)
-                                    {
-                                        jogo.fase = Fase.descarte;
-                                        t = true;
-                                        continue;
-                                    }
-                                    jogo.JogadorAtual.Mao.Marcar(origem - 1);
+                                  if(origem == -1)
+                                   {
+                                       jogo.fase = Fase.descarte;
+                                       t = true;
+                                       continue;
+                                   }
+                                   jogo.JogadorAtual.Mao.Marcar(origem - 1);
 
-                                    Tela.ImprimeMesa(jogo);
-                                    Console.WriteLine("  > MOVER CARTA <");
-                                    Console.Write("    Destino (Posição): ");
-                                    int destino = Tela.EntrarPosicao();
-                                    jogo.JogadorAtual.Mao.DesMarcar();
+                                   Tela.ImprimeMesa(jogo);
+                                   Console.WriteLine("  > MOVER CARTA <");
+                                   Console.Write("    Destino (Posição): ");
+                                   int destino = Tela.EntrarPosicao();
+                                   jogo.JogadorAtual.Mao.DesMarcar();
 
-                                    jogo.JogadorAtual.Mao.MoverCarta(origem - 1, destino - 1);
-                                    jogo.JogadorAtual.Mao.RemoveGrupos();
-                                    jogo.JogadorAtual.Mao.VerifTrincas2();
-                                    jogo.JogadorAtual.Mao.VerifSequencias2();
-                                    jogo.JogadorAtual.Mao.VerifPares();
+                                   jogo.JogadorAtual.Mao.MoverCarta(origem - 1, destino - 1);
+                                   jogo.JogadorAtual.Mao.RemoveGrupos();
+                                   jogo.JogadorAtual.Mao.VerifTrincas();
+                                   jogo.JogadorAtual.Mao.VerifSequencias();
+                                   jogo.JogadorAtual.Mao.VerifPares();
 
-                                    jogo.JogadorAtual.Mao.Marcar(destino - 1);
-                                    Tela.ImprimeMesa(jogo);
-                                    Tela.Espera(1, false);
-                                    jogo.JogadorAtual.Mao.DesMarcar();
+                                   jogo.JogadorAtual.Mao.Marcar(destino - 1);
+                                   Tela.ImprimeMesa(jogo);
+                                   Tela.Espera(1, false);
+                                   jogo.JogadorAtual.Mao.DesMarcar();
 
-                                    Tela.ImprimeMesa(jogo);                                  
+                                   Tela.ImprimeMesa(jogo);                                                                      
                                 }
                             }
                             else
@@ -177,8 +177,8 @@ namespace Pif_paf
                                 jogo.Cemiterio.AdcCarta(jogo.JogadorAtual.Mao.Descartar(pos - 1));
 
                                 jogo.JogadorAtual.Mao.RemoveGrupos();
-                                jogo.JogadorAtual.Mao.VerifTrincas2();
-                                jogo.JogadorAtual.Mao.VerifSequencias2();
+                                jogo.JogadorAtual.Mao.VerifTrincas();
+                                jogo.JogadorAtual.Mao.VerifSequencias();
                                 jogo.JogadorAtual.Mao.VerifPares();
 
                                 jogo.JogadorAtual.Mao.DesMarcar();
@@ -226,6 +226,7 @@ namespace Pif_paf
                     Console.Read();
                 }
             }
+            return;
         }
     }
 }
