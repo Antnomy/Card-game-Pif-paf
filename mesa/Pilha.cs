@@ -6,7 +6,7 @@ namespace mesa
 {
     class Pilha
     {
-        public List<Carta> Cartas { get; protected set; } = new List<Carta>();       
+        public List<Carta> Cartas { get; protected set; } = new List<Carta>();
         public void AdcCarta(Carta carta)
         {
             Cartas.Add(carta);
@@ -17,21 +17,14 @@ namespace mesa
             Cartas.Remove(carta);
             return aux;
         }
-        public Carta RemovePosicao(int posicao)
-        {
-            Carta aux = Cartas[posicao];
-            Cartas.Remove(Cartas[posicao]);
-            return aux;
-        }
+
         public Carta RemoveTop()
         {
             if (QntCartas() == 0)
             {
                 throw new PifpafExeption("   Não há mais cartas para sacar!");
             }
-            Carta aux = Top();
-            Cartas.Remove(Top());
-            return aux;
+            return RemoveCarta(Top());
         }
         public Carta Top()
         {

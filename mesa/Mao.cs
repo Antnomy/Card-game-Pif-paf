@@ -11,7 +11,6 @@ namespace mesa
         public int Trincas { get; private set; }
         public int Sequencias { get; private set; }
         public int selec { get; set; }
-        public Carta Selecao { get; set; }
         public bool Visibilidade { get; private set; }
 
         public Mao()
@@ -25,7 +24,6 @@ namespace mesa
                 Cartas.Add(baralho.RemoveTop());
             }
             selec = -1;
-            Selecao = null;
             Visibilidade = true;
             Trincas = 0;
             Sequencias = 0;
@@ -56,21 +54,6 @@ namespace mesa
             }
         }
 
-
-
-        public void Descartar(int posicao, Pilha pilha)
-        {
-            if (!ValidarPosicao(posicao))
-            {
-                throw new PifpafExeption("Digite uma posiçaõ existente!! ENTER para continuar: ");
-            }
-            else
-            {
-
-                pilha.AdcCarta(RemoveCarta(Cartas[posicao]));
-            }
-        }
-
         public void Marcar(int indice)
         {
             if (!ValidarPosicao(indice))
@@ -79,13 +62,11 @@ namespace mesa
             }
             else
             {
-                //Selecao = Cartas[indice];
                 selec = indice;
             }
         }
         public void DesMarcar()
         {
-            //Selecao = null;
             selec = -1;
         }
         public void RemoveGrupos(int indice)

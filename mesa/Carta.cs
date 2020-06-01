@@ -20,10 +20,7 @@ namespace mesa
             Grupo = Grupo.Nenhum;
             
         }
-       public void SetValor(int valor)
-        {
-            Valor = Valor;
-        }
+      
         public bool Livre()
         {
             if (Grupo == Grupo.Nenhum || Grupo == Grupo.Pares)
@@ -31,19 +28,9 @@ namespace mesa
                 return true;
             }
             return false;
-        }
-        private void Print(ConsoleColor foreground, ConsoleColor background)
-        {
-            ConsoleColor aux = Console.ForegroundColor;
-            Console.ForegroundColor = foreground;
-            Console.BackgroundColor = background;
-            Console.Write(Nipe);
-            Console.ForegroundColor = aux;
-            Console.BackgroundColor = default;
-        }
-       
+        }       
         public string ToStringNipe()
-        {
+        {       
             switch (Nipe)
             {
                 case Nipe.Cop:

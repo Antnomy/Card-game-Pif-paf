@@ -10,10 +10,7 @@ namespace mesa
         {
 
         }
-        public  void SetCartas(List<Carta> cartas)
-        {
-            Cartas = cartas ;
-        }
+        
         public void Embaralhar()
         {
             List<Carta> aux = new List<Carta>();

@@ -14,7 +14,7 @@ namespace Pif_paf
         {
             Baralho = baralho;
             Cemiterio = cemiterio;
-            Mao = mao;           
+            Mao = mao;
         }
         public void AutoMontar()
         {
@@ -36,24 +36,18 @@ namespace Pif_paf
                 Mao.AdcCarta(Baralho.RemoveTop());
             }
         }
-        public void SelecDescarte()
+        public int SelecDescarte()
         {
             int indice = Mao.GetListaCartas().FindIndex(carta => carta.Grupo == Grupo.Nenhum);
-           
-           
+
             if (indice != -1)
             {
-                
-                    Cemiterio.AdcCarta(Mao.Descartar(indice));
-                
-                
+                return indice;
             }
             else
             {
                 indice = Mao.GetListaCartas().FindIndex(carta => carta.Grupo == Grupo.Pares);
-                
-                    Cemiterio.AdcCarta(Mao.Descartar(indice));
-                
+                return indice;
             }
         }
 
@@ -61,14 +55,14 @@ namespace Pif_paf
         {
             Mao = mao;
         }
-       
+
         private bool CemiterioFazJogo()
         {
             if (Cemiterio.QntCartas() > 0)
             {
                 if (Mao.GetListaCartas().Find(carta => carta.Grupo == Grupo.Nenhum && (Mao.VerifPar(carta, Cemiterio.Top()) || Mao.VerifSeq(carta, Cemiterio.Top()) || Mao.VerifSeq(Cemiterio.Top(), carta))) != null)
                 {
-                                 
+
                     return true;
                 }
                 //Se completa uma trinca ou sequencia.
@@ -76,14 +70,14 @@ namespace Pif_paf
                 {
                     if (Mao.GetListaCartas().Exists(carta => Mao.VerifIguais(carta, Cemiterio.Top())))
                     {
-                       
+
                         return false;
                     }
                     return true;
                 }
 
                 //Se é 2 acima ou abaixo de uma sequencia.
-         
+
                 if (Mao.GetListaCartas().Find(carta => carta.Livre() && (Mao.VerifSeq2p(carta, Cemiterio.Top()) || Mao.VerifSeq2p(Cemiterio.Top(), carta))) != null)
                 {
                     return true;
